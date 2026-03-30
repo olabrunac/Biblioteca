@@ -29,16 +29,16 @@ int main() {
     cout << "Editora: " << livro1.getEditora() << endl;
     cout << "Ano: " << livro1.getAnoPublicacao() << endl;
     cout << "Genero: " << livro1.getGenero() << endl;
-    cout << "Disponivel: " << livro1.taDisponivel() << endl;
+    cout << "Disponivel: " << (livro1.taDisponivel() ? "Sim" : "Nao") << endl;
 
     // Testando setDisponibilidade
     cout << endl << "=== Teste setDisponibilidade ===" << endl << endl;
-    cout << "Livro 1 disponivel? " << livro1.taDisponivel() << endl;
+    cout << "Livro: '" << livro1.getTitulo() << "' está disponivel? " << (livro1.taDisponivel() ? "Sim" : "Nao") << endl;
     livro1.setDisponibilidade(false);
-    cout << "Apos emprestimo: " << livro1.taDisponivel() << endl;
+    cout << "Apos emprestimo: " << (livro1.taDisponivel() ? "Sim" : "Nao") << endl;
 
     // Liberando memoria dos livros dinamicos
     delete livro3;
     delete livro4;
-
+    cout << endl;
 }
