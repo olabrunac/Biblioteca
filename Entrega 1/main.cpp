@@ -1,8 +1,6 @@
 #include "Biblioteca.h"
-#include <iostream>
-using namespace std;
 
-int main(){
+int main() {
     // Instanciando dois livros de forma estatica
     Livro livro1("Dom Casmurro", "Machado de Assis", 1, "Garnier", 1899, "Romance");
     Livro livro2("O Cortico", "Aluisio Azevedo", 2, "Garnier", 1890, "Naturalismo");
@@ -43,5 +41,4 @@ int main(){
     delete livro3;
     delete livro4;
 
-    return 0;
 }

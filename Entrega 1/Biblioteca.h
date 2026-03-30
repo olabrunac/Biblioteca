@@ -1,7 +1,6 @@
 #ifndef BIBLIOTECA_H
 #define BIBLIOTECA_H
-#include <string>
-
+#include <iostream>
 using namespace std;
 
 class Livro{

@@ -1,6 +1,4 @@
 #include "Biblioteca.h"
-#include <iostream>
-using namespace std;
 
 Livro::Livro(string titulo, string autor, int id, string editora, int anoPublicacao, string genero, bool disponivel){
     this->titulo = titulo;
