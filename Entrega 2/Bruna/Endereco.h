@@ -15,7 +15,22 @@ class Endereco {
         string cep;
 
     public:
+        Endereco();
+        void imprimirEndereco();
 
+        string getRua();
+        int getNumero();
+        string getBairro();
+        string getCidade();
+        string getEstado();
+        string getCep();
+
+        void setRua(string novaRua);
+        void setNumero(int novoNumero);
+        void setBairro(string novoBairro);
+        void setCidade(string novaCidade);
+        void setEstado(string novoEstado);
+        void setCep(string novoCep);
 };
 
 #endif

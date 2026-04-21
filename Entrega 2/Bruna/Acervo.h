@@ -14,7 +14,6 @@ class Acervo {
         Acervo();
         
         void setAcervo (const vector<Livro>& novoAcervo);
-
         vector<Livro> getAcervo() const;
 
 };

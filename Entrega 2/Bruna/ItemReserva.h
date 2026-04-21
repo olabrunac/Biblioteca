@@ -10,7 +10,16 @@ class ItemReserva {
         Livro livro;
         
     public:
+        ItemReserva();
+        void imprimirItemReserva();
 
+        int getNroDoItem();
+        int getDataDeRetirada();
+        Livro getLivro();
+
+        void setNroDoItem(int novoNroDoItem);
+        void setDataDeRetirada(int novaDataDeRetirada);
+        void setLivro(Livro& novoLivro);
 };
 
 #endif

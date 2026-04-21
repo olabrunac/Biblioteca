@@ -8,6 +8,13 @@ class Emprestimo {
 
     public:
         Emprestimo();
+        void imprimirEmprestimo();
+
+        int getDataDeRetirada();
+        int getStatus();
+
+        void setDataDeRetirada(int novaDataDeRetirada);
+        void setStatus(int novoStatus);
 };
 
 #endif

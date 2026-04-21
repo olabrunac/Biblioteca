@@ -19,6 +19,7 @@ class Livro {
 
     public:
         Livro();
+        void imprimirLivro();
 
         int getCodigo();
         string getTitulo();
@@ -28,6 +29,16 @@ class Livro {
         int getAnoPublicacao();
         int getQuantidadeDeExemplares();
         int getNroDiasPermitidoEmprestimo();
+
+        void setCodigo(int novoCodigo);
+        void setTitulo(string novoTitulo);
+        void setEdicao(int novaEdicao);
+        void setPreco(float novoPreco);
+        void setEditora(Editora& novaEditora);
+        void setAnoPublicacao(int novoAno);
+        void setQuantidadeDeExemplares(int novaQuantidade);
+        void setNroDiasPermitidoEmprestimo(int novoNroDias);
+    
 };
 
 #endif

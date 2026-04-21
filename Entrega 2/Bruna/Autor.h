@@ -12,6 +12,13 @@ class Autor {
         
     public:
         Autor();
+        void imprimirAutor();
+
+        int getCodigo();
+        string getNome();
+
+        void setCodigo(int novoCodigo);
+        void setNome(string novoNome);
 };
 
 #endif

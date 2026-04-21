@@ -14,6 +14,16 @@ class Usuario {
         StatusUsuario status;
 
     public:
+        Usuario();
+        void imprimirUsuario();
+
+        int getCodigo();
+        string getNome();
+        StatusUsuario getStatus();
+
+        void setCodigo(int novoCodigo);
+        void setNome(string novoNome);
+        void setStatus(StatusUsuario& novoStatus);
 };
 
 #endif

@@ -7,7 +7,14 @@ class Reserva {
         int dataRealizacao;
         
     public:
+        Reserva();
+        void imprimirReserva();
 
+        int getID();
+        int getDataRealizacao();
+
+        void setID(int novoID);
+        void setDataRealizacao(int novaDataReserva);
 };
 
 #endif

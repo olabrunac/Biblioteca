@@ -14,6 +14,15 @@ class Editora {
 
     public:
         Editora();
+        void imprimirEditora();
+
+        int getCodigo();
+        string getNome();
+        Endereco getEndereco();
+
+        void setCodigo(int novoCodigo);
+        void setNome(string novoNome);
+        void setEndereco(Endereco& novoEndereco);
 
 };
 
