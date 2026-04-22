@@ -5,13 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug Entrega 1 (gdb)",
+            "name": "Debug current folder (gdb)",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/Entrega 1/app",
+            "program": "${fileDirname}/app",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/Entrega 1",
+            "cwd": "${fileDirname}",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
@@ -23,7 +23,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "C/C++: build Entrega 1"
+            "preLaunchTask": "C/C++: build active folder"
         }
     ]
 }

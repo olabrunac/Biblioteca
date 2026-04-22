@@ -1,0 +1,21 @@
+#ifndef PROFESSOR_H
+#define PROFESSOR_H
+
+#include "Usuario.h"
+#include <iostream>
+
+using std::cout;
+using std::endl;
+
+class Professor : public Usuario {
+    private:
+
+    public:
+        Professor():Usuario() {}
+
+        void imprimirDadosProfessor() const override {
+            cout << "Professor: " << endl;
+        }
+};
+
+#endif

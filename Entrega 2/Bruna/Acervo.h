@@ -13,8 +13,12 @@ class Acervo {
     public:
         Acervo();
         
-        void setAcervo (const vector<Livro>& novoAcervo);
-        vector<Livro> getAcervo() const;
+        void acrescentarLivro(const Livro& novoLivro);
+        void removerDoAcervo();
+
+        void listarTodos() const;
+        void listarLivrosDisponiveis() const;
+        void listarLivrosIndisponiveis() const;
 
 };
 

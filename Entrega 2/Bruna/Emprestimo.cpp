@@ -11,10 +11,18 @@ void Emprestimo::imprimirEmprestimo() {
     cout << "Status: " << status << endl;
 }
 
-int Emprestimo::getDataDeRetirada() {return dataDeRetirada; }
+int Emprestimo::getDataDeRetirada() { return dataDeRetirada; }
 
-int Emprestimo::getStatus() {return status; }
+int Emprestimo::getDataPrevistaDevolucao() { return dataPrevistaDevolucao; }
+
+int Emprestimo::getDataDevolucao() { return dataDevolucao; }
+
+int Emprestimo::getStatus() { return status; }
 
 void Emprestimo::setDataDeRetirada(int novaDataDeRetirada) { this -> dataDeRetirada = novaDataDeRetirada; }
+
+void Emprestimo::setDataPrevistaDevolucao(int novaDataPrevistaDevolucao) { this -> dataPrevistaDevolucao = novaDataPrevistaDevolucao; }
+
+void Emprestimo::setDataDevolucao(int novaDataDevolucao) { this -> dataDevolucao = novaDataDevolucao; }
 
 void Emprestimo::setStatus(int novoStatus) { this -> status = novoStatus;} 

@@ -4,33 +4,54 @@
 using std::cout;
 using std::endl;
 
-Livro::Livro() {}
+Livro::Livro() : codigo(0), quantidadeDeExemplares(0), statusAgora(0) {}
 
 void Livro::imprimirLivro() {
-    cout << "Código: " << codigo << endl;
-    cout << "Titulo: " << titulo << endl;
-    cout << "Edicao: " << edicao << endl;
-    cout << "Preco: " << preco << endl;
-    cout << "Editora: " << &editora << endl;  // ------------------------------
-    cout << "Ano: " << anoPublicacao << endl;
-    cout << "Quantidade de Exemplares: " << quantidadeDeExemplares << endl;
+    cout << "Titulo: " << titulo << " | Edicao: " << edicao << endl;
+    cout << "Codigo: " << codigo << " | Editora: " << editora.getNome() << endl;  // ------------------------------
+    cout << "Autores: ";
+        if (autor.empty()) {
+            cout << "Nenhum autor" << endl;
+        } else {
+            for (const Autor& temp : autor) {
+                cout << "[" << temp.getNome() << "]" << endl;
+            }
+        }
+    cout << "Quantidade de exemplares em estoque: " << quantidadeDeExemplares << endl;
+    cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
 }
 
-int Livro::getCodigo() { return codigo; }
+bool Livro::estaDisponivel() { return quantidadeDeExemplares > 0; }
 
-string Livro::getTitulo() { return titulo; }
+void Livro::criarExemplares(int novoExemplar) { this -> quantidadeDeExemplares += novoExemplar; }
 
-int Livro::getEdicao() {return edicao; }
 
-float Livro::getPreco() { return preco; }
 
-Editora Livro::getEditora() { return editora; }
+// set e get dos outros métodos
 
-int Livro::getAnoPublicacao() { return anoPublicacao; }
+int Livro::getCodigo() const { return codigo; }
 
-int Livro::getQuantidadeDeExemplares() { return quantidadeDeExemplares; }
+string Livro::getTitulo() const { return titulo; }
 
-int Livro::getNroDiasPermitidoEmprestimo() { return nroDiasPermitidoEmprestimo; }
+int Livro::getEdicao() const {return edicao; }
+
+float Livro::getPreco() const { return preco; }
+
+Editora Livro::getEditora() const { return editora; }
+
+int Livro::getAnoPublicacao() const { return anoPublicacao; }
+
+int Livro::getQuantidadeDeExemplares() const { return quantidadeDeExemplares; }
+
+int Livro::getNroDiasPermitidoEmprestimo() const { return nroDiasPermitidoEmprestimo; }
+
+vector<Autor> Livro::getAutor() const { return autor; }
+
+int Livro::getStatusAgora() const {}
+
+int Livro::getStatusFuturo() const {}
+
+int Livro::getNroPaginas() const { return nroPaginas; }
 
 void Livro::setCodigo(int novoCodigo) { this -> codigo = novoCodigo; }
 
@@ -47,3 +68,11 @@ void Livro::setAnoPublicacao(int novoAno) { this -> anoPublicacao = novoAno; }
 void Livro::setQuantidadeDeExemplares(int novaQuantidade) { this -> quantidadeDeExemplares = novaQuantidade; }
 
 void Livro::setNroDiasPermitidoEmprestimo(int novoNroDias) { this -> nroDiasPermitidoEmprestimo = novoNroDias; }
+
+void Livro::setAutor(vector<Autor> novoAutor) { this -> autor = novoAutor; }
+
+void Livro::setStatusAgora() {}
+
+void Livro::setStatusFuturo() {}
+
+void Livro::setNroPaginas(int novoNroPaginas) { this -> nroPaginas = novoNroPaginas; }
