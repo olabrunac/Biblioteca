@@ -13,7 +13,7 @@ class ItemEmprestimo {
         ItemEmprestimo();
 
         void imprimirItemEmprestimo() const;
-        ExemplarLivro getExemplar() const;
+        ExemplarLivro* getExemplar() const;
 
         int getDataParaDevolucao();
         int getDataQueFoiDevolvido();

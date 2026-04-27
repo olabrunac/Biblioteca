@@ -12,9 +12,9 @@ void ItemEmprestimo::imprimirItemEmprestimo()const {
     cout << "Exemplar número: " << exemplar->getNroExemplar() << endl;
 }
 
-ExemplarLivro ItemEmprestimo::getExemplar() const {
+ExemplarLivro* ItemEmprestimo::getExemplar() const {
     
-    return *(this->exemplar); // O '*' extrai o objeto "sólido" do endereço de memória, 
+    return exemplar; // O '*' extrai o objeto "sólido" do endereço de memória, 
 }
 int ItemEmprestimo::getDataParaDevolucao() { return dataParaDevolucao; }
 

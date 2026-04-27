@@ -11,19 +11,21 @@ using std::vector;
 
 class GerenciadorDeEmprestimos {
     private:
-        vector<Reserva> reserva; 
-        vector<Emprestimo> emprestimo;     
+        vector<Reserva> reservas; 
+        vector<Emprestimo> emprestimos;     
 
     public:
         GerenciadorDeEmprestimos();
 
-        void criarReserva(Usuario emprestimoUsuario, Livro emprestimoLivro, Reserva novaData);
-        void criarEmprestimo(Usuario emprestimoUsuario, Livro emprestimoLivro);
+        void criarEmprestimo(Usuario& emprestimoUsuario, Livro& emprestimoLivro); //Passando por referência, pois o usuario e o exemplar já devem existirem e mais eficiente que por cópia
         void criarEmprestimoApartirDaReserva(Reserva novaReserva);
 
         void listarTodosEmprestimosAtuais();
-        void listarTodasReservas();
-        void listarReservasDoLivro(Livro listaLivro);
+        void listarReservasDoLivro(Livro& listaLivro);
+
+        int contarEmprestimosAtivos(Livro& ativos);
+
+        bool livroEstaDisponivel(Livro& livro);
 
 };
 

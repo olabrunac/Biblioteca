@@ -20,9 +20,9 @@ void Emprestimo::imprimirEmprestimo() {
 }
 
 void Emprestimo::adicionarItem(const ItemEmprestimo& novoItem) {
-    ExemplarLivro TesteExemplar = novoItem.getExemplar();
+    ExemplarLivro* TesteExemplar = novoItem.getExemplar();
 
-    if(TesteExemplar.getStatus() == StatusEmprestimo::DISPONIVEL){
+    if(TesteExemplar->getStatus() == StatusEmprestimo::DISPONIVEL){ //Como TesteExemplarfoi passado como ponteiro 
 
     itens.push_back(novoItem);
     cout <<"Item adicionado com sucesso" << endl;
@@ -42,6 +42,8 @@ int Emprestimo::getDataDevolucao()const { return dataDevolucao; }
 int Emprestimo::getStatus()const { return status; }
 
 Usuario* Emprestimo::getUsuario()const {return usuario;}
+
+const vector<ItemEmprestimo>& Emprestimo::getItens() const{ return itens; }
 
 void Emprestimo::setDataDeRetirada(int novaDataDeRetirada) { this -> dataDeRetirada = novaDataDeRetirada; }
 

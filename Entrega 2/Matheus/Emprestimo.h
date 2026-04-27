@@ -28,6 +28,7 @@ class Emprestimo {
         int getDataDevolucao() const; 
         int getStatus() const;
         Usuario* getUsuario() const;
+        const vector<ItemEmprestimo>& getItens() const;
 
         void setDataDeRetirada(int novaDataDeRetirada);
         void setDataPrevistaDevolucao(int novaDataPrevistaDevolucao);
