@@ -13,10 +13,10 @@ class ExemplarLivro {
         void imprimirExemplarLivro();
 
         int getNroExemplar() const;
-        StatusEmprestimo getStatus();
+        StatusEmprestimo getStatus()const ;//Precisei adicionar o const para o Acervo
 
         void setNroExemplar(int novoNroExemplar);
-        void setStatus(StatusEmprestimo& novoStatusEmprestimo);
+        void setStatus(StatusEmprestimo novoStatusEmprestimo);
 
 };
 

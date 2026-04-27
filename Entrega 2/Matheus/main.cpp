@@ -2,6 +2,7 @@
 #include <vector>
 #include "Acervo.h"
 #include "GerenciadorDeEmprestimos.h"
+#include "Professor.h"
 #include "Editora.h"
 #include "Autor.h"
 
@@ -37,14 +38,12 @@ int main() {
 
     biblioteca.listarTodos();
 
-
-    Usuario matheus;
-
-    matheus.setNome("Matheus");
-    matheus.setCodigo(123);
+    Professor valter;
+    valter.setNome("Valter");
+    valter.setCodigo(111);
 
     GerenciadorDeEmprestimos sistema;
-    sistema.criarEmprestimo(matheus, l1);
+    sistema.criarEmprestimo(valter, l1);
 
     sistema.listarTodosEmprestimosAtuais();
 

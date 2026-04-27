@@ -21,13 +21,49 @@ void Livro::imprimirLivro() {
     cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
 }
 
-bool Livro::estaDisponivel() const { return quantidadeDeExemplares > 0; }
+bool Livro::estaDisponivel()const  {  
+    // Percorre todos os exemplares físicos que o livro possui
+    for (const ExemplarLivro& exemplar : exemplares) {
+        // Se encontrar pelo menos UM exemplar na prateleira (DISPONIVEL), o livro está disponível!
+        if (exemplar.getStatus() == StatusEmprestimo::DISPONIVEL) {
+            return true;
+        }
+    }
+    // Se olhou todos e não achou nenhum disponível (ou se a lista estiver vazia), retorna falso.
+    return false; 
+}
 
-void Livro::criarExemplares(int novoExemplar) { this -> quantidadeDeExemplares += novoExemplar; }
+void Livro::criarExemplares(int quantidade) { 
 
+for (int i = 0; i < quantidade; i++) {
+        ExemplarLivro novoExemplar;
+        
+        // Todo novo exemplar nasce com status DISPONIVEL
+        StatusEmprestimo statusInicial = StatusEmprestimo::DISPONIVEL;
+        novoExemplar.setStatus(statusInicial);
+        
+        // Define um número para o exemplar (ex: se ja tem 2, o próximo é o 3)
+        novoExemplar.setNroExemplar(quantidadeDeExemplares + i + 1);
 
+        // Adiciona o exemplar gerado na lista que pertence a este Livro
+        this->exemplares.push_back(novoExemplar);
+    }
+    
+    // Atualiza o contador de quantidade
+    this->quantidadeDeExemplares += quantidade; 
+}
 
-// set e get dos outros métodos
+ExemplarLivro* Livro::getExemplarDisponivel() {
+
+    for (ExemplarLivro& exemplar : exemplares) {
+        if (exemplar.getStatus() == StatusEmprestimo::DISPONIVEL) {
+            return &exemplar; 
+        }
+    }
+    
+    cout << "Nenhum exemplar disponivel no momento!" << endl;
+    return nullptr; 
+}
 
 int Livro::getCodigo() const { return codigo; }
 
@@ -41,15 +77,21 @@ Editora Livro::getEditora() const { return editora; }
 
 int Livro::getAnoPublicacao() const { return anoPublicacao; }
 
-int Livro::getQuantidadeDeExemplares() const { return quantidadeDeExemplares; }
+int Livro::getQuantidadeDeExemplares() const { 
+    
+    return exemplares.size(); }
 
 int Livro::getNroDiasPermitidoEmprestimo() const { return nroDiasPermitidoEmprestimo; }
 
 vector<Autor> Livro::getAutor() const { return autor; }
 
-int Livro::getStatusAgora() const {}
+string Livro::getStatusAgora() const {
+    if (estaDisponivel()) {
+        return "Disponivel";
+    }
+    return "Indisponivel";
+}
 
-int Livro::getStatusFuturo() const {}
 
 int Livro::getNroPaginas() const { return nroPaginas; }
 
@@ -70,9 +112,5 @@ void Livro::setQuantidadeDeExemplares(int novaQuantidade) { this -> quantidadeDe
 void Livro::setNroDiasPermitidoEmprestimo(int novoNroDias) { this -> nroDiasPermitidoEmprestimo = novoNroDias; }
 
 void Livro::setAutor(vector<Autor> novoAutor) { this -> autor = novoAutor; }
-
-void Livro::setStatusAgora() {}
-
-void Livro::setStatusFuturo() {}
 
 void Livro::setNroPaginas(int novoNroPaginas) { this -> nroPaginas = novoNroPaginas; }

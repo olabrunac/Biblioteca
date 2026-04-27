@@ -13,8 +13,8 @@ void ExemplarLivro::imprimirExemplarLivro() {
 
 int ExemplarLivro::getNroExemplar() const{ return nroExemplar; }
 
-StatusEmprestimo ExemplarLivro::getStatus() { return status; }
+StatusEmprestimo ExemplarLivro::getStatus() const { return status; }
 
 void ExemplarLivro::setNroExemplar(int novoNroExemplar) { this -> nroExemplar = novoNroExemplar; }
 
-void ExemplarLivro::setStatus(StatusEmprestimo& novoStatusEmprestimo) { this -> status = novoStatusEmprestimo; }
+void ExemplarLivro::setStatus(StatusEmprestimo novoStatusEmprestimo) { this -> status = novoStatusEmprestimo; }

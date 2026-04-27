@@ -8,12 +8,11 @@ class ItemEmprestimo {
         ExemplarLivro* exemplar;
         int dataParaDevolucao;
         int dataQueFoiDevolvido;
-        
     public:
         
         ItemEmprestimo();
 
-        void imprimirItemEmprestimo();
+        void imprimirItemEmprestimo() const;
         ExemplarLivro getExemplar() const;
 
         int getDataParaDevolucao();

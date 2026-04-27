@@ -18,15 +18,13 @@ void Acervo::removerDoAcervo(const Livro& removerLivro) {
     for (auto temp = acervo.begin(); temp != acervo.end(); temp ++){
 
         if(temp->getCodigo() == removerLivro.getCodigo()){
-
-            acervo.erase(temp);
-
-            cout << "Livro removido com sucesso" << endl;
-
+        acervo.erase(temp);
+        cout << "Livro removido com sucesso" << endl;
+        return; 
         }
-    }
 
     cout <<"Livro não encontrado" << endl;
+    }
 }
 void Acervo::listarTodos() const {
     cout << "----- TODOS OS LIVROS -----" << endl;
@@ -39,7 +37,7 @@ void Acervo::listarTodos() const {
 void Acervo::listarLivrosDisponiveis() const {
     cout << "+++++ TODOS OS LIVROS DISPONIVEIS +++++" << endl;
     for (const Livro& temp: acervo) {
-        if (temp.estaDisponivel()) {
+        if (temp.estaDisponivel()==true) {
             cout << "Titulo: " << temp.getTitulo() << " | Código: " << temp.getCodigo() << endl;
         }
     }
