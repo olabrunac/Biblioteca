@@ -17,8 +17,6 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, Exemp
 
     // Verifica se o exemplar obtido é válido e se está de fato disponível
     if (exemplar == nullptr || exemplar->getStatus() != StatusParaEmprestimo::DISPONIVEL) {
-        // A mensagem de erro para livro sem exemplares já é impressa por getExemplarDisponivel()
-        // Podemos adicionar uma mensagem genérica caso o exemplar seja inválido por outro motivo.
         cout << "Nao foi possivel realizar o emprestimo para " << emprestimoUsuario.getNome() << "." << endl;
         return;
     }
