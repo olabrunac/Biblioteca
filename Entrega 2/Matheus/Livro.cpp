@@ -25,7 +25,7 @@ bool Livro::estaDisponivel()const  {
     // Percorre todos os exemplares físicos que o livro possui
     for (const ExemplarLivro& exemplar : exemplares) {
         // Se encontrar pelo menos UM exemplar na prateleira (DISPONIVEL), o livro está disponível!
-        if (exemplar.getStatus() == StatusEmprestimo::DISPONIVEL) {
+        if (exemplar.getStatus() == StatusParaEmprestimo::DISPONIVEL) {
             return true;
         }
     }
@@ -39,11 +39,13 @@ for (int i = 0; i < quantidade; i++) {
         ExemplarLivro novoExemplar;
         
         // Todo novo exemplar nasce com status DISPONIVEL
-        StatusEmprestimo statusInicial = StatusEmprestimo::DISPONIVEL;
+        StatusParaEmprestimo statusInicial = StatusParaEmprestimo::DISPONIVEL;
         novoExemplar.setStatus(statusInicial);
+
+        novoExemplar.setLivro(this);
         
         // Define um número para o exemplar (ex: se ja tem 2, o próximo é o 3)
-        novoExemplar.setNroExemplar(quantidadeDeExemplares + i + 1);
+        novoExemplar.setNroExemplar(this->quantidadeDeExemplares + i + 1);
 
         // Adiciona o exemplar gerado na lista que pertence a este Livro
         this->exemplares.push_back(novoExemplar);
@@ -56,7 +58,7 @@ for (int i = 0; i < quantidade; i++) {
 ExemplarLivro* Livro::getExemplarDisponivel() {
 
     for (ExemplarLivro& exemplar : exemplares) {
-        if (exemplar.getStatus() == StatusEmprestimo::DISPONIVEL) {
+        if (exemplar.getStatus() == StatusParaEmprestimo::DISPONIVEL) {
             return &exemplar; 
         }
     }

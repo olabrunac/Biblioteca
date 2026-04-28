@@ -1,4 +1,5 @@
 #include "ItemEmprestimo.h"
+#include "ExemplarLivro.h"
 #include <iostream>
 
 using std::cout;
@@ -7,9 +8,10 @@ using std::endl;
 ItemEmprestimo::ItemEmprestimo():dataParaDevolucao(0), dataQueFoiDevolvido(0), exemplar(nullptr) {}
 
 void ItemEmprestimo::imprimirItemEmprestimo()const {
-    cout << "Data para devolver: " << dataParaDevolucao << endl;
-    cout << "Data que foi devolvido: " << dataQueFoiDevolvido << endl;
-    cout << "Exemplar número: " << exemplar->getNroExemplar() << endl;
+    if (exemplar != nullptr) {
+        exemplar->imprimirExemplarLivro();
+    }
+
 }
 
 ExemplarLivro* ItemEmprestimo::getExemplar() const {

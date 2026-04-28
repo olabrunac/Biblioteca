@@ -25,8 +25,6 @@ class GerenciadorDeEmprestimos {
 
         int contarEmprestimosAtivos(Livro& ativos);
 
-        bool livroEstaDisponivel(Livro& livro);
-
 };
 
 #endif

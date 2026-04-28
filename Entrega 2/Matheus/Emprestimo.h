@@ -35,6 +35,7 @@ class Emprestimo {
         void setDataDevolucao(int novaDataDevolucao);
         void setStatus(int novoStatus);
         void setUsuario(Usuario* novoUsuario);
+        void setItens(Livro& novoLivro);
         
 };
 

@@ -7,8 +7,8 @@ using std::endl;
 Usuario::Usuario(): codigo(0), nome(""), status(StatusUsuario::HABILITADO){}
 
 void Usuario::imprimirUsuario() const {
-    cout << "Codigo: " << codigo << endl;
     cout << "Nome: " << nome << endl;
+    cout << "Codigo: " << codigo << endl;
     cout << "Status do usuário: ";
     if (status == StatusUsuario::HABILITADO) {
         cout << "Habilitado" << endl;

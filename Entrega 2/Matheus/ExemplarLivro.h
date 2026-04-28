@@ -1,22 +1,29 @@
 #ifndef EXEMPLARLIVRO_H
 #define EXEMPLARLIVRO_H
 
-#include "StatusEmprestimo.h"
+class Livro;
+
+#include "StatusParaEmprestimo.h"
+
+
 
 class ExemplarLivro {
     private:
         int nroExemplar;
-        StatusEmprestimo status;
+        StatusParaEmprestimo status;
+        Livro* livro;
         
     public:
         ExemplarLivro();
         void imprimirExemplarLivro();
 
         int getNroExemplar() const;
-        StatusEmprestimo getStatus()const ;//Precisei adicionar o const para o Acervo
+        StatusParaEmprestimo getStatus()const ;//Precisei adicionar o const para o Acervo
+        Livro* getLivro() const;
 
         void setNroExemplar(int novoNroExemplar);
-        void setStatus(StatusEmprestimo novoStatusEmprestimo);
+        void setStatus(StatusParaEmprestimo novoStatusEmprestimo);
+        void setLivro(Livro* Nlivro);
 
 };
 

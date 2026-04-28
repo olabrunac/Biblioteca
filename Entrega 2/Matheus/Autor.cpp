@@ -5,7 +5,7 @@
 using std::cout;
 using std::endl;
 
-Autor::Autor() {}
+Autor::Autor():codigo(0), nome("Sem Nome") {}
 
 void Autor::imprimirAutor() {
     cout << "Codigo: " << codigo << endl;
