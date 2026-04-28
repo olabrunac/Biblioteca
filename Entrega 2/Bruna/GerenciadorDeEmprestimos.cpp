@@ -8,53 +8,34 @@ using std::endl;
 GerenciadorDeEmprestimos::GerenciadorDeEmprestimos() {}
 
 
-void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, Livro& emprestimoLivro) {
+void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, ExemplarLivro* exemplar) {
     if (emprestimoUsuario.getStatus() != StatusUsuario::HABILITADO) {
-
         cout << "O usuario: '" << emprestimoUsuario.getNome();
         cout << "' nao esta habilitado para realizar emprestimos no momento." << endl;
-
         return;
-        
     }
 
-    //Lógica para verificar exemplares disponiveis
-
-    int TotalExemplares = emprestimoLivro.getQuantidadeDeExemplares();
-    int ExemplaresEmprestados = 0;
-
-    // Percorre o histórico para contar quantos exemplares deste livro já saíram
-    for (const Emprestimo& temp : emprestimos) {
-        for (const ItemEmprestimo& item : temp.getItens()) {
-            
-            // Verifica se o item pertence ao livro X e se está emprestado
-            if (item.getExemplar()->getLivro()->getCodigo() == emprestimoLivro.getCodigo()) {
-                
-                if (item.getExemplar()->getStatus() == StatusParaEmprestimo::EMPRESTADO) {
-                    ExemplaresEmprestados++;
-                }
-            }
-        }
-    }
-
-    //Comparar os emprestados com o total
-   if (ExemplaresEmprestados >= TotalExemplares) {
-
-        cout << "Nao ha exemplares disponiveis para o livro: "
-             << emprestimoLivro.getTitulo() << endl;
-
+    // Verifica se o exemplar obtido é válido e se está de fato disponível
+    if (exemplar == nullptr || exemplar->getStatus() != StatusParaEmprestimo::DISPONIVEL) {
+        // A mensagem de erro para livro sem exemplares já é impressa por getExemplarDisponivel()
+        // Podemos adicionar uma mensagem genérica caso o exemplar seja inválido por outro motivo.
+        cout << "Nao foi possivel realizar o emprestimo para " << emprestimoUsuario.getNome() << "." << endl;
         return;
-    
     }
+
+    // Se chegou aqui, o empréstimo é possível. Altera o status do exemplar.
+    exemplar->setStatus(StatusParaEmprestimo::EMPRESTADO);
+
+    ItemEmprestimo novoItem;
+    novoItem.setExemplar(exemplar);
 
     Emprestimo novoEmprestimo;
-
     novoEmprestimo.setUsuario(&emprestimoUsuario);
-    novoEmprestimo.setItens(emprestimoLivro);
+    novoEmprestimo.adicionarItem(novoItem); // Usando o método correto para adicionar um item
     novoEmprestimo.setStatus(1);
     emprestimos.push_back(novoEmprestimo);
 
-    cout << "Emprestimo de '" << emprestimoLivro.getTitulo();
+    cout << "Emprestimo de '" << exemplar->getLivro()->getTitulo();
     cout << "' realizado para: "
          << emprestimoUsuario.getNome() << endl;
 }

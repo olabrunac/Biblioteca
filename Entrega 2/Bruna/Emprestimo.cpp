@@ -10,7 +10,7 @@ using std::endl;
 Emprestimo::Emprestimo(): usuario(nullptr), status(0) {}
 
 void Emprestimo::imprimirEmprestimo() {
-    cout << "+++ Detalhes Emprestimo +++***** " << endl;
+    cout << "+++ Detalhes Emprestimo +++" << endl;
     cout << "Usuario: ";
     usuario->imprimirUsuario();
     cout << "Livros Emprestados:" << endl;
@@ -19,14 +19,12 @@ void Emprestimo::imprimirEmprestimo() {
     }
 }
 
-void Emprestimo::adicionarItem(const ItemEmprestimo& novoItem) {
-    ExemplarLivro* TesteExemplar = novoItem.getExemplar();
-    if(TesteExemplar->getStatus() == StatusParaEmprestimo::DISPONIVEL){ //Como TesteExemplarfoi passado como ponteiro 
-    itens.push_back(novoItem);
-    cout <<"Item adicionado com sucesso" << endl;
+void Emprestimo::adicionarItem(const ItemEmprestimo& novoItem) { //Apenas adiciona um item, o gerenciadorDeEmprestimos que lida com o status dos exemplares
+    if (novoItem.getExemplar() != nullptr) {
+        itens.push_back(novoItem);
+    } else {
+        cout << "Erro: item invalido." << endl;
     }
-     else 
-        cout << "Erro, item não está disponível" << endl;    
 }
 
 int Emprestimo::getDataDeRetirada() const { return dataDeRetirada; }

@@ -89,16 +89,16 @@ int main() {
     cout << endl;
     cout << "===== REALIZANDO EMPRESTIMOS =====" << endl;
 
-    sistema.criarEmprestimo(Matheus, l1);
-    sistema.criarEmprestimo(Bruna, l1);
+    sistema.criarEmprestimo(Matheus, l1.getExemplarDisponivel());
+    sistema.criarEmprestimo(Bruna, l1.getExemplarDisponivel());
 
     // Deve falhar (exemplares esgotados)
-    sistema.criarEmprestimo(Ryan, l1);
+    sistema.criarEmprestimo(Ryan, l1.getExemplarDisponivel());
 
-    sistema.criarEmprestimo(Ana, l2);
+    sistema.criarEmprestimo(Ana, l2.getExemplarDisponivel());
 
     // Deve falhar (apenas 1 exemplar)
-    sistema.criarEmprestimo(Ryan, l2);
+    sistema.criarEmprestimo(Ryan, l2.getExemplarDisponivel());
 
     // ---------------- LISTAGEM ----------------
 
@@ -110,7 +110,7 @@ int main() {
     cout << endl;
     cout << "===== FIM DO SISTEMA =====" << endl;
 
+    
     system("pause");
-
     return 0;
 }

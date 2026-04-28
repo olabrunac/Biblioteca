@@ -17,7 +17,7 @@ class GerenciadorDeEmprestimos {
     public:
         GerenciadorDeEmprestimos();
 
-        void criarEmprestimo(Usuario& emprestimoUsuario, Livro& emprestimoLivro); //Passando por referência, pois o usuario e o exemplar já devem existirem e mais eficiente que por cópia
+        void criarEmprestimo(Usuario& emprestimoUsuario, ExemplarLivro* exemplar); // Simplifica o código apenas checando se tem exemplar disponivel,
         //void criarEmprestimoApartirDaReserva(Reserva novaReserva);
 
         void listarTodosEmprestimosAtuais();
