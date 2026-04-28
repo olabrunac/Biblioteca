@@ -10,7 +10,8 @@ Editora::Editora() {}
 void Editora::imprimirEditora() {
     cout << "Codigo: " << codigo << endl;
     cout << "Nome: " << nome << endl;
-    cout << "Endereco: " << &endereco << endl; // ---------------------------------
+    cout << "--- Endereco da Editora ---" << endl;
+    endereco.imprimirEndereco(); 
 }
 
 int Editora::getCodigo() { return codigo; }

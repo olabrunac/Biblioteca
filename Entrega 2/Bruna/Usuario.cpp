@@ -4,22 +4,28 @@
 using std::cout;
 using std::endl;
 
-Usuario::Usuario() {}
+Usuario::Usuario(): codigo(0), nome(""), status(StatusUsuario::HABILITADO){}
 
-void Usuario::imprimirUsuario() {
-    cout << "Codigo: " << codigo << endl;
+void Usuario::imprimirUsuario() const {
     cout << "Nome: " << nome << endl;
-    cout << "Status do usuário: " << &status << endl;
+    cout << "Codigo: " << codigo << endl;
+    cout << "Status do usuario: ";
+    if (status == StatusUsuario::HABILITADO) {
+        cout << "Habilitado" << endl;
+    } else {
+        cout << "Em debito" << endl; 
+    }
 }
 
-int Usuario::getCodigo() { return codigo; }
+int Usuario::getCodigo() const { return codigo; }
 
-string Usuario::getNome() { return nome; }
+string Usuario::getNome() const{ return nome; }
 
-StatusUsuario Usuario::getStatus() { return status; }
+StatusUsuario Usuario::getStatus() const { return status; }
+
 
 void Usuario::setCodigo(int novoCodigo) { this -> codigo = novoCodigo; }
 
 void Usuario::setNome(string novoNome) { this -> nome = novoNome; }
 
-void Usuario::setStatus(StatusUsuario& novoStatus) { this -> status = novoStatus; }
+void Usuario::setStatus(StatusUsuario novoStatus) { this -> status = novoStatus; } // Para Enums,não precisa passar por referência

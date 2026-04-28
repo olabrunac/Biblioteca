@@ -5,7 +5,6 @@
 #include "Autor.h"
 #include "Editora.h"
 #include <vector>
-#include <string>
 
 using std::string;
 using std::vector;
@@ -25,13 +24,15 @@ class Livro {
         int statusFuturo;
         int nroPaginas;
 
+        vector <ExemplarLivro> exemplares;
     public:
         Livro();
         void imprimirLivro();
         
-        bool estaDisponivel();
-        void criarExemplares(int novoExemplar);
-        ExemplarLivro getExemplarDisponivel();
+        bool estaDisponivel() const; //Precisei adicionar o const pois utilizo esse método no listarDisponiveis do Acervo
+        void criarExemplares(int quantidade);
+
+        ExemplarLivro* getExemplarDisponivel();
 
         int getCodigo() const;
         string getTitulo() const;
@@ -41,9 +42,9 @@ class Livro {
         int getAnoPublicacao() const;
         int getQuantidadeDeExemplares() const;
         int getNroDiasPermitidoEmprestimo() const;
+        int getQuantidadeDisponivel() const;  //para listar apenas a quantidade de exemplares disponiveis
         vector<Autor> getAutor() const;
-        int getStatusAgora() const;
-        int getStatusFuturo() const;
+        string getStatusAgora() const;
         int getNroPaginas() const;
 
         void setCodigo(int novoCodigo);
@@ -55,8 +56,6 @@ class Livro {
         void setQuantidadeDeExemplares(int novaQuantidade);
         void setNroDiasPermitidoEmprestimo(int novoNroDias);
         void setAutor(vector<Autor> novoAutor);
-        void setStatusAgora();
-        void setStatusFuturo();
         void setNroPaginas(int novoNroPaginas);
     
 };

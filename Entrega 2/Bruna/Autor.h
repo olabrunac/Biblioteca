@@ -14,8 +14,8 @@ class Autor {
         Autor();
         void imprimirAutor();
 
-        int getCodigo();
-        string getNome();
+        int getCodigo() const; 
+        string getNome() const;
 
         void setCodigo(int novoCodigo);
         void setNome(string novoNome);

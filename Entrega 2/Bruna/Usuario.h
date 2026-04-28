@@ -15,15 +15,15 @@ class Usuario {
 
     public:
         Usuario();
-        void imprimirUsuario();
+        void imprimirUsuario() const;
 
-        int getCodigo();
-        string getNome();
-        StatusUsuario getStatus();
+        int getCodigo() const;
+        string getNome() const;
+        StatusUsuario getStatus()const;
 
         void setCodigo(int novoCodigo);
         void setNome(string novoNome);
-        void setStatus(StatusUsuario& novoStatus);
+        void setStatus(StatusUsuario novoStatus);
 };
 
 #endif

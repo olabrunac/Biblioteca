@@ -5,16 +5,16 @@
 using std::cout;
 using std::endl;
 
-Autor::Autor() {}
+Autor::Autor():codigo(0), nome("Sem Nome") {}
 
 void Autor::imprimirAutor() {
     cout << "Codigo: " << codigo << endl;
     cout << "Nome: " << nome << endl;
 }
 
-int Autor::getCodigo() {return codigo; }
+int Autor::getCodigo() const { return codigo; }
 
-string Autor::getNome() {return nome; }
+string Autor::getNome() const { return nome; }
 
 void Autor::setCodigo(int novoCodigo) { this -> codigo = novoCodigo; }
 

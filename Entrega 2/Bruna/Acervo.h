@@ -14,7 +14,7 @@ class Acervo {
         Acervo();
         
         void acrescentarLivro(const Livro& novoLivro);
-        void removerDoAcervo();
+        void removerDoAcervo(const Livro& removerLivro);
 
         void listarTodos() const;
         void listarLivrosDisponiveis() const;

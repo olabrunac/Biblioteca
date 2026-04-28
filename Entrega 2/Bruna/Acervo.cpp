@@ -7,23 +7,31 @@ using std::endl;
 
 Acervo::Acervo() {}
 
-void Acervo::acrescentarLivro(const Livro& novoLivro) {
-    acervo.push_back(novoLivro);
+void Acervo::acrescentarLivro(const Livro& novoLivro) { acervo.push_back(novoLivro); }
+
+void Acervo::removerDoAcervo(const Livro& removerLivro) {
+    cout << " <<<<< REMOVENDO O LIVRO >>>>> " << endl;
+    for (auto temp = acervo.begin(); temp != acervo.end(); temp ++){
+        if(temp->getCodigo() == removerLivro.getCodigo()){
+        acervo.erase(temp);
+        cout << "Livro removido com sucesso" << endl;
+        return; 
+        }
+    cout <<"Livro não encontrado" << endl;
+    }
 }
-
-void Acervo::removerDoAcervo()  {} // Destrutor
-
 void Acervo::listarTodos() const {
-    for (const Livro& temp : acervo ) {
-        cout << "----- TODOS OS LIVROS -----" << endl;
-        cout << temp.getTitulo() << ", " << temp.getStatusAgora() << endl;
+    cout << "----- TODOS OS LIVROS -----" << endl;
+    for (const Livro& temp: acervo) {
+        cout << temp.getTitulo() << ", " 
+        << temp.getStatusAgora() << endl;
     }
 }
 
 void Acervo::listarLivrosDisponiveis() const {
-    for (const Livro& temp : acervo ) {
-        if (temp.getQuantidadeDeExemplares() > 0) {
-            cout << "+++++ TODOS OS LIVROS DISPONIVEIS +++++" << endl;
+    cout << "+++++ TODOS OS LIVROS DISPONIVEIS +++++" << endl;
+    for (const Livro& temp: acervo) {
+        if (temp.estaDisponivel()==true) {
             cout << "Titulo: " << temp.getTitulo() << " | Código: " << temp.getCodigo() << endl;
         }
     }
@@ -31,7 +39,7 @@ void Acervo::listarLivrosDisponiveis() const {
 
 void Acervo::listarLivrosIndisponiveis() const {
     for (const Livro& temp : acervo ) {
-        if (temp.getQuantidadeDeExemplares() == 0) {
+        if (!temp.estaDisponivel()) {
             cout << "----- TODOS OS LIVROS INDISPONIVEIS -----" << endl;
             cout << "Titulo: " << temp.getTitulo() << " | Código: " << temp.getCodigo() << endl;
         }
