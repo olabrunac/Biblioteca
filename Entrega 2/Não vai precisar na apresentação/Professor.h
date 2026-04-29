@@ -1,4 +1,4 @@
-#ifndef PROFESSOR_H
+/* #ifndef PROFESSOR_H
 #define PROFESSOR_H
 
 #include "Usuario.h"
@@ -18,4 +18,4 @@ class Professor : public Usuario {
         }
 };
 
-#endif
+#endif */

@@ -1,15 +1,15 @@
 {
     "tasks": [
         {
-            "type": "shell",
+            "type": "cppbuild",
             "label": "C/C++: build active folder",
-            "command": "/usr/bin/g++",
+            "command": "g++.exe",
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
                 "*.cpp",
                 "-o",
-                "app"
+                "app.exe"
             ],
             "options": {
                 "cwd": "${fileDirname}"
@@ -26,7 +26,7 @@
         {
             "type": "shell",
             "label": "C/C++: executar active folder",
-            "command": "./app",
+            "command": "./app.exe",
             "options": {
                 "cwd": "${fileDirname}"
             },

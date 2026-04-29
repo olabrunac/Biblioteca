@@ -8,14 +8,14 @@
             "name": "Debug current folder (gdb)",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}/app",
+            "program": "${fileDirname}/app.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
-            "externalConsole": false,
+            "externalConsole": true,
             "MIMode": "gdb",
-            "miDebuggerPath": "/usr/bin/gdb",
+            "miDebuggerPath": "gdb.exe",
             "setupCommands": [
                 {
                     "description": "Habilitar pretty-printing no gdb",

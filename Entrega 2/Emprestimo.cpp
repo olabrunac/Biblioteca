@@ -6,16 +6,22 @@
 
 using std::cout;
 using std::endl;
+using std::iterator;
 
-Emprestimo::Emprestimo(): usuario(nullptr), status(0) {}
+Emprestimo::Emprestimo(): usuario(nullptr), status(0) {}         //cria o emprestimo com um ponteiro que nao associa a nenhum usuário
 
 void Emprestimo::imprimirEmprestimo() {
     cout << "+++ Detalhes Emprestimo +++" << endl;
-    cout << "Usuario: ";
-    usuario->imprimirUsuario();
+    if (usuario != nullptr) {
+        cout << "Usuario: ";
+        usuario->imprimirUsuario();
+    } else {
+        cout << "Usuario: (Nao especificado)" << endl;           // caso base
+    }
+    cout << "Status do Emprestimo: " << toString(status) << endl;
     cout << "Livros Emprestados:" << endl;
-    for (const auto& temp : itens) {
-        temp.imprimirItemEmprestimo();
+    for (vector<ItemEmprestimo>::const_iterator temp = itens.cbegin(); temp != itens.cend(); ++temp) { // iterador aponta para os elementos do vetor, começa no primeiro elemento graças ao itens.cbegin() e percorre temp++ até o itens.cend()
+        temp -> imprimirItemEmprestimo();
     }
 }
 
@@ -33,7 +39,7 @@ int Emprestimo::getDataPrevistaDevolucao() const { return dataPrevistaDevolucao;
 
 int Emprestimo::getDataDevolucao() const { return dataDevolucao; }
 
-int Emprestimo::getStatus() const { return status; }
+StatusEmprestimo Emprestimo::getStatus() const { return status; }
 
 Usuario* Emprestimo::getUsuario() const {return usuario;}
 
@@ -45,14 +51,19 @@ void Emprestimo::setDataPrevistaDevolucao(int novaDataPrevistaDevolucao) { this 
 
 void Emprestimo::setDataDevolucao(int novaDataDevolucao) { this -> dataDevolucao = novaDataDevolucao; }
 
-void Emprestimo::setStatus(int novoStatus) { this -> status = novoStatus;} 
+void Emprestimo::setStatus(StatusEmprestimo novoStatus) { this -> status = novoStatus;} 
 
 void Emprestimo::setUsuario(Usuario* novoUsuario) {this-> usuario = novoUsuario;}
 
 void Emprestimo::setItens(Livro& novoLivro){
-    ItemEmprestimo ItemAdicionado;
-    ExemplarLivro* Exemplar = novoLivro.getExemplarDisponivel();
-    ItemAdicionado.setExemplar(Exemplar);
-    Exemplar->setStatus(StatusParaEmprestimo::EMPRESTADO);
-    itens.push_back(ItemAdicionado);
+    ItemEmprestimo ItemAdicionado;                                      // cria um objeto em branco do tipo ItemEmprestimo
+    ExemplarLivro* Exemplar = novoLivro.getExemplarDisponivel();        // procura qual cópia está disponivel e retorna um ponteiro para ele
+    if (Exemplar != nullptr) {  
+        ItemAdicionado.setExemplar(Exemplar);                           //vai vincular o livro ao ponteiro do exemplar disponivel
+        Exemplar->setStatus(StatusEmprestimo::EMPRESTADO);          // altera o status desse exemplar
+        itens.push_back(ItemAdicionado);                                //pega o registro do exemplar e o adiciona no final do vetor itens
+    } else {
+        cout << "Erro: Nenhum exemplar disponivel para o livro." << endl;    // caso base
+    }
 }
+

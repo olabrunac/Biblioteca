@@ -9,29 +9,25 @@ GerenciadorDeEmprestimos::GerenciadorDeEmprestimos() {}
 
 
 void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, ExemplarLivro* exemplar) {
-    if (emprestimoUsuario.getStatus() != StatusUsuario::HABILITADO) {
+    if (emprestimoUsuario.getStatus() != StatusUsuario::HABILITADO) {                               // valida se o usuário pode fazer emprestimos
         cout << "O usuario: '" << emprestimoUsuario.getNome();
         cout << "' nao esta habilitado para realizar emprestimos no momento." << endl;
         return;
     }
-
-    // Verifica se o exemplar obtido é válido e se está de fato disponível
-    if (exemplar == nullptr || exemplar->getStatus() != StatusParaEmprestimo::DISPONIVEL) {
+    if (exemplar == nullptr || exemplar->getStatus() != StatusParaEmprestimo::DISPONIVEL) {         // valida se o exemplar está disponivel
         cout << "Nao foi possivel realizar o emprestimo para " << emprestimoUsuario.getNome() << "." << endl;
         return;
     }
-
-    // Se chegou aqui, o empréstimo é possível. Altera o status do exemplar.
     exemplar->setStatus(StatusParaEmprestimo::EMPRESTADO);
 
     ItemEmprestimo novoItem;
-    novoItem.setExemplar(exemplar);
+    novoItem.setExemplar(exemplar);                                                                 //vincula o novoItem ao exemplar que está sendo emprestado
 
     Emprestimo novoEmprestimo;
     novoEmprestimo.setUsuario(&emprestimoUsuario);
-    novoEmprestimo.adicionarItem(novoItem); // Usando o método correto para adicionar um item
+    novoEmprestimo.adicionarItem(novoItem); 
     novoEmprestimo.setStatus(1);
-    emprestimos.push_back(novoEmprestimo);
+    emprestimos.push_back(novoEmprestimo);                                                          //adiciona o novoItem na lista de itens dentro do novoEMprestimo
 
     cout << "Emprestimo de '" << exemplar->getLivro()->getTitulo();
     cout << "' realizado para: "
@@ -41,8 +37,8 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, Exemp
 
 void GerenciadorDeEmprestimos::listarTodosEmprestimosAtuais() {
     cout << "***** Lista de Emprestimos *****" << endl;
-    for (auto& e : emprestimos) {
-        e.imprimirEmprestimo();
+    for (auto& temp : emprestimos) {
+        temp.imprimirEmprestimo();
     }
 }
 
