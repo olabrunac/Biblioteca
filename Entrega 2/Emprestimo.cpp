@@ -2,6 +2,7 @@
 #include "Livro.h"
 #include "ItemEmprestimo.h"
 #include "ExemplarLivro.h"
+#include "StatusEmprestimo.h"
 #include <iostream>
 
 using std::cout;
@@ -18,7 +19,6 @@ void Emprestimo::imprimirEmprestimo() {
     } else {
         cout << "Usuario: (Nao especificado)" << endl;           // caso base
     }
-    cout << "Status do Emprestimo: " << toString(status) << endl;
     cout << "Livros Emprestados:" << endl;
     for (vector<ItemEmprestimo>::const_iterator temp = itens.cbegin(); temp != itens.cend(); ++temp) { // iterador aponta para os elementos do vetor, começa no primeiro elemento graças ao itens.cbegin() e percorre temp++ até o itens.cend()
         temp -> imprimirItemEmprestimo();
@@ -39,7 +39,7 @@ int Emprestimo::getDataPrevistaDevolucao() const { return dataPrevistaDevolucao;
 
 int Emprestimo::getDataDevolucao() const { return dataDevolucao; }
 
-StatusEmprestimo Emprestimo::getStatus() const { return status; }
+int Emprestimo::getStatus() const { return status; }
 
 Usuario* Emprestimo::getUsuario() const {return usuario;}
 
@@ -51,7 +51,7 @@ void Emprestimo::setDataPrevistaDevolucao(int novaDataPrevistaDevolucao) { this 
 
 void Emprestimo::setDataDevolucao(int novaDataDevolucao) { this -> dataDevolucao = novaDataDevolucao; }
 
-void Emprestimo::setStatus(StatusEmprestimo novoStatus) { this -> status = novoStatus;} 
+void Emprestimo::setStatus(int novoStatus) { this -> status = novoStatus;} 
 
 void Emprestimo::setUsuario(Usuario* novoUsuario) {this-> usuario = novoUsuario;}
 
@@ -66,4 +66,3 @@ void Emprestimo::setItens(Livro& novoLivro){
         cout << "Erro: Nenhum exemplar disponivel para o livro." << endl;    // caso base
     }
 }
-

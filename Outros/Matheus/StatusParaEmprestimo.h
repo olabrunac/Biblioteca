@@ -1,4 +1,4 @@
-#ifndef STATUSPARAEMPRESTIMO_H
+/* #ifndef STATUSPARAEMPRESTIMO_H
 #define STATUSPARAEMPRESTIMO_H
 
 enum class StatusParaEmprestimo {
@@ -6,4 +6,4 @@ enum class StatusParaEmprestimo {
     EMPRESTADO
 };
 
-#endif
+#endif */

@@ -1,6 +1,8 @@
 #include "ExemplarLivro.h"
 #include "Livro.h"
+#include "StatusEmprestimo.h"
 #include <iostream>
+#include <string>
 
 using std::cout;
 using std::endl;
@@ -13,19 +15,19 @@ void ExemplarLivro::imprimirExemplarLivro() {
 
     cout << "Titulo: " << livro->getTitulo() << endl;
     cout << "Numero do Exemplar: " << nroExemplar << endl;
-    cout << "Status: " << (status == StatusParaEmprestimo::DISPONIVEL ? "DISPONIVEL" : "EMPRESTADO") << endl;
+    cout << "Status: " << toString(status) << endl;
 }
 
 int ExemplarLivro::getNroExemplar() const { return nroExemplar; }
 
 
 
-StatusParaEmprestimo ExemplarLivro::getStatus() const { return status; }
+StatusEmprestimo ExemplarLivro::getStatus() const { return status; }
 
 Livro* ExemplarLivro::getLivro() const { return livro; }
 
 void ExemplarLivro::setNroExemplar(int novoNroExemplar) { this -> nroExemplar = novoNroExemplar; }
 
-void ExemplarLivro::setStatus(StatusParaEmprestimo novoStatusEmprestimo) { this -> status = novoStatusEmprestimo; }
+void ExemplarLivro::setStatus(StatusEmprestimo novoStatusEmprestimo) { this -> status = novoStatusEmprestimo; }
 
 void ExemplarLivro::setLivro(Livro* Nlivro){ this->livro = Nlivro;}

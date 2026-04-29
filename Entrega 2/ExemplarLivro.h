@@ -3,14 +3,14 @@
 
 class Livro;
 
-#include "StatusParaEmprestimo.h"
+#include "StatusEmprestimo.h"
 
 
 
 class ExemplarLivro {
     private:
         int nroExemplar;
-        StatusParaEmprestimo status;
+        StatusEmprestimo status;
         Livro* livro;
         
     public:
@@ -18,11 +18,11 @@ class ExemplarLivro {
         void imprimirExemplarLivro();
 
         int getNroExemplar() const;
-        StatusParaEmprestimo getStatus()const ;//Precisei adicionar o const para o Acervo
+        StatusEmprestimo getStatus()const ;//Precisei adicionar o const para o Acervo
         Livro* getLivro() const;
 
         void setNroExemplar(int novoNroExemplar);
-        void setStatus(StatusParaEmprestimo novoStatusEmprestimo);
+        void setStatus(StatusEmprestimo novoStatusEmprestimo);
         void setLivro(Livro* Nlivro);
 
 };
