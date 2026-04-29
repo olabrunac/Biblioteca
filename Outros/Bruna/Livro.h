@@ -29,7 +29,7 @@ class Livro {
         Livro();
         void imprimirLivro();
         
-        bool estaDisponivel() const;
+        bool estaDisponivel() const; //Precisei adicionar o const pois utilizo esse método no listarDisponiveis do Acervo
         void criarExemplares(int quantidade);
 
         ExemplarLivro* getExemplarDisponivel();
@@ -42,7 +42,7 @@ class Livro {
         int getAnoPublicacao() const;
         int getQuantidadeDeExemplares() const;
         int getNroDiasPermitidoEmprestimo() const;
-        int getQuantidadeDisponivel() const;
+        int getQuantidadeDisponivel() const;  //para listar apenas a quantidade de exemplares disponiveis
         vector<Autor> getAutor() const;
         string getStatusAgora() const;
         int getNroPaginas() const;

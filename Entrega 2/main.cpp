@@ -44,14 +44,14 @@ int main() {
     l1.setTitulo("Jogos Vorazes");
     l1.setEditora(ediRocco);
     l1.setAutor(listaAutores);
-    l1.criarExemplares(2); // poucos exemplares para testar limite
+    l1.criarExemplares(2);                  // poucos exemplares para testar limite
 
     Livro l2;
     l2.setCodigo(123);
     l2.setTitulo("O Gambito da Rainha");
     l2.setEditora(ediRocco);
     l2.setAutor(listaAutores);
-    l2.criarExemplares(1); // apenas 1 exemplar
+    l2.criarExemplares(1);                  // apenas 1 exemplar
 
     // ---------------- ACERVO ----------------
 
@@ -111,6 +111,6 @@ int main() {
     cout << "===== FIM DO SISTEMA =====" << endl;
 
     
-    system("pause");
-    return 0;
+    system("pause"); 
+    return 0; 
 }

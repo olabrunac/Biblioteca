@@ -13,13 +13,13 @@ void ItemEmprestimo::imprimirItemEmprestimo()const {
     }
 }
 
-ExemplarLivro* ItemEmprestimo::getExemplar() const { return exemplar; } // O '*' extrai o objeto "sólido" do endereço de memória, 
+ExemplarLivro* ItemEmprestimo::getExemplar() const { return exemplar; }
 
 int ItemEmprestimo::getDataParaDevolucao() { return dataParaDevolucao; }
 
 int ItemEmprestimo::getDataQueFoiDevolvido() { return dataQueFoiDevolvido; }
 
-void ItemEmprestimo::setExemplar(ExemplarLivro* novoExemplar) { this->exemplar = novoExemplar;} //Como o novoExemplar é um ponteiro para um objeto ExemplarLivro
+void ItemEmprestimo::setExemplar(ExemplarLivro* novoExemplar) { this->exemplar = novoExemplar;}
 
 void ItemEmprestimo::setDataParaDevolucao(int novaDataParaDevolucao) { this -> dataParaDevolucao = novaDataParaDevolucao; }
 

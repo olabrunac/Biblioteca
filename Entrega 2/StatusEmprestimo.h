@@ -1,4 +1,4 @@
-#ifndef STATUSEMPRESTIMO_H
+#ifndef STATUSEMPRESTIMO_H 
 #define STATUSEMPRESTIMO_H
 
 #include <string>

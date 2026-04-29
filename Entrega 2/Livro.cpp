@@ -6,7 +6,7 @@ using std::endl;
 
 Livro::Livro() : codigo(0), quantidadeDeExemplares(0), statusAgora(0) {}
 
-void Livro::imprimirLivro() {
+void Livro::imprimirLivro() { 
     cout << "Titulo: " << titulo << " | Edicao: " << edicao << endl;
     cout << "Codigo: " << codigo << " | Editora: " << editora.getNome() << endl;
     cout << "Autores: ";
@@ -22,42 +22,41 @@ void Livro::imprimirLivro() {
     cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
 }
 
-bool Livro::estaDisponivel() const  {  
-    // Percorre todos os exemplares físicos que o livro possui
+bool Livro::estaDisponivel() const  {
     for (const ExemplarLivro& exemplar : exemplares) {
-        if (exemplar.getStatus() == StatusEmprestimo::DISPONIVEL) {                 // Se encontrar pelo menos UM exemplar na prateleira (DISPONIVEL), o livro está disponível!
+        if (exemplar.getStatus() == StatusEmprestimo::DISPONIVEL) {
             return true;
         }
     }
-    return false;                                                                    // Se olhou todos e não achou nenhum disponível (ou se a lista estiver vazia), retorna falso.
+    return false;
 }
 
-void Livro::criarExemplares(int quantidade) { 
+void Livro::criarExemplares(int quantidade) {
 
 for (int i = 0; i < quantidade; i++) {
         ExemplarLivro novoExemplar;
-        StatusEmprestimo statusInicial = StatusEmprestimo::DISPONIVEL;              // Todo novo exemplar nasce com status DISPONIVEL
+        StatusEmprestimo statusInicial = StatusEmprestimo::DISPONIVEL;
         novoExemplar.setStatus(statusInicial);
         novoExemplar.setLivro(this);
-        novoExemplar.setNroExemplar(this->quantidadeDeExemplares + i + 1);          // Define um número para o exemplar (ex: se ja tem 2, o próximo é o 3)
-        this->exemplares.push_back(novoExemplar);                                   // Adiciona o exemplar gerado na lista que pertence a este Livro
+        novoExemplar.setNroExemplar(this->quantidadeDeExemplares + i + 1);
+        this->exemplares.push_back(novoExemplar);
     }
-    this->quantidadeDeExemplares += quantidade;                                     // Atualiza o contador de quantidade
+    this->quantidadeDeExemplares += quantidade;
 }
 
 ExemplarLivro* Livro::getExemplarDisponivel() {
 
     for (ExemplarLivro& exemplar : exemplares) {
         if (exemplar.getStatus() == StatusEmprestimo::DISPONIVEL) {
-            return &exemplar; 
+            return &exemplar;
         }
     }
     
     cout << "Nenhum exemplar disponivel no momento!" << endl;
-    return nullptr; 
+    return nullptr;
 }
 
-int Livro::getCodigo() const { return codigo; }
+int Livro::getCodigo() const { return codigo; } 
 
 string Livro::getTitulo() const { return titulo; }
 
@@ -77,7 +76,7 @@ vector<Autor> Livro::getAutor() const { return autor; }
 
 string Livro::getStatusAgora() const {
     if (estaDisponivel()) {
-        return "Disponivel (" + std::to_string(getQuantidadeDisponivel()) + " exemplares)"; // mostrar a quantidade de exemplares disponiveis
+        return "Disponivel (" + std::to_string(getQuantidadeDisponivel()) + " exemplares)";
     }
     return "Indisponivel";
 }
