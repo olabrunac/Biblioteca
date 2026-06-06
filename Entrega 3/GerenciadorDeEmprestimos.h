@@ -12,10 +12,11 @@ using std::vector;
 class GerenciadorDeEmprestimos {
     private:
         vector<Reserva*> reservas; 
-        vector<Emprestimo> emprestimos;   //*****MUDAR PARA PONTEIRO, VER ALTERAÇÕES NECESSÁRIAS */  
+        vector<Emprestimo*> emprestimos;   //ponteiro 
 
     public:
         GerenciadorDeEmprestimos();
+        ~GerenciadorDeEmprestimos();
 
         void criarEmprestimo(Usuario& emprestimoUsuario, ExemplarLivro* exemplar);
         //void criarEmprestimoApartirDaReserva(Reserva novaReserva);

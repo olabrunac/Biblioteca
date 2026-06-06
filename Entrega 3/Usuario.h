@@ -8,14 +8,15 @@ using std::string;
 
 
 class Usuario {
-    private:
+    protected:  //pra permitir a herança
         int codigo;
         string nome;
         StatusUsuario status;
 
     public:
         Usuario();
-        virtual void imprimirUsuario() const = 0;
+        virtual ~Usuario();   // Destrutor virtual
+        virtual void imprimirUsuario() const = 0;  //
 
         int getCodigo() const;
         string getNome() const;

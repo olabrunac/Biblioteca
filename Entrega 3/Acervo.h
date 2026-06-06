@@ -8,13 +8,14 @@ using std::vector;
 
 class Acervo {
     private:
-        vector<Livro> acervo; /*MUDAR PARA PONTEIRO E VERIFICAR ALTERAÇÔES NECESSARIAS*/
+        vector<Livro*> acervo; // agora é um vetor de ponteiros :)
 
     public:
         Acervo();
+        ~Acervo();  //Destrutor
         
-        void acrescentarLivro(const Livro& novoLivro);
-        void removerDoAcervo(const Livro& removerLivro);
+        void acrescentarLivro(Livro* novoLivro);
+        void removerDoAcervo(Livro* removerLivro);
 
         void listarTodos() const;
         void listarLivrosDisponiveis() const;

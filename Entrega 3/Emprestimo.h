@@ -11,7 +11,7 @@ using std::vector;
 class Emprestimo {
     private:
 
-        vector <ItemEmprestimo> itens;
+        vector <ItemEmprestimo*> itens;
         Usuario* usuario;
         int dataDeRetirada;
         int dataPrevistaDevolucao;

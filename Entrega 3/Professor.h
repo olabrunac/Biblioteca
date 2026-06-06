@@ -8,13 +8,19 @@ using std::cout;
 using std::endl;
 
 class Professor : public Usuario {
-    private:
-
     public:
         Professor():Usuario() {}
 
-        void imprimirUsuario() const override {
-            cout << "Professor: " << endl;
+        void imprimirUsuario() const override {     //implementado aqui para sobrescrever a herança
+            cout << "---Dados do Professor---" << endl;
+            cout << "Nome: " << nome << endl;
+            cout << "Codigo: " << codigo << endl;
+            cout << "Status do usuario: ";
+            if (status == StatusUsuario::HABILITADO) {
+               cout << "Habilitado" << endl;
+            } else {
+            cout << "Em debito" << endl;
+            }
         }
 };
 

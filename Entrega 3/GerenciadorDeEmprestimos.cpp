@@ -6,7 +6,14 @@
 using std::cout;
 using std::endl;
 
-GerenciadorDeEmprestimos::GerenciadorDeEmprestimos() {}  
+GerenciadorDeEmprestimos::GerenciadorDeEmprestimos() {} 
+
+~GerenciadorDeEmprestimos::GerenciadorDeEmprestimos() {
+    for (vector<Emprestimo*>::iterator temp = emprestimos.begin(); temp != emprestimos.begin(); temp != emprestimos.end(); ++temp) {
+        delete *temp;
+    }
+    emprestimos.clear();
+}
 
 
 void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, ExemplarLivro* exemplar) {
@@ -24,22 +31,22 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, Exemp
     ItemEmprestimo novoItem;
     novoItem.setExemplar(exemplar);
 
-    Emprestimo novoEmprestimo;
-    novoEmprestimo.setUsuario(&emprestimoUsuario);
-    novoEmprestimo.adicionarItem(novoItem);
-    novoEmprestimo.setStatus(1);
+    //criação dinamica
+    Emprestimo* novoEmprestimo = new Emprestimo();
+    novoEmprestimo->setUsuario(&emprestimoUsuario);
+    novoEmprestimo->adicionarItem(novoItem);
+    novoEmprestimo->setStatus(1);
     emprestimos.push_back(novoEmprestimo);
 
     cout << "Emprestimo de '" << exemplar->getLivro()->getTitulo();
-    cout << "' realizado para: "
-         << emprestimoUsuario.getNome() << endl;
+    cout << "' realizado com sucesso!" << endl;
 }
 
 
 void GerenciadorDeEmprestimos::listarTodosEmprestimosAtuais() { 
     cout << "***** Lista de Emprestimos *****" << endl;
-    for (vector<Emprestimo>::iterator temp = emprestimos.begin(); temp != emprestimos.end(); ++temp) {
-        temp->imprimirEmprestimo();
+    for (vector<Emprestimo*>::iterator temp = emprestimos.begin(); temp != emprestimos.end(); ++temp) {
+        (*temp)->imprimirEmprestimo();
     }
 }
 
