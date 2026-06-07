@@ -4,17 +4,39 @@
 using std::cout;
 using std::endl;
 
-Reserva::Reserva() {}
+Reserva::Reserva() : ID(0), dataRealizacao(0), usuario(nullptr) {}
 
-void Reserva::imprimirReserva() {
-    cout << "ID: " << ID << endl;
-    cout << "Data da Reserva: " << dataRealizacao << endl;
+Reserva::~Reserva() {
+    for (vector<ItemReserva*>::iterator temp = itens.begin(); temp != itens.end(); ++temp) {
+        dekete *temp;
+    }
+    itens.clear();
 }
 
-int Reserva::getID() { return ID; }
+void Reserva::adicionarItem(ItemReserva* novoItem) {
+    itens.push_back(novoItem);
+}
 
-int Reserva::getDataRealizacao() { return dataRealizacao; }
+void Reserva::imprimirReserva() const {
+    cout << "Reserva ID: " << ID << endl;
+    cout << "Data da Reserva: " << dataRealizacao << endl;
+    if (usuario != nullptr) {
+        cout << "Reservado por: " << usuario->getNome() << "Codigo: " << usuario->getCodigo << ")" << endl;
+    }
+    cout << "Itens da Reserva: " << endl;
+    for (vector<ItemReserva*>::const_iterator temp = itens.cbegin(); temp != itens.cend(); ++temp) {
+        (*temp)->imprimirItemReserva();
+    }
+}
+
+int Reserva::getID() const { return ID; }
+
+int Reserva::getDataRealizacao() const { return dataRealizacao; }
+
+Usuario* Reserva::getUsuario() const { return usuario; }
 
 void Reserva::setID(int novoID) { this -> ID = novoID; }
 
 void Reserva::setDataRealizacao(int novaDataReserva) { this -> dataRealizacao = novaDataReserva; }
+
+void Reserva::setUsuario(Usuario* novoUsuario { this->usuario = novoUsuario; }

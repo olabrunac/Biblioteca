@@ -13,6 +13,11 @@ GerenciadorDeEmprestimos::GerenciadorDeEmprestimos() {}
         delete *temp;
     }
     emprestimos.clear();
+
+    for (vector<Reserva*> iterator temp = reservas.begin(); temp != reservas.end(); ++temp) {
+        delete *temp;
+    }
+    reservas.clear();  //para tambem limpar o vetor de reserva por conta do polimorfismo
 }
 
 
@@ -65,21 +70,67 @@ int GerenciadorDeEmprestimos::contarEmprestimosAtivos(Livro& livro) {
     return contador; 
 }
 
-/*
-// Secao que esta comentada de proposito, provavel escopo para funcionalidades futuras
-void GerenciadorDeEmprestimos::criarReserva(Usuario emprestimoUsuario, Livro emprestimoLivro, Reserva novaData) {
-    this -> reservas.push_back(novaData);
-    cout << "Reserva do livro: " << emprestimoLivro.getTitulo() << endl;
+
+void GerenciadorDeEmprestimos::criarReserva(Usuario* reservaUsuario, Livro* reservaLivro,  int dataAtual) {
+    if (reservaUsuario->getStatus() != StatusUsuario::HABILITADO) {
+        cout << "Erro: o usuário não pode fazer reservas" << endl;
+        return;
+    }
+
+    //cria o item da reserva
+    ItemReserva* novoItem = new ItemReserva();
+    novoItem->setLivro(reservaLivro);
+    novoItem->setDataDeRetirada(dataAtual);
+    novoItem->setNroDoItem(1);
+
+    //cria a reserva
+    Reserva* novaReserva = new Reserva();
+    novaReserva->setUsuario(reservaUsuario);
+    novaReserva->setDataRealizacao(dataAtual);
+    novaReserva->setID(reservas.size() +1); //gera um id simples
+    novaReserva->adicionarItem(novoItem);
+    
+    reservas.push_back(novaReserva);
+    cout << "Sucesso: Reserva do livro '" << reservaLivro->getTitulo() << "' registrada para " << reservaUsuario->getNome() << endl;
 }
 
-void GerenciadorDeEmprestimos::criarEmprestimoApartirDaReserva(Reserva novaReserva) {
 
+--------------------------------------------------------------------------------------------------------------------------
+
+
+void GerenciadorDeEmprestimos::criarEmprestimoApartirDaReserva(Reserva* reservaExistente, Emprestimo* novoEmprestimo, ExemplarLivro* exemplar) {
+    if (exemplar != nullptr && exemplar->getStatus() == StatusEmprestimo::DISPONIVEL) {
+        exemplar-setStatus(StatusEmprestimo::EMPRESTADO);   //atualiza o status do exemplar e coloca no emprestimo
+        ItemEmprestimo novoItem;
+        novoItem.setExemplar(exemplar);
+        novoEmprestimo->adicionarItem(novoItem);
+
+        emprestimos.push_back(novoEmprestimo); //coloca o emprestimo no vetor de ponteiros
+
+        vector<Reserva*>::iterator temp;        //remove a reserva do vetor de reservas
+        for(temp = reservas.begin(); temp != reservas.end(); ++temp) {
+            if ((*temp)->getID() == reservaExistente->getID()) {
+                delete *temp;       //limpa o objeto reserva da memória
+                reservas.erase(temp);       //remove o ponteiro da lista
+                break;
+            }
+        }
+        cout << "Sucesso: Reserva convertida em emprestimo" << endl;
+    } else {
+        cout << "Erro: o livro nao possiu exemplares disponiveis" << endl;
+    }
 }
 
 void GerenciadorDeEmprestimos::listarTodasReservas() {
-    cout << "----- Lista de Reservas -----" << endl;
-    for (Reserva& temp : reservas) {
-        temp.imprimirReserva();
-    } cout << endl;
+    cout << "----- Lista de Reservas Ativas -----" << endl;
+    for (reservas.empty()) {
+        cout << "Nenhuma reseva no sistema" << endl;
+        return;
+    }
+
+    for (vector<Reserva*>::iterator temp = reservas.begin(); temp != reservas.end(); ++temp) {
+        (*temp)->imprimirReserva();
+        cout << endl;
+    }
 }
-*/
+

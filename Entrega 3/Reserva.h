@@ -2,6 +2,7 @@
 #define RESERVA_H
 
 #include "ItemReserva.h"
+#include "Usuario.h"    //pro polimorfismo
 
 #include <vector>
 using std::vector;
@@ -9,19 +10,23 @@ using std::vector;
 class Reserva {
     private:
         int ID;
-        ///*************ADICIONAR A RELAÇÃO COM O USUARIO, CASO NECESSARIO UTILIZE POLIMORFISMO */
         int dataRealizacao;
-        vector<ItemReserva*> itens;
+        Usuario* usuario;       //relação polimórfica
+        vector<ItemReserva*> itens;     //vetor de ponteiros
 
     public:
         Reserva();
-        void imprimirReserva();
+        ~Reserva();
+        void imprimirReserva() const;
+        void adicionarItem(ItemReserva* novoItem);
 
-        int getID();
-        int getDataRealizacao();
+        int getID() const;
+        int getDataRealizacao() const;
+        Usuario* getUsuario() const;
 
         void setID(int novoID);
         void setDataRealizacao(int novaDataReserva);
+        void setUsuario(Usuario* novoUsuario);
 };
 
 #endif

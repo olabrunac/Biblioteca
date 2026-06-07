@@ -19,12 +19,12 @@ class GerenciadorDeEmprestimos {
         ~GerenciadorDeEmprestimos();
 
         void criarEmprestimo(Usuario& emprestimoUsuario, ExemplarLivro* exemplar);
-        //void criarEmprestimoApartirDaReserva(Reserva novaReserva);
+        void criarEmprestimoApartirDaReserva(Reserva* reservaExistente, Emprestimo* novoEmprestimo, ExemplarLivro* exemplar);
 
-        /*void criarReserva(Usuario& usuario, Livro& livro, Data data);*/
+        void criarReserva(Usuario* reservaUsuario, Livro* reservaLivro, int dataRealizacao); //reserva com uma data int, aprimorar depois
         void listarTodosEmprestimosAtuais();
         //void listarReservasDoLivro(Livro& listaLivro);
-        /*void ListarTodasReservas() CRIAR ISSO    */
+        void ListarTodasReservas();
         int contarEmprestimosAtivos(Livro& ativos);
 
 };

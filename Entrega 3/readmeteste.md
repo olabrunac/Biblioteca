@@ -11,3 +11,6 @@ vou aproveitar esse arquivo pra botar anotações (com '//' significa que ta fei
     checar se returar a reserva funciona e checar se apaga na memória
     //arrumar a herança
     ponteiros nos vetores de objetos
+    Destrutores
+    Reserva
+    polimorfismo da reserva e emprestimo com usuario
