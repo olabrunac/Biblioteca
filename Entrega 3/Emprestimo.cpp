@@ -33,11 +33,11 @@ void Emprestimo::adicionarItem(const ItemEmprestimo& novoItem) {
     }
 }
 
-int Emprestimo::getDataDeRetirada() const { return dataDeRetirada; }
+Data Emprestimo::getDataDeRetirada() const { return dataDeRetirada; }
 
-int Emprestimo::getDataPrevistaDevolucao() const { return dataPrevistaDevolucao; }
+Data Emprestimo::getDataPrevistaDevolucao() const { return dataPrevistaDevolucao; }
 
-int Emprestimo::getDataDevolucao() const { return dataDevolucao; }
+Data Emprestimo::getDataDevolucao() const { return dataDevolucao; }
 
 int Emprestimo::getStatus() const { return status; }
 
@@ -45,11 +45,27 @@ Usuario* Emprestimo::getUsuario() const {return usuario; }
 
 const vector<ItemEmprestimo>& Emprestimo::getItens() const { return itens; }
 
-void Emprestimo::setDataDeRetirada(int novaDataDeRetirada) { this -> dataDeRetirada = novaDataDeRetirada; } 
 
-void Emprestimo::setDataPrevistaDevolucao(int novaDataPrevistaDevolucao) { this -> dataPrevistaDevolucao = novaDataPrevistaDevolucao; } 
+/*Os setters de data utilizam o próprio construtor da classe data, o que
+possibilita receber um inteiro, testar, tratar erro, e atribui-la */
 
-void Emprestimo::setDataDevolucao(int novaDataDevolucao) { this -> dataDevolucao = novaDataDevolucao; } 
+void Emprestimo::setDataDeRetirada(int novaDataDeRetirada)
+{
+    this -> dataDeRetirada = Data(novaDataDeRetirada);
+}
+    
+
+void Emprestimo::setDataPrevistaDevolucao(int novaDataPrevistaDevolucao) { 
+
+    this -> dataPrevistaDevolucao = Data(novaDataPrevistaDevolucao); 
+
+} 
+
+void Emprestimo::setDataDevolucao(int novaDataDevolucao) { 
+    
+    this -> dataDevolucao = Data(novaDataDevolucao); 
+
+} 
 
 void Emprestimo::setStatus(int novoStatus) { this -> status = novoStatus;} 
 
