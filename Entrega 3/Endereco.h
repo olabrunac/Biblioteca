@@ -16,6 +16,8 @@ class Endereco {
 
     public:
         Endereco();
+        Endereco(string novaRua, int novoNumero, string novoBairro, string novaCidade, string novoEstado, string novoCep);
+        ~Endereco(); //falta implementar
         void imprimirEndereco();
 
         string getRua();

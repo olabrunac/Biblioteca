@@ -6,6 +6,7 @@
 #include "Emprestimo.h"
 #include "Reserva.h"
 #include <vector>
+#include <initializer_list>
 
 using std::vector;
 
@@ -19,6 +20,7 @@ class GerenciadorDeEmprestimos {
         ~GerenciadorDeEmprestimos();
 
         void criarEmprestimo(Usuario& emprestimoUsuario, ExemplarLivro* exemplar);
+        void criarEmprestimo(Usuario& emprestimoUsuario, initializer_list<ExemplarLivro*> listaExemplares);
         void criarEmprestimoApartirDaReserva(Reserva* reservaExistente, Emprestimo* novoEmprestimo, ExemplarLivro* exemplar);
 
         void criarReserva(Usuario* reservaUsuario, Livro* reservaLivro, int dataRealizacao); //reserva com uma data int, aprimorar depois

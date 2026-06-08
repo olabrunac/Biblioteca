@@ -8,6 +8,12 @@ using std::iterator;
 
 Acervo::Acervo() {}
 
+Acervo::Acervo(initializer_list<Livro*> listaLivros) { //permite colocar 1 ou mais livros na criação do acervo
+    for (initializer_list<Livro*>::const_iterator temp = listaLivros.begin(); temp != listaLivros.end(); ++temp) {
+        acervo.push_back(*temp);
+    }
+}
+
 Acervo::~Acervo() {     //destrutor com os ponteiros e etc
     for (vector<Livro*>::iterator temp = acervo.begin(); temp != acervo.end(); ++temp) {
         delete *temp;  //apaga na memória
@@ -15,7 +21,17 @@ Acervo::~Acervo() {     //destrutor com os ponteiros e etc
     acervo.clear();
 }
 
-void Acervo::acrescentarLivro(Livro* novoLivro) { acervo.push_back(novoLivro); }
+void Acervo::acrescentarLivro(Livro* novoLivro) {
+    acervo.push_back(novoLivro);
+}
+
+// permite colocar um vetor de livros no acervo de uma vez só 
+void Acervo::acrescentarLivro(initializer_list<Livro*> listaLivros) {
+    for (initializer_list<Livro*>::const_iterator temp = listaLivros.begin(); temp != listaLivros.end(); ++temp) {
+        acervo.push_back(*temp);
+    }
+    cout << listaLivros.size() << " livros adicionados ao acervo em lote!" << endl;
+}
 
 void Acervo::removerDoAcervo(Livro* removerLivro) {
     cout << " <<<<< REMOVENDO O LIVRO >>>>> " << endl;

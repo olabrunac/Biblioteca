@@ -7,6 +7,10 @@ using std::endl;
 
 Editora::Editora() {}
 
+Editora::Editora(int novoCodigo, string novoNome, const Endereco& novoEndereco) {}
+
+Editora::~Editora() {}
+
 void Editora::imprimirEditora() {
     cout << "Codigo: " << codigo << endl;
     cout << "Nome: " << nome << endl;

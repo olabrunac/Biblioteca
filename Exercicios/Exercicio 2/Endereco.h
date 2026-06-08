@@ -27,8 +27,8 @@ class Endereco {
     string getCidade();
     void setEstado(string estado);
     string getEstado();
-    void setCEP(string cep);
-    string getCEP();
+    void setCep(string cep);
+    string getCep();
 
 };
 

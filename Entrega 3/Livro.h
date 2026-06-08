@@ -20,7 +20,7 @@ class Livro {
         int anoPublicacao;
         int quantidadeDeExemplares;
         int nroDiasPermitidoEmprestimo;
-        vector<Autor> autor;
+        vector<Autor*> autores;  //Arrumar o ponteiro
         int statusAgora; /*VER COMO SE RELACIONA COM A RESERVA*/
         int statusFuturo;
         int nroPaginas;
@@ -29,6 +29,9 @@ class Livro {
     public:
         //****************** CRIAR CONSTRUTOR COM PARÂMETROS*********Livro()
         Livro();
+        Livro(int novoCodigo, string novoTitulo, Editora& novaEditora, int novaQuantidade, vector<Autor*> novoAutor);
+        Livro(int novoCodigo, string novoTitulo, int novaEdicao, float novoPreco, Editora& novaEditora, int novoAno, int novaQuantidade, int novoNroDias, vector<Autor*> novoAutor, int novoNroPaginas;);
+        ~Livro(); //precisa implementar
         void imprimirLivro();
         
         bool estaDisponivel() const;
@@ -45,7 +48,7 @@ class Livro {
         int getQuantidadeDeExemplares() const;
         int getNroDiasPermitidoEmprestimo() const;
         int getQuantidadeDisponivel() const;
-        vector<Autor> getAutor() const;
+        vector<Autor*> getAutor() const;
         string getStatusAgora() const;
         int getNroPaginas() const;
 
@@ -57,7 +60,7 @@ class Livro {
         void setAnoPublicacao(int novoAno);
         void setQuantidadeDeExemplares(int novaQuantidade);
         void setNroDiasPermitidoEmprestimo(int novoNroDias);
-        void setAutor(vector<Autor> novoAutor);
+        void setAutor(vector<Autor*> novoAutor);
         void setNroPaginas(int novoNroPaginas);
     
 };

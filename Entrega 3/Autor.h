@@ -12,6 +12,8 @@ class Autor {
         
     public:
         Autor();
+        Autor(int novoCodigo, string novoNome);
+        ~Autor(); //nao ta implementado
         void imprimirAutor();
 
         int getCodigo() const; 

@@ -8,7 +8,7 @@ Reserva::Reserva() : ID(0), dataRealizacao(0), usuario(nullptr) {}
 
 Reserva::~Reserva() {
     for (vector<ItemReserva*>::iterator temp = itens.begin(); temp != itens.end(); ++temp) {
-        dekete *temp;
+        delete *temp;
     }
     itens.clear();
 }
@@ -39,4 +39,4 @@ void Reserva::setID(int novoID) { this -> ID = novoID; }
 
 void Reserva::setDataRealizacao(int novaDataReserva) { this -> dataRealizacao = novaDataReserva; }
 
-void Reserva::setUsuario(Usuario* novoUsuario { this->usuario = novoUsuario; }
+void Reserva::setUsuario(Usuario* novoUsuario) { this->usuario = novoUsuario; }

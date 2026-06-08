@@ -7,6 +7,10 @@ using std::endl;
 
 Endereco::Endereco() {}
 
+Endereco::Endereco(string novaRua, int novoNumero, string novoBairro, string novaCidade, string novoEstado, string novoCep) : rua(novaRua), numero(novoNumero), bairro(novoBairro), cidade(novaCidade), estado(novoEstado), cep(novoCep) {}
+
+Endereco::~Endereco() {}
+
 void Endereco::imprimirEndereco() {
     cout << "Rua: " << rua << endl;
     cout << "Numero: " << numero << endl;

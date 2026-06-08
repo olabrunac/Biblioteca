@@ -7,6 +7,10 @@ using std::endl;
 
 Autor::Autor():codigo(0), nome("Sem Nome") {}
 
+Autor::Autor(int novoCodigo, string novoNome) : codigo(novoCodigo), nome(novoNome) {}
+
+Autor::~Autor() {}
+
 void Autor::imprimirAutor() {  
     cout << "Codigo: " << codigo << endl;
     cout << "Nome: " << nome << endl;

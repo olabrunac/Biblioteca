@@ -6,6 +6,8 @@ using std::endl;
 
 Usuario::Usuario(): codigo(0), nome(""), status(StatusUsuario::HABILITADO){}
 
+Usuario::Usuario(int novoCodigo, string novoNome, StatusUsuario status) : codigo(novoCodigo), nome(novoNome), status(novoStatus) {}
+
 int Usuario::getCodigo() const { return codigo; } 
 
 string Usuario::getNome() const{ return nome; }

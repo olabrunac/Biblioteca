@@ -31,5 +31,5 @@
     string Endereco::getEstado() { return estado; }
 
 // set e get CEP
-    void Endereco::setCEP(string cep) { this -> cep = cep; }
-    string Endereco::getCEP() { return cep; }
+    void Endereco::setCep(string cep) { this -> cep = cep; }
+    string Endereco::getCep() { return cep; }

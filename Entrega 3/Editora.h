@@ -14,6 +14,8 @@ class Editora {
 
     public:
         Editora();
+        Editora(int novoCodigo, string novoNome, const Endereco& novoEndereco) : codigo(novoCodigo), nome(novoNome), endereco(novoEndereco) {}
+        ~Editora(); //nao ta implementado
         void imprimirEditora();
 
         int getCodigo();

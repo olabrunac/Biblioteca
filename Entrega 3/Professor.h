@@ -11,6 +11,8 @@ class Professor : public Usuario {
     public:
         Professor():Usuario() {}
 
+        Professor(int novoCodigo, string novoNome, StatusUsuario status = StatusUsuario::HABILITADO) : Usuario(novoCodigo, novoNome, novoStatus) {}
+
         void imprimirUsuario() const override {     //implementado aqui para sobrescrever a herança
             cout << "---Dados do Professor---" << endl;
             cout << "Nome: " << nome << endl;

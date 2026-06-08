@@ -15,6 +15,8 @@ class Usuario {
 
     public:
         Usuario();
+        //construtor é chamado pelas classes filhas para inicializar os atributos herdados
+        Usuario(int novoCodigo, string novoNome, StatusUsuario novoStatus = StatusUsuario::HABILITADO);
         virtual ~Usuario();   // Destrutor virtual
         virtual void imprimirUsuario() const = 0;  //
 
