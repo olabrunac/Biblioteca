@@ -11,6 +11,9 @@ using std::iterator;
 
 Emprestimo::Emprestimo(): usuario(nullptr), status(0) {}
 
+Emprestimo::Emprestimo(Usuario* novoUsuario, const Data& novaDataDeRetirada, const Data& novaDataPrevistaDevolucao, const Data& novaDataDevolucao, int novoStatus)
+:usuario(novoUsuario), dataDeRetirada(novaDataDeRetirada), dataPrevistaDevolucao(novaDataPrevistaDevolucao), dataDevolucao(novaDataDevolucao), status(novoStatus) {}
+
 void Emprestimo::imprimirEmprestimo() {                                  
     cout << "+++ Detalhes Emprestimo +++" << endl;                       
     if (usuario != nullptr) {
@@ -45,7 +48,7 @@ Data Emprestimo::getDataPrevistaDevolucao() const {
 
         return DataPrevistaDevolução;
     
-    return ; }
+}
 
 Data Emprestimo::getDataDevolucao() const { return dataDevolucao; }
 
@@ -59,19 +62,19 @@ const vector<ItemEmprestimo>& Emprestimo::getItens() const { return itens; }
 /*Os setters de data utilizam o próprio construtor da classe data, o que
 possibilita receber um inteiro, testar, tratar erro, e atribui-la */
 
-void Emprestimo::setDataDeRetirada(int novaDataDeRetirada)
+void Emprestimo::setDataDeRetirada(Data novaDataDeRetirada)
 {
     this -> dataDeRetirada = Data(novaDataDeRetirada);
 }
     
 
-void Emprestimo::setDataPrevistaDevolucao(int novaDataPrevistaDevolucao) { 
+void Emprestimo::setDataPrevistaDevolucao(Data novaDataPrevistaDevolucao) { 
 
     this -> dataPrevistaDevolucao = Data(novaDataPrevistaDevolucao); 
 
 } 
 
-void Emprestimo::setDataDevolucao(int novaDataDevolucao) { 
+void Emprestimo::setDataDevolucao(Data novaDataDevolucao) { 
     
     this -> dataDevolucao = Data(novaDataDevolucao); 
 

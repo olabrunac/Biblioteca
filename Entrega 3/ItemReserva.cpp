@@ -6,10 +6,13 @@ using std::endl;
 
 ItemReserva::ItemReserva() {}
 
+ItemReserva::ItemReserva(int novoNroDoItem, const Data& novaDataDeRetirada, Livro* novoLivro)
+    : nroDoItem(novoNroDoItem), dataDeRetirada(novaDataDeRetirada), livro(novoLivro) {}
+
 void ItemReserva::imprimirItemReserva() const{
     cout << "Numero do Item: " << nroDoItem << endl;
     cout << "Data de Retirada: " << dataDeRetirada.getDataInteira() << endl;
-    cout << "Livro: " << livro << endl;
+    cout << "Livro: " << livro->getTitulo() << endl;
 }
 
 int ItemReserva::getNroDoItem() const { return nroDoItem; }

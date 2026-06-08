@@ -7,7 +7,8 @@ using std::endl;
 
 Editora::Editora() {}
 
-Editora::Editora(int novoCodigo, string novoNome, const Endereco& novoEndereco) {}
+Editora::Editora(int novoCodigo, string novoNome, const Endereco& novoEndereco)
+: codigo(novoCodigo), nome(novoNome), endereco(novoEndereco)  {}
 
 Editora::~Editora() {}
 

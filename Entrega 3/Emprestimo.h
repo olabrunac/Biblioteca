@@ -22,6 +22,7 @@ class Emprestimo {
 
     public:
         Emprestimo();
+        Emprestimo(Usuario* novoUsuario, const Data& novaDataDeRetirada, const Data& novaDataPrevistaDevolucao, const Data& novaDataDevolucao, int novoStatus);
         void imprimirEmprestimo();
         void adicionarItem(const ItemEmprestimo& novoitem);
 
@@ -32,9 +33,9 @@ class Emprestimo {
         Usuario* getUsuario() const;
         const vector<ItemEmprestimo>& getItens() const;
 
-        void setDataDeRetirada(const int novaDataDeRetirada);
-        void setDataPrevistaDevolucao(const int novaDataPrevistaDevolucao);
-        void setDataDevolucao(const int novaDataDevolucao);
+        void setDataDeRetirada(const Data novaDataDeRetirada);
+        void setDataPrevistaDevolucao(const Data novaDataPrevistaDevolucao);
+        void setDataDevolucao(const Data novaDataDevolucao);
         void setStatus(int novoStatus);
         void setUsuario(Usuario* novoUsuario);
         void setItens(Livro& novoLivro);

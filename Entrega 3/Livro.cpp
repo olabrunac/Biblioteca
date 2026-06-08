@@ -6,15 +6,30 @@ using std::endl;
 
 Livro::Livro() : codigo(0), quantidadeDeExemplares(0), statusAgora(0) {}
 
+Livro::Livro(int novoCodigo, string novoTitulo, Editora& novaEditora, vector<Autor*> novoAutor) : codigo(novoCodigo), titulo(novoTitulo), editora(novaEditora), autores(novoAutor) {}
+
+Livro::Livro(int novoCodigo, string novoTitulo, int novaEdicao, float novoPreco, Editora& novaEditora, int novoAno, int novaQuantidade, int novoNroDias, vector<Autor*> novoAutor, int novoNroPaginas)
+: codigo(novoCodigo), titulo(novoTitulo), edicao(novaEdicao), preco(novoPreco), editora(novaEditora), anoPublicacao(novoAno), quantidadeDeExemplares(novaQuantidade), nroDiasPermitidoEmprestimo(novoNroDias), autores(novoAutor), nroPaginas(novoNroPaginas) {
+    criarExemplares(novaQuantidade); //para criar os exemplares aqui em vez de só anotar quantos tem
+}
+
+Livro::~Livro() {
+
+
+
+
+
+}
+
 void Livro::imprimirLivro() { 
     cout << "Titulo: " << titulo << " | Edicao: " << edicao << endl;
     cout << "Codigo: " << codigo << " | Editora: " << editora.getNome() << endl;
     cout << "Autores: ";
-        if (autor.empty()) {
+        if (autores.empty()) {
             cout << "Nenhum autor" << endl;
         } else {
-            for (const Autor& temp : autor) {
-                cout << "[" << temp.getNome() << "]" << endl;
+            for (const Autor* temp : autores) {
+                cout << "[" << temp->getNome() << "]" << endl;
             }
         }
     cout << "Quantidade de exemplares em estoque: " << getQuantidadeDeExemplares() << endl;
@@ -31,18 +46,35 @@ bool Livro::estaDisponivel() const  {
     return false;
 }
 
-void Livro::criarExemplares(int quantidade) {
+bool Livro::possuiExemplaresEmprestados() const {
+    // Vasculha os exemplares para ver se tem algum emprestado
+    for (const ExemplarLivro& exemplar : exemplares) {
+        if (exemplar.getStatus() == StatusEmprestimo::EMPRESTADO) {
+            return true; //Ainda não pode ser excluido
+        }
+    }
+    return false; 
+}
 
-for (int i = 0; i < quantidade; i++) {
+void Livro::criarExemplares(int quantidade) { 
+    // Conta quantos exemplares já existem fisicamente no vetor
+    int tamanhoAtual = exemplares.size(); 
+    
+    for (int i = 0; i < quantidade; i++) {
         ExemplarLivro novoExemplar;
-        StatusEmprestimo statusInicial = StatusEmprestimo::DISPONIVEL;
-        novoExemplar.setStatus(statusInicial);
+        novoExemplar.setStatus(StatusEmprestimo::DISPONIVEL);
         novoExemplar.setLivro(this);
-        novoExemplar.setNroExemplar(this->quantidadeDeExemplares + i + 1);
+        
+        // Agora o cálculo será: 0 + 0 + 1 = 1 (Para o primeiro livro)
+        novoExemplar.setNroExemplar(tamanhoAtual + i + 1); 
+        
         this->exemplares.push_back(novoExemplar);
     }
-    this->quantidadeDeExemplares += quantidade;
+    
+    // Atualiza a variável de controle apenas no final
+    this->quantidadeDeExemplares = exemplares.size(); 
 }
+
 
 ExemplarLivro* Livro::getExemplarDisponivel() {
 
@@ -72,7 +104,7 @@ int Livro::getQuantidadeDeExemplares() const { return exemplares.size(); }
 
 int Livro::getNroDiasPermitidoEmprestimo() const { return nroDiasPermitidoEmprestimo; }
 
-vector<Autor> Livro::getAutor() const { return autor; }
+vector<Autor*> Livro::getAutor() const { return autores; }
 
 string Livro::getStatusAgora() const {
     if (estaDisponivel()) {
@@ -80,6 +112,14 @@ string Livro::getStatusAgora() const {
     }
     return "Indisponivel";
 }
+
+int Livro::getStatusFuturo(Data& data) const {
+
+//Nao tenho a menor ideia de como fazer isso por enquanto, precisa acessar o vetor de Reservas e Emprestimos.
+
+return 0;
+}
+
 
 int Livro::getQuantidadeDisponivel() const {
     int contador = 0;
@@ -109,6 +149,13 @@ void Livro::setQuantidadeDeExemplares(int novaQuantidade) { this -> quantidadeDe
 
 void Livro::setNroDiasPermitidoEmprestimo(int novoNroDias) { this -> nroDiasPermitidoEmprestimo = novoNroDias; }
 
-void Livro::setAutor(vector<Autor> novoAutor) { this -> autor = novoAutor; }
+void Livro::setAutor(vector<Autor*> novoAutor) { this -> autores = novoAutor; }
 
 void Livro::setNroPaginas(int novoNroPaginas) { this -> nroPaginas = novoNroPaginas; }
+
+bool Livro::operator==( const Livro& outroLivro) const {
+           if (codigo == outroLivro.codigo) {
+                return true;
+            }
+            return false;
+        }

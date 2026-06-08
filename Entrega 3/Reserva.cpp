@@ -6,6 +6,11 @@ using std::endl;
 
 Reserva::Reserva() : ID(0), dataRealizacao(0), usuario(nullptr) {}
 
+Reserva::Reserva(int novoID, const Data& novaDataRealizacao, Usuario* novoUsuario)
+    : ID(novoID), dataRealizacao(novaDataRealizacao), usuario(novoUsuario) {}
+
+    Reserva::Reserva(int novoID, const Data& novaDataRealizacao, Usuario* novoUsuario, const vector<ItemReserva*>& itensIn)
+    : ID(novoID), dataRealizacao(novaDataRealizacao), usuario(novoUsuario), itens(itensIn) {}
 Reserva::~Reserva() {
     for (vector<ItemReserva*>::iterator temp = itens.begin(); temp != itens.end(); ++temp) {
          delete *temp;
@@ -34,6 +39,8 @@ int Reserva::getID() const { return ID; }
 Data Reserva::getDataRealizacao() const { return dataRealizacao; }
 
 Usuario* Reserva::getUsuario() const { return usuario; }
+
+vector<ItemReserva*> Reserva::getItens() const { return itens; }
 
 void Reserva::setID(int novoID) { this -> ID = novoID; }
 

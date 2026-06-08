@@ -16,7 +16,9 @@ class Reserva {
         vector<ItemReserva*> itens;     //vetor de ponteiros
 
     public:
-        Reserva();
+        Reserva(); //Constrotores padrão; com vetor e sem vetor de itens
+        Reserva(int novoID, const Data& novaDataRealizacao, Usuario* novoUsuario);
+        Reserva(int novoID, const Data& novaDataRealizacao, Usuario* novoUsuario, const vector<ItemReserva*>& itens);
         ~Reserva();
         void imprimirReserva() const;
         void adicionarItem(ItemReserva* novoItem);
@@ -24,6 +26,7 @@ class Reserva {
         int getID() const;
         Data getDataRealizacao() const;
         Usuario* getUsuario() const;
+        vector<ItemReserva*> getItens() const;
 
         void setID(int novoID);
         void setDataRealizacao(Data& novaDataReserva);

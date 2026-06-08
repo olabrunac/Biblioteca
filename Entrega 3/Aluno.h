@@ -11,7 +11,7 @@ class Aluno : public Usuario {
     public:
         Aluno():Usuario() {}
         //herdando os atributos do construtor
-        Aluno(int novoCodigo, string novoNome, StatusUsuario status = StatusUsuario::HABILITADO) : Usuario(novoCodigo, novoNome, novoStatus) {}
+        Aluno(int novoCodigo, string novoNome, StatusUsuario status = StatusUsuario::HABILITADO) : Usuario(novoCodigo, novoNome, status) {}
         
         void imprimirUsuario() const override {
         cout << "---Dados do Aluno---" << endl;
