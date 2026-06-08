@@ -1,0 +1,93 @@
+#include <iostream>
+#include <string>
+#include "Data.h"
+
+using std::cout;
+using std::endl;
+
+bool Data::testeDataValida(int d, int m, int a) {
+    if (a < 2026) {
+        cout << "Erro: Viajante do tempo detectado (Ano < 2026)." << endl;
+        return false;
+    }
+    if (m < 1 || m > 12) {
+        cout << "Erro: Mes invalido." << endl;
+        return false;
+    }
+    if (d < 1 || d > 31) {
+        cout << "Erro: Dia invalido." << endl;
+        return false;
+    }
+    return true;
+}
+
+Data::Data(): data(20260607), dia(7), mes(6), ano(2026) {}
+
+Data::Data(int dia, int mes, int ano) {
+    if (testeDataValida(dia, mes, ano)) {
+        this->dia = dia;
+        this->mes = mes;
+        this->ano = ano;
+    } else {
+        cout << "Aplicando data padrao (07/06/2026)." << endl;
+        this->dia = 7;
+        this->mes = 6;
+        this->ano = 2026;
+    }
+}
+
+Data::Data(int dataInteira)
+    : Data(dataInteira % 100, (dataInteira % 10000) / 100, dataInteira / 10000) {}
+
+Data::~Data() {}
+
+void Data::imprimirData() const {
+    cout << "Data: " << dia << "/" << mes << "/" << ano << endl;
+}
+
+int Data::getDia() const {
+    return dia;
+}
+
+int Data::getMes() const {
+    return mes;
+}
+
+int Data::getAno() const {
+    return ano;
+}
+
+int Data::getDataInteira() const {
+    return ano * 10000 + mes * 100 + dia;
+}
+
+void Data::setData(int novaData) {
+    int novaDia = novaData % 100;
+    int novaMes = (novaData % 10000) / 100;
+    int novoAno = novaData / 10000;
+
+    if (testeDataValida(novaDia, novaMes, novoAno)) {
+        this->dia = novaDia;
+        this->mes = novaMes;
+        this->ano = novoAno;
+    } else {
+        cout << "Data nao alterada devido a entrada invalida." << endl;
+    }
+}
+
+Data Data::operator+(int dias) const {
+    Data novaData = *this;
+    novaData.dia += dias;
+
+    while (novaData.dia > 30) {
+        novaData.dia -= 30;
+        novaData.mes += 1;
+
+        if (novaData.mes > 12) {
+            novaData.mes = 1;
+            novaData.ano += 1;
+        }
+    }
+
+    return novaData;
+}

@@ -35,7 +35,17 @@ void Emprestimo::adicionarItem(const ItemEmprestimo& novoItem) {
 
 Data Emprestimo::getDataDeRetirada() const { return dataDeRetirada; }
 
-Data Emprestimo::getDataPrevistaDevolucao() const { return dataPrevistaDevolucao; }
+Data Emprestimo::getDataPrevistaDevolucao() const {
+    
+        Data dataBase; // Data de retirada, usada para o calculo
+
+        dataBase.setData(dataDeRetirada.getDataInteira());
+
+        Data DataPrevistaDevolução = dataBase + 7; //Utiliza a sobrecarga de operadores da classe Data para 7 na data de foi realizadaa  retirada.
+
+        return DataPrevistaDevolução;
+    
+    return ; }
 
 Data Emprestimo::getDataDevolucao() const { return dataDevolucao; }
 

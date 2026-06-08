@@ -13,7 +13,7 @@ using std::vector;
 class Emprestimo {
     private:
 
-        vector <ItemEmprestimo*> itens;
+        vector <ItemEmprestimo> itens; // Ponteiro quebrou a classe 
         Usuario* usuario;
         Data dataDeRetirada;
         Data dataPrevistaDevolucao;
