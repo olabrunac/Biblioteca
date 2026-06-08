@@ -2,23 +2,26 @@
 #define ITEMRESERVA_H
 
 #include "Livro.h"
+#include "Data.h"
+
+//Esta utilizando objetos Data
 
 class ItemReserva {
     private:
         int nroDoItem;
-        int dataDeRetirada;
+        Data dataDeRetirada;
         Livro* livro;
         
     public:
         ItemReserva();
-        void imprimirItemReserva();
+        void imprimirItemReserva() const;
 
-        int getNroDoItem();
-        int getDataDeRetirada();
-        Livro* getLivro();
+        int getNroDoItem() const;
+        Data getDataDeRetirada() const;
+        Livro* getLivro()const ;
 
-        void setNroDoItem(int novoNroDoItem);
-        void setDataDeRetirada(int novaDataDeRetirada);
+        void setNroDoItem(const int novoNroDoItem);
+        void setDataDeRetirada(const Data& novaDataDeRetirada);
         void setLivro(Livro* novoLivro);
 };
 

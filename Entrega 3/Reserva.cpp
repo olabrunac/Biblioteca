@@ -8,7 +8,7 @@ Reserva::Reserva() : ID(0), dataRealizacao(0), usuario(nullptr) {}
 
 Reserva::~Reserva() {
     for (vector<ItemReserva*>::iterator temp = itens.begin(); temp != itens.end(); ++temp) {
-        delete *temp;
+         delete *temp;
     }
     itens.clear();
 }
@@ -19,9 +19,9 @@ void Reserva::adicionarItem(ItemReserva* novoItem) {
 
 void Reserva::imprimirReserva() const {
     cout << "Reserva ID: " << ID << endl;
-    cout << "Data da Reserva: " << dataRealizacao << endl;
+    cout << "Data da Reserva: " << dataRealizacao.getDataInteira() << endl; //Imprime a data no formato AAAAMMDD
     if (usuario != nullptr) {
-        cout << "Reservado por: " << usuario->getNome() << "Codigo: " << usuario->getCodigo << ")" << endl;
+        cout << "Reservado por: " << usuario->getNome() << "Codigo: " << usuario->getCodigo() << ")" << endl;
     }
     cout << "Itens da Reserva: " << endl;
     for (vector<ItemReserva*>::const_iterator temp = itens.cbegin(); temp != itens.cend(); ++temp) {
@@ -31,12 +31,12 @@ void Reserva::imprimirReserva() const {
 
 int Reserva::getID() const { return ID; }
 
-int Reserva::getDataRealizacao() const { return dataRealizacao; }
+Data Reserva::getDataRealizacao() const { return dataRealizacao; }
 
 Usuario* Reserva::getUsuario() const { return usuario; }
 
 void Reserva::setID(int novoID) { this -> ID = novoID; }
 
-void Reserva::setDataRealizacao(int novaDataReserva) { this -> dataRealizacao = novaDataReserva; }
+void Reserva::setDataRealizacao(Data& novaDataReserva) { this -> dataRealizacao = novaDataReserva; }
 
 void Reserva::setUsuario(Usuario* novoUsuario) { this->usuario = novoUsuario; }
