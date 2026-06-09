@@ -19,3 +19,9 @@ vou aproveitar esse arquivo pra botar anotações (com '//' significa que ta fei
     data de empréstimo e data de devolucao ainda tao +-
     emprestimo apartir de reserva cria um objeto emprestimo novo em vez de fazer uma lista pro usuario (pra arrumar isso é mto código nao sei se ficaria legal)
     ao criar um empréstimo ta pra alocar a data atual, mas e se quisermos usar outra data?
+
+    data de empréstimo e data de devolucao
+    GerenciadorDeReservas
+    
+    Menu
+    Verificar Possiveis regras esquecidas

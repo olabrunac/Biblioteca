@@ -21,7 +21,7 @@ bool Data::testeDataValida(int d, int m, int a) {
     return true;
 }
 
-Data::Data(): data(20260607), dia(7), mes(6), ano(2026) {}
+Data::Data(): dia(7), mes(6), ano(2026) {}
 
 Data::Data(int dia, int mes, int ano) {
     if (testeDataValida(dia, mes, ano)) {
@@ -38,6 +38,15 @@ Data::Data(int dia, int mes, int ano) {
 
 Data::Data(int dataInteira)
     : Data(dataInteira % 100, (dataInteira % 10000) / 100, dataInteira / 10000) {}
+
+Data::Data(int d, int m, int a, bool pularValidacao) {
+    this->dia = d;
+    this->mes = m;
+    this->ano = a;
+}
+
+Data::Data(const Data& outra) 
+    : dia(outra.dia), mes(outra.mes), ano(outra.ano) {}
 
 Data::~Data() {}
 

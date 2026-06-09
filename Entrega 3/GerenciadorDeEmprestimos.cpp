@@ -40,8 +40,14 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, Exemp
     int itensAdicionados = 0;
 
     // Verifica se o exemplar é válido e está disponível.
-    if (exemplar != nullptr && exemplar->getStatus() == StatusEmprestimo::DISPONIVEL) {
-        exemplar->setStatus(StatusEmprestimo::EMPRESTADO);
+    bool disponivelNoPeriodo = false;
+    if (exemplar != nullptr) {
+        Livro* livro = exemplar->getLivro();
+        disponivelNoPeriodo = estaDisponivelnaData(livro, dataAtual, dataAtual + livro->getNroDiasPermitidoEmprestimo());
+    }
+    
+    if (exemplar != nullptr && exemplar->getStatus() == StatusEmprestimo::DISPONIVEL && disponivelNoPeriodo) {
+        exemplar->setStatus(StatusEmprestimo::EMPRESTADO); // usuario pode fazer imprestimo
 
         ItemEmprestimo* novoItem = new ItemEmprestimo();
         novoItem->setExemplar(exemplar);
@@ -54,7 +60,11 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, Exemp
 
         itensAdicionados++;
     } else {
-        cout << "-Nao foi possivel realizar o emprestimo para " << emprestimoUsuario.getNome() << "." << endl;
+        if (exemplar != nullptr && !disponivelNoPeriodo) {
+            cout << "-Nao foi possivel realizar o emprestimo: O livro '" << exemplar->getLivro()->getTitulo() << "' ja possui reservas para este periodo." << endl;
+        } else {
+            cout << "-Nao foi possivel realizar o emprestimo para " << emprestimoUsuario.getNome() << "." << endl;
+        }
     }
     if (itensAdicionados > 0) {
         emprestimos.push_back(novoEmprestimo);
@@ -89,7 +99,11 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, initi
         ExemplarLivro* exemplar = temp;
 
         // Verifica se o exemplar é válido e está disponível.
-        if (exemplar != nullptr && exemplar->getStatus() == StatusEmprestimo::DISPONIVEL) {
+        bool disponivelNoPeriodo = false;
+        if (exemplar != nullptr) {
+            disponivelNoPeriodo = estaDisponivelnaData(exemplar->getLivro(), dataAtual, dataAtual + exemplar->getLivro()->getNroDiasPermitidoEmprestimo());
+        }
+        if (exemplar != nullptr && exemplar->getStatus() == StatusEmprestimo::DISPONIVEL && disponivelNoPeriodo) {
             exemplar->setStatus(StatusEmprestimo::EMPRESTADO);
             ItemEmprestimo* novoItem = new ItemEmprestimo();
             novoItem->setExemplar(exemplar);
@@ -101,6 +115,8 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, initi
             novoItem->setDataParaDevolucao((dataAtual + dias).getDataInteira());
             
             itensAdicionados++;
+        } else if (exemplar != nullptr && !disponivelNoPeriodo) {
+            cout << "Aviso: O livro '" << exemplar->getLivro()->getTitulo() << "' possui conflito com reservas futuras." << endl;
         }
     }
 
@@ -421,7 +437,7 @@ void GerenciadorDeEmprestimos::listarReservasDoLivro(Livro& listaLivro) {
     }
 }
 
-void GerenciadorDeEmprestimos::listarTodasReservasUsuario(Usuario* usuario) {
+/*void GerenciadorDeEmprestimos::listarTodasReservasUsuario(Usuario* usuario) {
     // CONSULTA: Visualização de todas as reservas de um determinado usuário.
     cout << "\n----- Reservas do usuario: " << usuario->getNome() << " -----" << endl;
     Reserva* reserva = getReservaPorUsuario(usuario);
@@ -455,3 +471,4 @@ bool GerenciadorDeEmprestimos::estaDisponivelnaData(Livro* testeLivro, const Dat
 
     return false;
 }
+*/

@@ -11,7 +11,6 @@ using std::string;
 class Data {
 
     private:
-        int data; //Padrão AAAAMMDD
         int dia;
         int mes;
         int ano;
