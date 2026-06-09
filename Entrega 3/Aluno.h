@@ -18,7 +18,7 @@ class Aluno : public Usuario {
         void imprimirUsuario() const override {
             cout << "Aluno" << endl;
             cout << "Nome: " << nome << endl;
-            cout << "Codigo: " << codigo << endl;
+            //cout << "Codigo: " << codigo << endl;
             cout << "Status do usuario: ";
             if (status == StatusUsuario::HABILITADO) {
                 cout << "Habilitado" << endl;

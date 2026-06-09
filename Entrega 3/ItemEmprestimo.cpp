@@ -13,7 +13,7 @@ ItemEmprestimo::~ItemEmprestimo() {}            //nao faz alocacao dinamica
 
 void ItemEmprestimo::imprimirItemEmprestimo()const {
     if (exemplar != nullptr) {
-        exemplar->imprimirExemplarLivro();
+        exemplar->imprimirExemplarLivro(dataParaDevolucao);
     }
 }
 

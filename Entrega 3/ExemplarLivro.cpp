@@ -13,9 +13,17 @@ ExemplarLivro::ExemplarLivro() {}
 ExemplarLivro::~ExemplarLivro() {}      //nao faz alocacao dinamica
 
 
-void ExemplarLivro::imprimirExemplarLivro() {
-
-    cout << livro->getTitulo() << ", " << nroExemplar << ", " << toString(status) << endl;
+void ExemplarLivro::imprimirExemplarLivro(int dataDevolucao) {          //retorna a data que o livro deve ser devolvido
+    if (dataDevolucao != 0) {
+        int d = dataDevolucao % 100;
+        int m = (dataDevolucao % 10000) / 100;
+        int a = dataDevolucao / 10000;
+        
+        cout << livro->getTitulo() << ", " << nroExemplar << ", " << toString(status)
+             << " até " << (d < 10 ? "0" : "") << d << "/" << (m < 10 ? "0" : "") << m << "/" << a << endl;
+    } else {
+        cout << livro->getTitulo() << ", " << nroExemplar << ", " << toString(status) << endl;
+    }
 }
 
 

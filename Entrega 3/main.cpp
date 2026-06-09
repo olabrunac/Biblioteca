@@ -57,9 +57,10 @@ int main() {
 
 
     Livro* l1 = new Livro(111, "Jogos Vorazes", ediRocco, vector<Autor*> {&suzanne}, 2);       //dinamico heap, 2 exemplares para testar limite
+    l1->setNroDiasPermitidoEmprestimo(2);
 
     Livro* l2 = new Livro(222, "O Gambito da Rainha", ediRocco, listaAutoresl2, 1);           //recebe uma lista de autores, 1 exemplar
-    l2->setNroDiasPermitidoEmprestimo(7);
+    l2->setNroDiasPermitidoEmprestimo(2);
 
     //dinamico
     Livro* l3 = new Livro(333, "Turma da Monica", 3, 4.99f, ediPanini, 2021, 4, 7, vector<Autor*> {&mauricio}, 132);
@@ -104,19 +105,21 @@ int main() {
 
     GerenciadorDeEmprestimos sistema;
 
+    Data dataHoje(10, 06, 2026);
+
     cout << endl << endl;
     cout << "===== REALIZANDO EMPRESTIMOS =====" << endl;
 
-    sistema.criarEmprestimo(Matheus, l1->getExemplarDisponivel());
-    sistema.criarEmprestimo(Bruna, l1->getExemplarDisponivel());
+    sistema.criarEmprestimo(Matheus, l1->getExemplarDisponivel(), dataHoje);
+    sistema.criarEmprestimo(Bruna, l1->getExemplarDisponivel(), dataHoje);
     cout << endl;
 
     // Deve falhar (exemplares esgotados)
-    sistema.criarEmprestimo(Ryan, l1->getExemplarDisponivel());
+    sistema.criarEmprestimo(Ryan, l1->getExemplarDisponivel(), dataHoje);
     cout << endl;
 
     // Deve falhar imediatamente (o l5 nasceu com 0 exemplares, retornara nullptr)
-    sistema.criarEmprestimo(Bruna, l5->getExemplarDisponivel());
+    sistema.criarEmprestimo(Bruna, l5->getExemplarDisponivel(), dataHoje);
     cout << endl;
 
     // Tentando emprestar vários livros, o sistema verifica um por um
@@ -126,8 +129,41 @@ int main() {
         l3->getExemplarDisponivel(),            //turma da monica
         l4->getExemplarDisponivel(),            //em chamas
         l5->getExemplarDisponivel()             //o homem que caiu na terra
-    });
+    }, dataHoje);
+    cout << endl;
 
+    Ryan.setStatus(StatusUsuario::EM_DEBITO);
+    sistema.criarEmprestimo(Ryan, l4->getExemplarDisponivel(), dataHoje);
+    cout << endl; 
+
+
+    // ---------------- RESERVAS ----------------
+
+
+    cout << endl;
+    cout << "===== TESTANDO SISTEMA DE RESERVAS =====" << endl;
+    
+    // 1. Criando Reservas
+    sistema.criarReserva(&Ryan, l3, dataHoje);  // Ryan reserva Turma da Monica (tem muito estoque)
+    sistema.criarReserva(&Bruna, l5, dataHoje); // Bruna reserva l5 (estoque zerado)
+
+    cout << endl;
+    sistema.listarTodasReservas();
+
+    cout << endl;
+    cout << "===== CONVERTENDO RESERVA EM EMPRESTIMO =====" << endl;
+    
+    // 2. Convertendo a reserva do Ryan (Deve dar certo)
+    Reserva* reservaRyan = sistema.getReservaPorUsuario(&Ryan);
+    if (reservaRyan != nullptr) {
+        sistema.criarEmprestimoApartirDaReserva(reservaRyan);
+    }
+
+    // 3. Convertendo a reserva da Bruna (Deve falhar no método, pois l5 não tem exemplar físico)
+    Reserva* reservaBruna = sistema.getReservaPorUsuario(&Bruna);
+    if (reservaBruna != nullptr) {
+        sistema.criarEmprestimoApartirDaReserva(reservaBruna);
+    }
 
     // ---------------- LISTAGEM ----------------
 

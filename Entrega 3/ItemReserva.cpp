@@ -27,11 +27,7 @@ int ItemReserva::getNroDoItem() const { return nroDoItem; }
 Data ItemReserva::getDataDeRetirada() const { return  dataDeRetirada; }
 
 
-Livro* ItemReserva::getLivro() const {
-
-        return livro; // 
-
- }
+Livro* ItemReserva::getLivro() const { return livro; }
 
 
 void ItemReserva::setNroDoItem( const int novoNroDoItem) { this -> nroDoItem = novoNroDoItem; }

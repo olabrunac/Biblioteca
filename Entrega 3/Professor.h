@@ -18,7 +18,7 @@ class Professor : public Usuario {
         void imprimirUsuario() const override {     //implementado aqui para sobrescrever a herança
             cout << "Professor" << endl;
             cout << "Nome: " << nome << endl;
-            cout << "Codigo: " << codigo << endl;
+            //cout << "Codigo: " << codigo << endl;
             cout << "Status do usuario: ";
             if (status == StatusUsuario::HABILITADO) {
                cout << "Habilitado" << endl;

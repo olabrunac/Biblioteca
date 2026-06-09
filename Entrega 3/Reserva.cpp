@@ -4,7 +4,7 @@
 using std::cout;
 using std::endl;
 
-Reserva::Reserva() : ID(0), dataRealizacao(0), usuario(nullptr) {}
+Reserva::Reserva() : ID(0), usuario(nullptr) {}
 
 
 Reserva::Reserva(int novoID, const Data& novaDataRealizacao, Usuario* novoUsuario)
@@ -18,7 +18,7 @@ Reserva::Reserva(int novoID, const Data& novaDataRealizacao, Usuario* novoUsuari
 Reserva::~Reserva() {
     for (vector<ItemReserva*>::iterator temp = itens.begin(); temp != itens.end(); ++temp) {
          delete *temp;
-         cout << "Destruindo a reserva ID: " << this->ID << "e liberando a memória" << endl;
+         cout << "-Destruindo a reserva ID: " << this->ID << " e liberando a memória" << endl;
     }
     itens.clear();
 }
@@ -33,14 +33,13 @@ void Reserva::imprimirReserva() const {
     cout << "Reserva ID: " << ID << endl;
     cout << "Data da Reserva: " << dataRealizacao.getDataInteira() << endl; //Imprime a data no formato AAAAMMDD
     if (usuario != nullptr) {
-        cout << "Reservado por: " << usuario->getNome() << "Codigo: " << usuario->getCodigo() << ")" << endl;
+        cout << "Reservado por: ";
+        usuario->imprimirUsuario(); // polimorfismo aqui
     }
-    cout << "Itens da Reserva: " << endl;
     for (vector<ItemReserva*>::const_iterator temp = itens.cbegin(); temp != itens.cend(); ++temp) {
         (*temp)->imprimirItemReserva();
     }
 }
-
 
 
 int Reserva::getID() const { return ID; }
@@ -52,7 +51,7 @@ Data Reserva::getDataRealizacao() const { return dataRealizacao; }
 Usuario* Reserva::getUsuario() const { return usuario; }
 
 
-vector<ItemReserva*> Reserva::getItens() const { return itens; }
+const vector<ItemReserva*>& Reserva::getItens() const { return itens; }
 
 bool Reserva::possuiLivro(const Livro* livroBuscado) const {
     for (vector<ItemReserva*>::const_iterator temp = itens.begin(); temp != itens.end(); ++temp) {

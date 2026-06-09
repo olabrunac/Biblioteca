@@ -17,7 +17,7 @@ class ExemplarLivro {
     public:
         ExemplarLivro();
         ~ExemplarLivro();
-        void imprimirExemplarLivro();
+        void imprimirExemplarLivro(int dataDevolucao = 0);
 
         int getNroExemplar() const;
         StatusEmprestimo getStatus()const ;//Precisei adicionar o const para o Acervo

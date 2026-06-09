@@ -15,26 +15,26 @@ class Emprestimo {
 
         vector <ItemEmprestimo*> itens; // Ponteiro quebrou a classe 
         Usuario* usuario;
-        Data dataDeRetirada;
+        Data dataEmprestimo;
         Data dataPrevistaDevolucao;
         Data dataDevolucao;
         int status;
 
     public:
         Emprestimo();
-        Emprestimo(Usuario* novoUsuario, const Data& novaDataDeRetirada, const Data& novaDataPrevistaDevolucao, const Data& novaDataDevolucao, int novoStatus);
+        Emprestimo(Usuario* novoUsuario, const Data& novaDataDEmprestimo, const Data& novaDataPrevistaDevolucao, const Data& novaDataDevolucao, int novoStatus);
         ~Emprestimo();                                      
         void imprimirEmprestimo();
         void adicionarItem(ItemEmprestimo* novoItem);
 
-        Data getDataDeRetirada() const;
+        Data getDataEmprestimo() const;
         Data getDataPrevistaDevolucao() const;
         Data getDataDevolucao() const; 
         int getStatus() const;
         Usuario* getUsuario() const;
         const vector<ItemEmprestimo*>& getItens() const;
 
-        void setDataDeRetirada(const Data novaDataDeRetirada);
+        void setDataEmprestimo(const Data novaDataEmprestimo);
         void setDataPrevistaDevolucao(const Data novaDataPrevistaDevolucao);
         void setDataDevolucao(const Data novaDataDevolucao);
         void setStatus(int novoStatus);

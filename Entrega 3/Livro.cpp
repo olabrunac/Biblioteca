@@ -124,12 +124,7 @@ string Livro::getStatusAgora() const {
 }
 
 
-int Livro::getStatusFuturo(Data& data) const {
-
-//Nao tenho a menor ideia de como fazer isso por enquanto, precisa acessar o vetor de Reservas e Emprestimos.
-
-return 0;
-}
+//int Livro::getStatusFuturo(Data& data) const {} //Nao tenho a menor ideia de como fazer isso por enquanto, precisa acessar o vetor de Reservas e Emprestimos.
 
 
 int Livro::getQuantidadeDisponivel() const {
