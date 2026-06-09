@@ -11,32 +11,45 @@ using std::iterator;
 
 Emprestimo::Emprestimo(): usuario(nullptr), status(0) {}
 
+
 Emprestimo::Emprestimo(Usuario* novoUsuario, const Data& novaDataDeRetirada, const Data& novaDataPrevistaDevolucao, const Data& novaDataDevolucao, int novoStatus)
-:usuario(novoUsuario), dataDeRetirada(novaDataDeRetirada), dataPrevistaDevolucao(novaDataPrevistaDevolucao), dataDevolucao(novaDataDevolucao), status(novoStatus) {}
+    :usuario(novoUsuario), dataDeRetirada(novaDataDeRetirada), dataPrevistaDevolucao(novaDataPrevistaDevolucao), dataDevolucao(novaDataDevolucao), status(novoStatus) {}
+
+
+Emprestimo::~Emprestimo() {
+    for(vector<ItemEmprestimo*>::iterator temp = itens.begin(); temp != itens.end(); ++temp) {
+        delete *temp;
+    }
+    itens.clear();
+}
+
 
 void Emprestimo::imprimirEmprestimo() {                                  
-    cout << "+++ Detalhes Emprestimo +++" << endl;                       
+    cout << endl << "+++ Detalhes Emprestimo +++" << endl;                       
     if (usuario != nullptr) {
-        cout << "Usuario: "; 
+        cout << "Tipo do usuario: "; 
         usuario->imprimirUsuario(); 
     } else {
-        cout << "Usuario: (Nao especificado)" << endl;
+        cout << "Tipo do usuario: (Nao especificado)" << endl;
     }
     cout << "Livros Emprestados:" << endl;
-    for (vector<ItemEmprestimo>::const_iterator temp = itens.cbegin(); temp != itens.cend(); ++temp) {
-        temp -> imprimirItemEmprestimo();
+    for (vector<ItemEmprestimo*>::const_iterator temp = itens.begin(); temp != itens.end(); ++temp) {
+        (*temp)->imprimirItemEmprestimo();
     }
 }
 
-void Emprestimo::adicionarItem(const ItemEmprestimo& novoItem) {
-    if (novoItem.getExemplar() != nullptr) {
+
+void Emprestimo::adicionarItem(ItemEmprestimo* novoItem) {
+    if (novoItem->getExemplar() != nullptr) {
         itens.push_back(novoItem);
     } else {
         cout << "Erro: item invalido." << endl;
     }
 }
 
+
 Data Emprestimo::getDataDeRetirada() const { return dataDeRetirada; }
+
 
 Data Emprestimo::getDataPrevistaDevolucao() const {
     
@@ -50,13 +63,17 @@ Data Emprestimo::getDataPrevistaDevolucao() const {
     
 }
 
+
 Data Emprestimo::getDataDevolucao() const { return dataDevolucao; }
+
 
 int Emprestimo::getStatus() const { return status; }
 
+
 Usuario* Emprestimo::getUsuario() const {return usuario; }
 
-const vector<ItemEmprestimo>& Emprestimo::getItens() const { return itens; }
+
+const vector<ItemEmprestimo*>& Emprestimo::getItens() const { return itens; }
 
 
 /*Os setters de data utilizam o próprio construtor da classe data, o que
@@ -74,21 +91,26 @@ void Emprestimo::setDataPrevistaDevolucao(Data novaDataPrevistaDevolucao) {
 
 } 
 
+
 void Emprestimo::setDataDevolucao(Data novaDataDevolucao) { 
     
     this -> dataDevolucao = Data(novaDataDevolucao); 
 
 } 
 
+
 void Emprestimo::setStatus(int novoStatus) { this -> status = novoStatus;} 
 
+
 void Emprestimo::setUsuario(Usuario* novoUsuario) {this-> usuario = novoUsuario;}
+
 
 void Emprestimo::setItens(Livro& novoLivro){                            
     ItemEmprestimo ItemAdicionado;
     ExemplarLivro* Exemplar = novoLivro.getExemplarDisponivel();
     if (Exemplar != nullptr) {
-        ItemAdicionado.setExemplar(Exemplar);
+        ItemEmprestimo* ItemAdicionado = new ItemEmprestimo();
+        ItemAdicionado->setExemplar(Exemplar);
         Exemplar->setStatus(StatusEmprestimo::EMPRESTADO);
         itens.push_back(ItemAdicionado);
     } else {

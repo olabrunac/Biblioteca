@@ -1,29 +1,26 @@
 {
-    // Use o IntelliSense para saber mais sobre os atributos possíveis.
-    // Focalizar para exibir as descrições dos atributos existentes.
-    // Para obter mais informações, acesse: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug current folder (gdb)",
+            "name": "C/C++: g++ depurar projeto",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}/app.exe",
+            "program": "${fileDirname}/${fileBasenameNoExtension}",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
-            "externalConsole": true,
+            "externalConsole": false,
             "MIMode": "gdb",
-            "miDebuggerPath": "gdb.exe",
             "setupCommands": [
                 {
-                    "description": "Habilitar pretty-printing no gdb",
+                    "description": "Enable pretty-printing for gdb",
                     "text": "-enable-pretty-printing",
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "C/C++: build active folder"
+            "preLaunchTask": "C/C++: g++ compilar projeto",
+            "miDebuggerPath": "/usr/bin/gdb"
         }
     ]
 }

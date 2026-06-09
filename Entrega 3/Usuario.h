@@ -15,7 +15,7 @@ class Usuario {
 
     public:
         Usuario();
-        virtual ~Usuario();   // Destrutor virtual
+        virtual ~Usuario();   // Destrutor virtual, pode ser vazio pois as classes filhas q vao implementar
         Usuario(int novoCodigo, string novoNome, StatusUsuario novoStatus = StatusUsuario::HABILITADO);
         virtual void imprimirUsuario() const;  
 

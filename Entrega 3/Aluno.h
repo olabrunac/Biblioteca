@@ -13,17 +13,19 @@ class Aluno : public Usuario {
         //herdando os atributos do construtor
         Aluno(int novoCodigo, string novoNome, StatusUsuario status = StatusUsuario::HABILITADO) : Usuario(novoCodigo, novoNome, status) {}
         
+        ~Aluno() override { cout << "Destruindo objeto tipo Aluno: " << this->nome << endl; } 
+
         void imprimirUsuario() const override {
-        cout << "---Dados do Aluno---" << endl;
-        cout << "Nome: " << nome << endl;
-        cout << "Codigo: " << codigo << endl;
-        cout << "Status do usuario: ";
-        if (status == StatusUsuario::HABILITADO) {
-           cout << "Habilitado" << endl;
-        } else {
-        cout << "Em debito" << endl;
+            cout << "Aluno" << endl;
+            cout << "Nome: " << nome << endl;
+            cout << "Codigo: " << codigo << endl;
+            cout << "Status do usuario: ";
+            if (status == StatusUsuario::HABILITADO) {
+                cout << "Habilitado" << endl;
+            } else {
+            cout << "Em debito" << endl;
+            }
         }
-    }
 };
 
 #endif

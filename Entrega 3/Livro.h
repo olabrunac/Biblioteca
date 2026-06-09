@@ -30,14 +30,14 @@ class Livro {
     public:
         //****************** CRIAR CONSTRUTOR COM PARÂMETROS*********Livro()
         Livro();
-        Livro(int novoCodigo, string novoTitulo, Editora& novaEditora, vector<Autor*> novoAutor); //Tive que tirar o quantidade de exemplares daqui, dava conflito com o método criarExemplares
-        Livro(int novoCodigo, string novoTitulo, int novaEdicao, float novoPreco, Editora& novaEditora, int novoAno, int novaQuantidade, int novoNroDias, vector<Autor*> novoAutor, int novoNroPaginas);
-        ~Livro(); //precisa implementar
+        Livro(int novoCodigo, string novoTitulo, Editora& novaEditora, vector<Autor*> novoAutor, int quantidade);
+        Livro(int novoCodigo, string novoTitulo, int novaEdicao, float novoPreco, Editora& novaEditora, int novoAno, int quantidade, int novoNroDias, vector<Autor*> novoAutor, int novoNroPaginas);
+        //~Livro();                                       //o acervo já faz esse trampo
         void imprimirLivro();
         
         bool estaDisponivel() const;
         void criarExemplares(int quantidade);
-        bool possuiExemplaresEmprestados() const; //Pode ser usado antes de excluir um livro, verificar se tem exemplares emprestados
+        bool possuiExemplaresEmprestados() const;       //Pode ser usado antes de excluir um livro, verificar se tem exemplares emprestados
 
         ExemplarLivro* getExemplarDisponivel();
 
@@ -50,7 +50,7 @@ class Livro {
         int getQuantidadeDeExemplares() const;
         int getNroDiasPermitidoEmprestimo() const;
         int getQuantidadeDisponivel() const;
-        vector<Autor*> getAutor() const;
+        const vector<Autor*>& getAutor() const;             //garante que nao alterem o vetor
 
         string getStatusAgora() const;
 

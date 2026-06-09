@@ -11,6 +11,7 @@ class ItemEmprestimo {
     public:
         
         ItemEmprestimo();
+        ~ItemEmprestimo();                                       //quando o gerenciador da delete no emprestimo já destrói o vetor do ItemEmprestimo   
 
         void imprimirItemEmprestimo() const;
         ExemplarLivro* getExemplar() const;

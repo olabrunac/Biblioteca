@@ -15,6 +15,7 @@ class ItemReserva {
     public:
         ItemReserva();
         ItemReserva(int novoNroDoItem, const Data& novaDataDeRetirada, Livro* novoLivro);
+        ~ItemReserva();                                             //reserva já faz esse trampo
         void imprimirItemReserva() const;
 
         int getNroDoItem() const;

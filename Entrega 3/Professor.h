@@ -13,8 +13,10 @@ class Professor : public Usuario {
 
         Professor(int novoCodigo, string novoNome, StatusUsuario status = StatusUsuario::HABILITADO) : Usuario(novoCodigo, novoNome, status) {}
 
+        ~Professor() override {cout << "Destruindo objeto tipo Professor: " << this->nome << endl; }
+
         void imprimirUsuario() const override {     //implementado aqui para sobrescrever a herança
-            cout << "---Dados do Professor---" << endl;
+            cout << "Professor" << endl;
             cout << "Nome: " << nome << endl;
             cout << "Codigo: " << codigo << endl;
             cout << "Status do usuario: ";

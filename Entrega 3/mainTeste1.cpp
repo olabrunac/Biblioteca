@@ -27,8 +27,8 @@ int main() {
         vector<Autor*> autoresLivro1 = { &autor1 };
         vector<Autor*> autoresLivro2 = { &autor2 };
 
-        Editora editoraAlpha; editoraAlpha.setCodigo(10); editoraAlpha.setNome("Alpha Edicoes");
-        Editora editoraBeta; editoraBeta.setCodigo(20); editoraBeta.setNome("Beta Letras");
+        Editora editoraAlpha (10, "Alpha Edicoes");
+        Editora editoraBeta (20, "Beta Letras");
 
         // 2. Criando Livros
         // Livro 1: O Senhor dos Anéis (Tem 2 exemplares disponíveis)

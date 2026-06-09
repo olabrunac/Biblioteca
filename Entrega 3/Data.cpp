@@ -21,7 +21,9 @@ bool Data::testeDataValida(int d, int m, int a) {
     return true;
 }
 
+
 Data::Data(): data(20260607), dia(7), mes(6), ano(2026) {}
+
 
 Data::Data(int dia, int mes, int ano) {
     if (testeDataValida(dia, mes, ano)) {
@@ -36,30 +38,38 @@ Data::Data(int dia, int mes, int ano) {
     }
 }
 
+
 Data::Data(int dataInteira)
     : Data(dataInteira % 100, (dataInteira % 10000) / 100, dataInteira / 10000) {}
 
+
 Data::~Data() {}
+
 
 void Data::imprimirData() const {
     cout << "Data: " << dia << "/" << mes << "/" << ano << endl;
 }
 
+
 int Data::getDia() const {
     return dia;
 }
+
 
 int Data::getMes() const {
     return mes;
 }
 
+
 int Data::getAno() const {
     return ano;
 }
 
+
 int Data::getDataInteira() const {
     return ano * 10000 + mes * 100 + dia;
 }
+
 
 void Data::setData(int novaData) {
     int novaDia = novaData % 100;
@@ -74,6 +84,7 @@ void Data::setData(int novaData) {
         cout << "Data nao alterada devido a entrada invalida." << endl;
     }
 }
+
 
 Data Data::operator+(int dias) const {
     Data novaData = *this;

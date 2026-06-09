@@ -16,6 +16,7 @@ class ExemplarLivro {
         
     public:
         ExemplarLivro();
+        ~ExemplarLivro();
         void imprimirExemplarLivro();
 
         int getNroExemplar() const;

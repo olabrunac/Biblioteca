@@ -1,15 +1,16 @@
 {
+    "version": "2.0.0",
     "tasks": [
         {
             "type": "cppbuild",
-            "label": "C/C++: build active folder",
-            "command": "g++.exe",
+            "label": "C/C++: g++ compilar projeto",
+            "command": "/usr/bin/g++",
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
                 "*.cpp",
                 "-o",
-                "app.exe"
+                "${fileDirname}/${fileBasenameNoExtension}"
             ],
             "options": {
                 "cwd": "${fileDirname}"
@@ -21,18 +22,7 @@
                 "kind": "build",
                 "isDefault": true
             },
-            "detail": "Compila todos os .cpp da pasta do arquivo ativo em app"
-        },
-        {
-            "type": "shell",
-            "label": "C/C++: executar active folder",
-            "command": "./app.exe",
-            "options": {
-                "cwd": "${fileDirname}"
-            },
-            "dependsOn": "C/C++: build active folder",
-            "problemMatcher": []
+            "detail": "Tarefa gerada para compilar todos os arquivos .cpp da pasta atual."
         }
-    ],
-    "version": "2.0.0"
+    ]
 }

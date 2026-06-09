@@ -16,10 +16,10 @@ class Reserva {
         vector<ItemReserva*> itens;     //vetor de ponteiros
 
     public:
-        Reserva(); //Constrotores padrão; com vetor e sem vetor de itens
+        Reserva();                                          //Construtores padrão; com vetor e sem vetor de itens
         Reserva(int novoID, const Data& novaDataRealizacao, Usuario* novoUsuario);
         Reserva(int novoID, const Data& novaDataRealizacao, Usuario* novoUsuario, const vector<ItemReserva*>& itens);
-        ~Reserva();
+        ~Reserva();                                             //deleta o itemreserva
         void imprimirReserva() const;
         void adicionarItem(ItemReserva* novoItem);
 
@@ -27,6 +27,7 @@ class Reserva {
         Data getDataRealizacao() const;
         Usuario* getUsuario() const;
         vector<ItemReserva*> getItens() const;
+        bool possuiLivro(const Livro* livroBuscado) const;
 
         void setID(int novoID);
         void setDataRealizacao(Data& novaDataReserva);
