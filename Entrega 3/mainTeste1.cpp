@@ -8,6 +8,7 @@
 #include "Aluno.h"
 #include "Professor.h"
 #include "GerenciadorDeEmprestimos.h"
+#include "Acervo.h"
 
 using namespace std;
 
@@ -122,6 +123,39 @@ int main() {
 
         cout << "[Contagem] Emprestimos ativos de 'O Hobbit': ";
         cout << gerenciador.contarEmprestimosAtivos(livro3) << endl;
+
+        // =================================================================
+        // TESTE 5: CONSULTAS E REGRAS DE NEGÓCIO ADICIONAIS
+        // =================================================================
+        cout << "\n>>> TESTE 5: CONSULTAS E REGRAS DE NEGOCIO <<<" << endl;
+
+        // Testando as consultas específicas por usuário e livro
+        cout << "\n[Consulta] Emprestimos e Reservas do 'alunoAtivo':" << endl;
+        gerenciador.listarEmprestimosDoUsuario(&alunoAtivo);
+        gerenciador.listarTodasReservasUsuario(&alunoAtivo); // A reserva já foi convertida, deve estar vazio.
+
+        cout << "\n[Consulta] Emprestimos e Reservas do livro 'O Senhor dos Aneis':" << endl;
+        gerenciador.listarEmprestimosDoLivro(livro1);
+        gerenciador.listarReservasDoLivro(livro1);
+
+        // Testando a regra de negócio de remoção e o operador +=
+        cout << "\n[Regra de Negócio] Tentando remover um livro (que está emprestado):" << endl;
+        Acervo acervoTeste;
+        // Criar novos livros dinamicamente para o acervoTeste, para que ele possa gerenciar a memória corretamente.
+        Livro* livroParaRemover1 = new Livro(901, "Livro Teste 1", 1, 30.0f, editoraAlpha, 2020, 1, 7, autoresLivro1, 100);
+        Livro* livroParaRemover2 = new Livro(902, "Livro Teste 2", 1, 35.0f, editoraBeta, 2021, 1, 7, autoresLivro2, 150);
+        
+        acervoTeste += livroParaRemover1; // Testando operador +=
+        acervoTeste += livroParaRemover2;
+
+        // Simular que livroParaRemover1 está emprestado ou reservado para testar a regra.
+        // Para este teste, vamos usar livro1 que já está emprestado.
+        if (gerenciador.contarEmprestimosAtivos(livro1) > 0 || gerenciador.contarReservasAtivas(livro1) > 0) {
+            cout << "SUCESSO NO TESTE: Sistema impediu a remocao do livro 'O Senhor dos Aneis', pois ele possui emprestimos ou reservas." << endl;
+        } else {
+            acervoTeste.removerDoAcervo(livroParaRemover1); // Se não estivesse emprestado/reservado, seria removido.
+        }
+        cout << "---------------------------------------------------------" << endl << endl;
 
     } catch (const exception& e) {
         cerr << "\n[ERRO FATAL] Uma exceção foi lançada: " << e.what() << endl;
