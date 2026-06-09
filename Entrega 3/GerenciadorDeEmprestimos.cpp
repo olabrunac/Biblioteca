@@ -387,7 +387,9 @@ void GerenciadorDeEmprestimos::listarEmprestimosDoLivro(Livro& livro) {
             if (item->getExemplar()->getLivro()->getCodigo() == livro.getCodigo()) {
                 cout << "- Emprestado para: " << emprestimo->getUsuario()->getNome() 
                      << " | Exemplar ID: " << item->getExemplar()->getNroExemplar()
-                     << " | Devolucao: " << item->getDataParaDevolucao() << endl;
+                     << " | Devolucao: ";
+                    item->getDataParaDevolucao().imprimirData();
+                cout << endl;
                 encontrou = true;
             }
         }

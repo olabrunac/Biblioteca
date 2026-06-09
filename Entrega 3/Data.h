@@ -37,6 +37,14 @@ class Data {
         void setData(int novaData);
 
         Data operator+(int dias) const; //Utilizado no calculo da DataPrevistaDevolução.
+
+
+        bool operator<(const Data& outraData) const;
+        bool operator>(const Data& outraData) const;
+
+        bool operator==(const Data& outraData) const;
+        int operator-(const Data& outraData) const; //Talvez use
+
         //Data operator==(const Data& outraData) const; //Implementar comparação de datas, se necessário
         //Data operator-(int dias) const; //Implementar subtração de dias, se necessário
 

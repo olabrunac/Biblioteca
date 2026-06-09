@@ -31,7 +31,7 @@ void Reserva::adicionarItem(ItemReserva* novoItem) {
 
 void Reserva::imprimirReserva() const {
     cout << "Reserva ID: " << ID << endl;
-    cout << "Data da Reserva: " << dataRealizacao.getDataInteira() << endl; //Imprime a data no formato AAAAMMDD
+    dataRealizacao.imprimirData(); //Imprime a data no formato AAAAMMDD
     if (usuario != nullptr) {
         cout << "Reservado por: ";
         usuario->imprimirUsuario(); // polimorfismo aqui
