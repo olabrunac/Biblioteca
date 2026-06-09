@@ -17,26 +17,26 @@ class Emprestimo {
         Usuario* usuario;
         Data dataDeRetirada;
         Data dataPrevistaDevolucao;
-        Data dataDevolucao;
+        int dataDevolucao; //tem que ser int pois se Data = 0 dá erro
         int status;
 
     public:
         Emprestimo();
-        Emprestimo(Usuario* novoUsuario, const Data& novaDataDeRetirada, const Data& novaDataPrevistaDevolucao, const Data& novaDataDevolucao, int novoStatus);
+        Emprestimo(Usuario* novoUsuario, const Data& novaDataDeRetirada, const Data& novaDataPrevistaDevolucao, const int novaDataDevolucao, int novoStatus);
         ~Emprestimo();
         void imprimirEmprestimo();
         void adicionarItem(ItemEmprestimo* novoitem);
 
         Data getDataDeRetirada() const;
         Data getDataPrevistaDevolucao() const;
-        Data getDataDevolucao() const; 
+        int getDataDevolucao() const; 
         int getStatus() const;
         Usuario* getUsuario() const;
         const vector<ItemEmprestimo*>& getItens() const;
 
         void setDataDeRetirada(const Data novaDataDeRetirada);
         void setDataPrevistaDevolucao(const Data novaDataPrevistaDevolucao);
-        void setDataDevolucao(const Data novaDataDevolucao);
+        void setDataDevolucao(const int novaDataDevolucao);
         void setStatus(int novoStatus);
         void setUsuario(Usuario* novoUsuario);
         void setItens(Livro& novoLivro);

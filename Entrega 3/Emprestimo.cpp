@@ -11,7 +11,7 @@ using std::endl;
 Emprestimo::Emprestimo(): usuario(nullptr), status(0) {}
 
 
-Emprestimo::Emprestimo(Usuario* novoUsuario, const Data& novaDataDeRetirada, const Data& novaDataPrevistaDevolucao, const Data& novaDataDevolucao, int novoStatus)
+Emprestimo::Emprestimo(Usuario* novoUsuario, const Data& novaDataDeRetirada, const Data& novaDataPrevistaDevolucao, const int novaDataDevolucao, int novoStatus)
     :usuario(novoUsuario), dataDeRetirada(novaDataDeRetirada), dataPrevistaDevolucao(novaDataPrevistaDevolucao), dataDevolucao(novaDataDevolucao), status(novoStatus) {}
 
 
@@ -53,7 +53,7 @@ Data Emprestimo::getDataDeRetirada() const { return dataDeRetirada; }
 Data Emprestimo::getDataPrevistaDevolucao() const { return dataPrevistaDevolucao; }
 
 
-Data Emprestimo::getDataDevolucao() const { return dataDevolucao; }
+int Emprestimo::getDataDevolucao() const { return dataDevolucao; }
 
 
 int Emprestimo::getStatus() const { return status; }
@@ -74,7 +74,7 @@ void Emprestimo::setDataDeRetirada(Data novaDataDeRetirada) { this -> dataDeReti
 void Emprestimo::setDataPrevistaDevolucao(Data novaDataPrevistaDevolucao) { this -> dataPrevistaDevolucao = Data(novaDataPrevistaDevolucao); } 
 
 
-void Emprestimo::setDataDevolucao(Data novaDataDevolucao) { this -> dataDevolucao = Data(novaDataDevolucao); } 
+void Emprestimo::setDataDevolucao(int novaDataDevolucao) { this -> dataDevolucao = int(novaDataDevolucao); } 
 
 
 void Emprestimo::setStatus(int novoStatus) { this -> status = novoStatus;} 

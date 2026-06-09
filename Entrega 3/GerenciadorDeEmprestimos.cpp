@@ -51,12 +51,16 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, Exemp
 
         ItemEmprestimo* novoItem = new ItemEmprestimo();
         novoItem->setExemplar(exemplar);
-        novoEmprestimo->adicionarItem(novoItem);
         
         int diasPermitidos = exemplar->getLivro()->getNroDiasPermitidoEmprestimo();
         Data dataPrevista = dataAtual + diasPermitidos;
+
+        novoItem->setDataParaDevolucao(dataPrevista);
+        novoItem->setDataQueFoiDevolvido(0); // Inicializa como não devolvido
+
+        novoEmprestimo->adicionarItem(novoItem);
         novoEmprestimo->setDataPrevistaDevolucao(dataPrevista);
-        novoItem->setDataParaDevolucao(dataPrevista.getDataInteira());
+        novoEmprestimo->setDataDevolucao(0); // Inicializa como não devolvido
 
         itensAdicionados++;
     } else {
@@ -107,13 +111,14 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, initi
             exemplar->setStatus(StatusEmprestimo::EMPRESTADO);
             ItemEmprestimo* novoItem = new ItemEmprestimo();
             novoItem->setExemplar(exemplar);
-            novoEmprestimo->adicionarItem(novoItem);
             
             int dias = exemplar->getLivro()->getNroDiasPermitidoEmprestimo();
             if (dias > maiorPrazoDias) maiorPrazoDias = dias;
             
-            novoItem->setDataParaDevolucao((dataAtual + dias).getDataInteira());
-            
+            novoItem->setDataParaDevolucao(dataAtual + dias);
+            novoItem->setDataQueFoiDevolvido(0);
+
+            novoEmprestimo->adicionarItem(novoItem);
             itensAdicionados++;
         } else if (exemplar != nullptr && !disponivelNoPeriodo) {
             cout << "Aviso: O livro '" << exemplar->getLivro()->getTitulo() << "' possui conflito com reservas futuras." << endl;
@@ -122,6 +127,7 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, initi
 
     if (itensAdicionados > 0) {
         novoEmprestimo->setDataPrevistaDevolucao(dataAtual + maiorPrazoDias);
+        novoEmprestimo->setDataDevolucao(0);
         emprestimos.push_back(novoEmprestimo);
         cout << "+" << itensAdicionados << " itens emprestados com sucesso para " << emprestimoUsuario.getNome() << "!" << endl;
     } else {
@@ -174,6 +180,11 @@ void GerenciadorDeEmprestimos::criarReserva(Usuario* reservaUsuario, Livro* rese
         cout << "-Erro: o usuario '" << reservaUsuario->getNome() << "' esta em debito e nao pode reservar." << endl;
         return;
     }
+
+    if (!estaDisponivelnaData(reservaLivro, dataRealizacao, dataRealizacao + reservaLivro->getNroDiasPermitidoEmprestimo())) {
+    cout << "Erro: livro '" << reservaLivro->getTitulo() << "' indisponivel no periodo solicitado." << endl;
+    return;
+}
 
     // 2. Busca se o usuário já possui um "Carrinho" de reservas aberto
     Reserva* reservaDoUsuario = getReservaPorUsuario(reservaUsuario);
@@ -247,6 +258,7 @@ void GerenciadorDeEmprestimos::criarEmprestimoApartirDaReserva(Reserva* reservaE
     novoEmprestimo->setUsuario(reservaExistente->getUsuario());
     novoEmprestimo->setStatus(1);
     novoEmprestimo->setDataDeRetirada(dataAtual);
+    novoEmprestimo->setDataDevolucao(0);
     int maiorPrazoDias = 0;
 
     // 3. Processamento: Itera sobre os itens da reserva e os adiciona ao novo empréstimo.
@@ -260,7 +272,8 @@ void GerenciadorDeEmprestimos::criarEmprestimoApartirDaReserva(Reserva* reservaE
         // Calcula a data de devolução para cada item e atualiza o prazo geral do empréstimo.
         int dias = exemplar->getLivro()->getNroDiasPermitidoEmprestimo();
         if (dias > maiorPrazoDias) maiorPrazoDias = dias;
-        novoItemEmprestimo->setDataParaDevolucao((dataAtual + dias).getDataInteira());
+        novoItemEmprestimo->setDataParaDevolucao(dataAtual + dias);
+        novoItemEmprestimo->setDataQueFoiDevolvido(0);
 
         novoEmprestimo->adicionarItem(novoItemEmprestimo);
     }

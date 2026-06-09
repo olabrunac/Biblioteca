@@ -27,7 +27,7 @@ ExemplarLivro* ItemEmprestimo::getExemplar() const { return exemplar; }
 Data ItemEmprestimo::getDataParaDevolucao() { return dataParaDevolucao; }
 
 
-Data ItemEmprestimo::getDataQueFoiDevolvido() { return dataQueFoiDevolvido; }
+int ItemEmprestimo::getDataQueFoiDevolvido() { return dataQueFoiDevolvido; }
 
 void ItemEmprestimo::setExemplar(ExemplarLivro* novoExemplar) { this->exemplar = novoExemplar;}
 
@@ -35,4 +35,4 @@ void ItemEmprestimo::setExemplar(ExemplarLivro* novoExemplar) { this->exemplar =
 void ItemEmprestimo::setDataParaDevolucao(Data novaDataParaDevolucao) { this -> dataParaDevolucao = novaDataParaDevolucao; }
 
 
-void ItemEmprestimo::setDataQueFoiDevolvido(Data novaDataQueFoiDevolvido) { this -> dataQueFoiDevolvido = novaDataQueFoiDevolvido; }
+void ItemEmprestimo::setDataQueFoiDevolvido(int novaDataQueFoiDevolvido) { this -> dataQueFoiDevolvido = novaDataQueFoiDevolvido; }
