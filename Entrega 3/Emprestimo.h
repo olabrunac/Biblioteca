@@ -13,7 +13,7 @@ using std::vector;
 class Emprestimo {
     private:
 
-        vector <ItemEmprestimo*> itens; 
+        vector <ItemEmprestimo*> itens;
         Usuario* usuario;
         Data dataDeRetirada;
         Data dataPrevistaDevolucao;
@@ -40,6 +40,8 @@ class Emprestimo {
         void setStatus(int novoStatus);
         void setUsuario(Usuario* novoUsuario);
         void setItens(Livro& novoLivro);
+
+        bool possuiLivro(Livro* livroTeste) const;
         
 };
 

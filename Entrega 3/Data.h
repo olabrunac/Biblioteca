@@ -22,6 +22,9 @@ class Data {
         Data();
         Data(int dia, int mes, int ano);
         Data(int dataInteira);
+        Data(int d, int m, int a, bool pularValidacao); //Construtor pula validacao
+
+        Data(const Data& outra); //Construtor de copia
         ~Data();
 
         void imprimirData() const;

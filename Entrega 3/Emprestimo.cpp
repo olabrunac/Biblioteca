@@ -94,3 +94,17 @@ void Emprestimo::setItens(Livro& novoLivro){
         cout << "Erro: Nenhum exemplar disponivel para o livro." << endl;
     }
 }
+
+bool Emprestimo::possuiLivro(Livro* livroTeste) const {
+
+      for (vector<ItemEmprestimo*>::const_iterator temp = itens.begin(); temp != itens.end(); ++temp){
+        Livro* livro = (*temp)->getLivro();
+
+        if (*livro == *livroTeste)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}

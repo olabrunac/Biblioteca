@@ -110,7 +110,7 @@ int Livro::getAnoPublicacao() const { return anoPublicacao; }
 int Livro::getQuantidadeDeExemplares() const { return exemplares.size(); }
 
 
-int Livro::getNroDiasPermitidoEmprestimo() const { return nroDiasPermitidoEmprestimo; }
+int Livro::getNroDiasPermitidoEmprestimo() const { return 7; }//Data fixa
 
 
 const vector<Autor*>& Livro::getAutor() const { return autores; }

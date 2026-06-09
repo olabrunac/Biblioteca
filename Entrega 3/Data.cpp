@@ -6,8 +6,8 @@ using std::cout;
 using std::endl;
 
 bool Data::testeDataValida(int d, int m, int a) {
-    if (a < 2026) {
-        cout << "Erro: Viajante do tempo detectado (Ano < 2026)." << endl;
+    if (a < 1500) {
+        cout << "Erro: Ano invalido" << endl;
         return false;
     }
     if (m < 1 || m > 12) {
@@ -76,18 +76,36 @@ void Data::setData(int novaData) {
 }
 
 Data Data::operator+(int dias) const {
-    Data novaData = *this;
-    novaData.dia += dias;
+    int novoDia = this->dia + dias;
+    int novoMes = this->mes;
+    int novoAno = this->ano;
 
-    while (novaData.dia > 30) {
-        novaData.dia -= 30;
-        novaData.mes += 1;
+    while (novoDia > 30) {
+        novoDia -= 30;
+        novoMes += 1;
 
-        if (novaData.mes > 12) {
-            novaData.mes = 1;
-            novaData.ano += 1;
+        if (novoMes > 12) {
+            novoMes = 1;
+            novoAno += 1;
         }
     }
 
-    return novaData;
+    // Retorna chamando o construtor que pula a validação
+    return Data(novoDia, novoMes, novoAno, true);
 }
+
+
+int Data::operator-(const Data& outraData) const {
+    // Converte ambas as datas para dias absolutos (assumindo meses de 30 dias como no seu operator+)
+    int diasDestaData = ano * 360 + mes * 30 + dia;
+    int diasDaOutraData = outraData.ano * 360 + outraData.mes * 30 + outraData.dia;
+    return diasDestaData - diasDaOutraData;
+}
+
+bool Data::operator<(const Data& outraData) const { return this->getDataInteira() < outraData.getDataInteira(); }
+
+
+bool Data::operator>(const Data& outraData) const { return this->getDataInteira() > outraData.getDataInteira(); }
+
+
+bool Data::operator==(const Data& outraData) const { return this->getDataInteira() == outraData.getDataInteira(); }

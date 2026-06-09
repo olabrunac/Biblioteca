@@ -28,6 +28,7 @@ class Reserva {
         Usuario* getUsuario() const;
         const vector<ItemReserva*>& getItens() const;
         bool possuiLivro(const Livro* livroBuscado) const;
+        ItemReserva* getItemPorLivro(Livro* livro) const; //Usado no gerenciador
 
         void setID(int novoID);
         void setDataRealizacao(Data& novaDataReserva);

@@ -2,12 +2,13 @@
 #define ITEMEMPRESTIMO_H
 
 #include "ExemplarLivro.h"
+#include "Data.h"
 
 class ItemEmprestimo {
     private:
         ExemplarLivro* exemplar;
-        int dataParaDevolucao;
-        int dataQueFoiDevolvido;
+        Data dataParaDevolucao;
+        Data dataQueFoiDevolvido;
     public:
         
         ItemEmprestimo();
@@ -15,12 +16,13 @@ class ItemEmprestimo {
         void imprimirItemEmprestimo() const;
         ExemplarLivro* getExemplar() const;
 
-        int getDataParaDevolucao();
-        int getDataQueFoiDevolvido();
+        Data getDataParaDevolucao();
+        Data getDataQueFoiDevolvido();
+        Livro* getLivro() const;
 
         void setExemplar(ExemplarLivro* novoExemplar);
-        void setDataParaDevolucao(int novaDataParaDevolucao);
-        void setDataQueFoiDevolvido(int novaDataQueFoiDevolvido);
+        void setDataParaDevolucao(Data novaDataParaDevolucao);
+        void setDataQueFoiDevolvido(Data novaDataQueFoiDevolvido);
 };
 
 #endif

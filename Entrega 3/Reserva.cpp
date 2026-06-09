@@ -62,6 +62,13 @@ bool Reserva::possuiLivro(const Livro* livroBuscado) const {
     return false;
 }
 
+ItemReserva* Reserva::getItemPorLivro(Livro* livro) const {
+    for (ItemReserva* item : itens)
+        if (item->getLivro() == livro){
+        return item;
+        }
+    return nullptr;
+}
 
 void Reserva::setID(int novoID) { this -> ID = novoID; }
 

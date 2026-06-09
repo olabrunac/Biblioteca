@@ -142,11 +142,9 @@ int main() {
     cout << endl;
     cout << "===== TESTANDO SISTEMA DE RESERVAS =====" << endl;
     
-    // Criação de reservas para diferentes usuários e livros.
-    sistema.criarReserva(&Ryan, l3, dataHoje);  // Ryan (em débito) reserva um livro.
-    sistema.criarReserva(&Bruna, l5, dataHoje); // Bruna reserva um livro sem estoque.
-
-    // Testes adicionais de reserva para o mesmo livro.
+    // 1. Criando Reservas
+    sistema.criarReserva(&Ryan, l3, dataHoje);  // Ryan reserva Turma da Monica (tem muito estoque)
+    sistema.criarReserva(&Bruna, l5, dataHoje); // Bruna reserva l5 (estoque zerado)
     sistema.criarReserva(&Backes, l3, dataHoje);
     sistema.criarReserva(&Joao,l3, dataHoje);
     sistema.criarReserva(&Mairon,l3, dataHoje);
