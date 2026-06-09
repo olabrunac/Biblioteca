@@ -8,6 +8,7 @@ using std::endl;
 
 GerenciadorDeEmprestimos::GerenciadorDeEmprestimos() {} 
 
+
 GerenciadorDeEmprestimos::~GerenciadorDeEmprestimos() {
     for (vector<Emprestimo*>::iterator temp = emprestimos.begin(); temp != emprestimos.end(); ++temp) {
         delete *temp;
@@ -21,10 +22,10 @@ GerenciadorDeEmprestimos::~GerenciadorDeEmprestimos() {
 }
 
 
-void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, ExemplarLivro* exemplar) {
+void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, ExemplarLivro* exemplar, const Data& dataAtual) {
     if (emprestimoUsuario.getStatus() != StatusUsuario::HABILITADO) {
-        cout << "O usuario: '" << emprestimoUsuario.getNome()
-             << "' nao esta habilitado para realizar emprestimos no momento." << endl;
+        cout << "O usuario: '" << emprestimoUsuario.getNome();
+        cout << "' nao esta habilitado para realizar emprestimos." << endl;
         return;
     }
 
@@ -32,6 +33,7 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, Exemp
     Emprestimo* novoEmprestimo = new Emprestimo();
     novoEmprestimo->setUsuario(&emprestimoUsuario);
     novoEmprestimo->setStatus(1);
+    novoEmprestimo->setDataEmprestimo(dataAtual);
 
     int itensAdicionados = 0;
 
@@ -39,37 +41,45 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, Exemp
     if (exemplar != nullptr && exemplar->getStatus() == StatusEmprestimo::DISPONIVEL) {
         exemplar->setStatus(StatusEmprestimo::EMPRESTADO);
 
-        ItemEmprestimo novoItem;
-        novoItem.setExemplar(exemplar);
+        ItemEmprestimo* novoItem = new ItemEmprestimo();
+        novoItem->setExemplar(exemplar);
         novoEmprestimo->adicionarItem(novoItem);
+        
+        int diasPermitidos = exemplar->getLivro()->getNroDiasPermitidoEmprestimo();
+        Data dataPrevista = dataAtual + diasPermitidos;
+        novoEmprestimo->setDataPrevistaDevolucao(dataPrevista);
+        novoItem->setDataParaDevolucao(dataPrevista.getDataInteira());
 
         itensAdicionados++;
     } else {
-        cout << "Nao foi possivel realizar o emprestimo para " << emprestimoUsuario.getNome() << "." << endl;
+        cout << "-Nao foi possivel realizar o emprestimo para " << emprestimoUsuario.getNome() << "." << endl;
     }
     if (itensAdicionados > 0) {
         emprestimos.push_back(novoEmprestimo);
-        cout << "Emprestimo de '" << exemplar->getLivro()->getTitulo() 
-             << "' realizado com sucesso!" << endl;
+        cout << "+'" << exemplar->getLivro()->getTitulo();
+        cout << "' emprestado para: " << emprestimoUsuario.getNome() << " com sucesso!" << endl;
     } else {
         delete novoEmprestimo;
-        cout << "Nenhum item adicionado. Emprestimo cancelado." << endl;
+        cout << "-Nenhum item adicionado. Emprestimo cancelado." << endl;
     }
 }
 
-void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, initializer_list<ExemplarLivro*> listaExemplares) {
+
+void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, initializer_list<ExemplarLivro*> listaExemplares, const Data& dataAtual) {
     
     if (emprestimoUsuario.getStatus() != StatusUsuario::HABILITADO) {
         cout << "O usuario: '" << emprestimoUsuario.getNome();
-        cout << "' nao esta habilitado para realizar emprestimos no momento." << endl;
+        cout << "' nao esta habilitado para realizar emprestimos." << endl;
         return;
     }
 
     Emprestimo* novoEmprestimo = new Emprestimo();
     novoEmprestimo->setUsuario(&emprestimoUsuario);
     novoEmprestimo->setStatus(1);
+    novoEmprestimo->setDataEmprestimo(dataAtual);
 
     int itensAdicionados = 0;
+    int maiorPrazoDias = 0;
 
     for (initializer_list<ExemplarLivro*>::const_iterator temp = listaExemplares.begin(); temp != listaExemplares.end(); ++temp) {
         ExemplarLivro* exemplar = *temp;
@@ -77,30 +87,32 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, initi
         //ve se o exemplar existe e ta disponivel
         if (exemplar != nullptr && exemplar->getStatus() == StatusEmprestimo::DISPONIVEL) {
             exemplar->setStatus(StatusEmprestimo::EMPRESTADO);
-            
-            ItemEmprestimo novoItem;
-            novoItem.setExemplar(exemplar);
+            ItemEmprestimo* novoItem = new ItemEmprestimo();
+            novoItem->setExemplar(exemplar);
             novoEmprestimo->adicionarItem(novoItem);
             
+            int dias = exemplar->getLivro()->getNroDiasPermitidoEmprestimo();
+            if (dias > maiorPrazoDias) maiorPrazoDias = dias;
+            
+            novoItem->setDataParaDevolucao((dataAtual + dias).getDataInteira());
+            
             itensAdicionados++;
-        } else {
-            cout << "Aviso: Um dos exemplares solicitados nao esta disponivel no momento." << endl;
         }
     }
 
     if (itensAdicionados > 0) {
+        novoEmprestimo->setDataPrevistaDevolucao(dataAtual + maiorPrazoDias);
         emprestimos.push_back(novoEmprestimo);
-        cout << "Emprestimo de " << itensAdicionados << " itens realizado com sucesso para " << emprestimoUsuario.getNome() << "!" << endl;
+        cout << "+" << itensAdicionados << " itens emprestados com sucesso para " << emprestimoUsuario.getNome() << "!" << endl;
     } else {
         //se a lista so tinha livros indisponiveis, cancela e limpa a memória
         delete novoEmprestimo;
-        cout << "Nenhum item adicionado. Emprestimo cancelado." << endl;
+        cout << "-Nenhum item adicionado. Emprestimo cancelado." << endl;
     }
 }
 
 
 void GerenciadorDeEmprestimos::listarTodosEmprestimosAtuais() { 
-    cout << "***** Lista de Emprestimos *****" << endl;
     for (vector<Emprestimo*>::iterator temp = emprestimos.begin(); temp != emprestimos.end(); ++temp) {
         (*temp)->imprimirEmprestimo();
     }
@@ -109,10 +121,10 @@ void GerenciadorDeEmprestimos::listarTodosEmprestimosAtuais() {
 
 int GerenciadorDeEmprestimos::contarEmprestimosAtivos(Livro& livro) {  
     int contador = 0;
-    for (const Emprestimo* temp : emprestimos) {
-        for (const ItemEmprestimo& item : temp->getItens()) {
-            if (item.getExemplar()->getStatus() == StatusEmprestimo::EMPRESTADO) {
-                if (item.getExemplar()->getLivro()->getCodigo() == livro.getCodigo()) {
+    for (vector<Emprestimo*>::const_iterator temp = emprestimos.begin(); temp != emprestimos.end(); ++temp) {
+        for (vector<ItemEmprestimo*>::const_iterator item = (*temp)->getItens().begin(); item != (*temp)->getItens().end(); ++item) {
+            if ((*item)->getExemplar()->getStatus() == StatusEmprestimo::EMPRESTADO) {
+                if ((*item)->getExemplar()->getLivro()->getCodigo() == livro.getCodigo()) {
                     contador++;
                 }
             }
@@ -124,97 +136,89 @@ int GerenciadorDeEmprestimos::contarEmprestimosAtivos(Livro& livro) {
 
 void GerenciadorDeEmprestimos::criarReserva(Usuario* reservaUsuario, Livro* reservaLivro, Data& dataRealizacao) {
 
-    //Validação do Usuario
+    // 1. Validação do Usuario
     if (reservaUsuario->getStatus() != StatusUsuario::HABILITADO) {
-        cout << "Erro: o usuario '" << reservaUsuario->getNome() << "' nao pode fazer reservas no momento." << endl;
-        return; //1 return, Usuario não pode reservar
+        cout << "-Erro: o usuario '" << reservaUsuario->getNome() << "' esta em debito e nao pode reservar." << endl;
+        return;
     }
-    //Validação do Livro
-    for(size_t i = 0; i < reservas.size(); i++) { 
-        if(reservas[i]->getUsuario() == reservaUsuario) { 
-            
-            //O usuário tem uma reserva. Vamos verificar se o livro já está nela
-            for(size_t j = 0; j < reservas[i]->getItens().size(); j++) { 
-                if(reservas[i]->getItens()[j]->getLivro() == reservaLivro) {
-                    cout << "Erro: o usuario ja possui uma reserva ativa para o livro '" << reservaLivro->getTitulo() << "'." << endl;
-                    return; //2 return, Usuario já tem esse livro reservado
-                }
-            }
-           
-            //Se chegou aqui, o livro não é repetido.Adicioná-lo à reserva existente
-            ItemReserva* novoItem = new ItemReserva();
-            novoItem->setLivro(reservaLivro);
 
-            if (reservaLivro->estaDisponivel()) { //Se estiver disponivel já pode retirar
-                
-                cout << "Aviso: O livro '" << reservaLivro->getTitulo() << "' esta disponivel no momento. Considere realizar um emprestimo ao inves de uma reserva." << endl;
-                novoItem->setDataDeRetirada(dataRealizacao); 
-            }
-            else {  
-            
-            novoItem->setDataDeRetirada(dataRealizacao + 7 ); //Se não estiver, data estimada
-            
-            } 
+    // 2. Busca se o usuário já possui um "Carrinho" de reservas aberto
+    Reserva* reservaDoUsuario = getReservaPorUsuario(reservaUsuario);
 
-            //O numeroItem com base na quantidade que já existem
-            novoItem->setNroDoItem(reservas[i]->getItens().size() + 1);      
-            
-            reservas[i]->adicionarItem(novoItem);
-            
-            cout << "Sucesso: Livro '" << reservaLivro->getTitulo() << "' adicionado a reserva existente de " << reservaUsuario->getNome() << "." << endl;
-            return; //3 return, livro adicionado a reserva existente
-        }
+    // 3. Validação do Livro Repetido
+    if (reservaDoUsuario != nullptr && reservaDoUsuario->possuiLivro(reservaLivro)) {
+        cout << "-Erro: o usuario ja possui uma reserva ativa para o livro '" << reservaLivro->getTitulo() << "'." << endl;
+        return; 
     }
+
+    // 4. Teste de Disponibilidade para definir a Data de Retirada
+    Data dataDeRetirada = dataRealizacao; // Nasce como hoje
+    Data limiteDisponibilidade = dataRealizacao + reservaLivro->getNroDiasPermitidoEmprestimo();
     
-    //Quarto caso, o usuario não tenha nenhuma reserva, criamos uma nova do zero e adicionamos o livro nela.
+    if (estaDisponivelnaData(reservaLivro, dataRealizacao, limiteDisponibilidade)) { 
+        cout << "!Aviso: O livro '" << reservaLivro->getTitulo() << "' esta disponivel fisicamente hoje. Considere realizar um emprestimo direto." << endl;
+        // Data de retirada continua sendo hoje
+    } else {  
+        // Se não tem disponível, a pessoa entra na fila. 
+        // Adicionamos 7 dias como uma estimativa padrão de espera (já que calcular o dia exato da volta do empréstimo mais próximo exige outro algoritmo).
+        dataDeRetirada = dataRealizacao + 7; 
+        cout << "!Aviso: Sem exemplares agora. Retirada programada para daqui a 7 dias." << endl;
+    } 
+
+    // 5. Criando o Item de Reserva independentemente de ser reserva nova ou velha
     ItemReserva* novoItem = new ItemReserva();
     novoItem->setLivro(reservaLivro);
-    novoItem->setDataDeRetirada(dataRealizacao + 7); 
-    novoItem->setNroDoItem(1); // Como é uma reserva nova, este será obrigatoriamente o Item 1
-    
-    // Cria a reserva-mãe
-    Reserva* novaReserva = new Reserva();
-    novaReserva->setUsuario(reservaUsuario);
-    novaReserva->setDataRealizacao(dataRealizacao);
-    novaReserva->setID(reservas.size() + 1); // Gera um ID simples baseado no tamanho atual
-    
-    // Coloca o item na reserva e a reserva no sistema
-    novaReserva->adicionarItem(novoItem);
-    reservas.push_back(novaReserva);
-    
-    cout << "Sucesso: Nova reserva criada e livro '" << reservaLivro->getTitulo() << "' registrado para " << reservaUsuario->getNome() << "." << endl;
+    novoItem->setDataDeRetirada(dataDeRetirada);
 
+    // 6. Decisão de Roteamento: Colocar na reserva existente OU criar uma nova
+    if (reservaDoUsuario != nullptr) {
+        // Usuário JÁ TEM reserva, apenas anexa
+        novoItem->setNroDoItem(reservaDoUsuario->getItens().size() + 1);      
+        reservaDoUsuario->adicionarItem(novoItem);
+        cout << "+Sucesso: Livro '" << reservaLivro->getTitulo() << "' adicionado a reserva existente de " << reservaUsuario->getNome() << "." << endl;
+    
+    } else {
+        // Usuário NÃO TEM reserva, cria do zero
+        novoItem->setNroDoItem(1); 
+        
+        Reserva* novaReserva = new Reserva();
+        novaReserva->setUsuario(reservaUsuario);
+        novaReserva->setDataRealizacao(dataRealizacao);
+        novaReserva->setID(reservas.size() + 1); 
+        novaReserva->adicionarItem(novoItem);
+        
+        reservas.push_back(novaReserva);
+        cout << "+Sucesso: Reserva ID " << novaReserva->getID() << " criada e '" << reservaLivro->getTitulo() << "' registrado para " << reservaUsuario->getNome() << "." << endl;
+    }
 }
-
-
 
 void GerenciadorDeEmprestimos::criarEmprestimoApartirDaReserva(Reserva* reservaExistente) {
     
-     if (reservaExistente->getUsuario()->getStatus() != StatusUsuario::HABILITADO) { //Tinha esquecido da verificação do usuario
+    if (reservaExistente->getUsuario()->getStatus() != StatusUsuario::HABILITADO) { //Tinha esquecido da verificação do usuario
         cout << "Erro: o usuário associado a esta reserva não pode fazer empréstimos." << endl;
         return;
     }   
 
-    for(int i=0; i<reservaExistente->getItens().size(); i++) { //Verificação de disponibilade ultra básica, sem nada de Datas
-        if(reservaExistente->getItens()[i]->getLivro()->getExemplarDisponivel() == nullptr) {
-            cout << "Erro: o livro '" << reservaExistente->getItens()[i]->getLivro()->getTitulo() << "' nao possui exemplares disponiveis no momento" << endl;
+    // Aplicação estrita de iteradores em substituição de 'int i'
+    for(vector<ItemReserva*>::const_iterator itItem = reservaExistente->getItens().begin(); itItem != reservaExistente->getItens().end(); ++itItem) { 
+        if((*itItem)->getLivro()->getExemplarDisponivel() == nullptr) {
+            cout << "Erro: o livro '" << (*itItem)->getLivro()->getTitulo() << "' nao possui exemplares disponiveis no momento" << endl;
             return;
         }
     }
 
-    for(int j=0; j<reservaExistente->getItens().size(); j++){
+    for(vector<ItemReserva*>::const_iterator itItem = reservaExistente->getItens().begin(); itItem != reservaExistente->getItens().end(); ++itItem){
 
-        ExemplarLivro* exemplar = reservaExistente->getItens()[j]->getLivro()->getExemplarDisponivel();
+        ExemplarLivro* exemplar = (*itItem)->getLivro()->getExemplarDisponivel();
         exemplar->setStatus(StatusEmprestimo::EMPRESTADO); //atualiza o status do exemplar e coloca no emprestimo
         
-        ItemEmprestimo novoItem;
-        novoItem.setExemplar(exemplar);
+        ItemEmprestimo* novoItem = new ItemEmprestimo();
+        novoItem->setExemplar(exemplar);
 
         Emprestimo* novoEmprestimo = new Emprestimo();
         novoEmprestimo->setUsuario(reservaExistente->getUsuario());
         novoEmprestimo->setStatus(1);
         novoEmprestimo->adicionarItem(novoItem);
-        novoEmprestimo->setDataDeRetirada(reservaExistente->getItens()[j]->getDataDeRetirada());
         emprestimos.push_back(novoEmprestimo);//coloca o emprestimo no vetor de ponteiros
 
     }
@@ -226,10 +230,11 @@ void GerenciadorDeEmprestimos::criarEmprestimoApartirDaReserva(Reserva* reservaE
                 break;
             }
         }
-        cout << "Sucesso: Reserva convertida em emprestimo" << endl;
+        cout << "+Sucesso: Reserva convertida em emprestimo" << endl;
 }
 
- void GerenciadorDeEmprestimos::listarTodasReservas() {
+
+void GerenciadorDeEmprestimos::listarTodasReservas() {
     cout << "----- Lista de Reservas Ativas -----" << endl;
     
     if (reservas.empty()) {
@@ -243,10 +248,87 @@ void GerenciadorDeEmprestimos::criarEmprestimoApartirDaReserva(Reserva* reservaE
     }
 }
 
+void GerenciadorDeEmprestimos::listarTodasReservasUsuario(Usuario* usuarioBuscado) {
+    if (usuarioBuscado == nullptr) {
+        cout << "Erro: Usuario invalido (ponteiro nulo)." << endl;
+        return;
+    }
+
+    cout << "\n----- Reservas Ativas de: " << usuarioBuscado->getNome() << " -----" << endl;
+    
+    int totalReservasEncontradas = 0;
+
+    for (vector<Reserva*>::iterator temp = reservas.begin(); temp != reservas.end(); ++temp) {
+        // Se a reserva pertencer ao usuário que estamos buscando
+        if ((*temp)->getUsuario() == usuarioBuscado) {
+            totalReservasEncontradas++;
+            
+            cout << "\n[ Ocorrencia #" << totalReservasEncontradas << " ]" << endl;
+            
+            // Aqui usamos a própria classe Reserva para imprimir seus detalhes e seus itens!
+            (*temp)->imprimirReserva(); 
+            
+            cout << "-----------------------------------" << endl;
+        }
+    }
+
+    // Feedback final
+    if (totalReservasEncontradas == 0) {
+        cout << "Nenhuma reserva ativa encontrada para este usuario." << endl;
+    } else {
+        cout << "\nTotal de reservas encontradas: " << totalReservasEncontradas << endl;
+    }
+}
+
+bool GerenciadorDeEmprestimos::estaDisponivelnaData(Livro* testeLivro, const Data& dataInicial, const Data& dataFinal){
+
+    int ContadorConflito = 0;
+
+    //Verificação das reservas
+    for (vector<Reserva*>::iterator temp = reservas.begin(); temp != reservas.end(); ++temp){
+        
+        if((*temp)->possuiLivro(testeLivro)){  //Se no vetor de reservas já tem reserva desse livro
+            ItemReserva* item = ((*temp))->getItemPorLivro(testeLivro);
+            //Variaveis de data para comparação
+            Data Retirada = item->getDataDeRetirada();
+            Data EsperadaDevolucao = Retirada + testeLivro->getNroDiasPermitidoEmprestimo();
+        
+            //Verificacao das datas, 1 expressão: se dataFinal for antes da retirada de uma reserva já existente, PODE
+                                    //2 expressão: se dataInicial for depois da devolução, PODE
+            bool PeriodoDiferente = (dataFinal < Retirada) || (dataInicial > EsperadaDevolucao);
+                if(!PeriodoDiferente){ //Se o bool for false, indica conflito
+
+                    ContadorConflito++; 
+
+                }
+        }
+
+    }
+    //Verificação dos Emprestimos    
+    for (vector<Emprestimo*>::iterator temp = emprestimos.begin(); temp != emprestimos.end(); ++temp ){
+
+        if((*temp)->possuiLivro(testeLivro)){ //Se ele já foi Emprestado
+            if((*temp)->getDataPrevistaDevolucao() > dataInicial){ //Se vai ser devolvido depois da data Inicial
+
+            ContadorConflito++;
+            }
+            
+        }
+    }
+        if(ContadorConflito >= testeLivro->getQuantidadeDeExemplares()){     
+              
+            return false;
+        }
+        
+    return true;
+
+}
+
+
 Reserva* GerenciadorDeEmprestimos::getReservaPorUsuario(Usuario* usuarioBuscado) {
-    for (size_t i = 0; i < reservas.size(); i++) {
-        if (reservas[i]->getUsuario() == usuarioBuscado) {
-            return reservas[i]; // Achou! Devolve o ponteiro da reserva
+    for (vector<Reserva*>::iterator temp = reservas.begin(); temp != reservas.end(); ++temp) {
+        if ((*temp)->getUsuario() == usuarioBuscado) {
+            return *temp; // Achou! Devolve o ponteiro da reserva
         }
     }
     return nullptr; // Se o usuário não tiver nenhuma reserva, devolve vazio

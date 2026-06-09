@@ -2,6 +2,8 @@
 #define GERENCIADORDEEMPRESTIMOS_H
 
 #include "Usuario.h"
+#include "Professor.h"
+#include "Aluno.h"
 #include "Livro.h"
 #include "Emprestimo.h"
 #include "Data.h"
@@ -22,16 +24,19 @@ class GerenciadorDeEmprestimos {
         GerenciadorDeEmprestimos();
         ~GerenciadorDeEmprestimos();
 
-        void criarEmprestimo(Usuario& emprestimoUsuario, ExemplarLivro* exemplar);
-        void criarEmprestimo(Usuario& emprestimoUsuario, initializer_list<ExemplarLivro*> listaExemplares);
+        void criarEmprestimo(Usuario& emprestimoUsuario, ExemplarLivro* exemplar, const Data& dataAtual);
+        void criarEmprestimo(Usuario& emprestimoUsuario, initializer_list<ExemplarLivro*> listaExemplares, const Data& dataAtual);
         void criarEmprestimoApartirDaReserva(Reserva* reservaExistente);
 
         void criarReserva(Usuario* reservaUsuario, Livro* reservaLivro, Data& dataRealizacao); //reserva com uma data int, aprimorar depois
         void listarTodosEmprestimosAtuais();
         //void listarReservasDoLivro(Livro& listaLivro);
         void listarTodasReservas();
+        void listarTodasReservasUsuario(Usuario* usuario);
         int contarEmprestimosAtivos(Livro& ativos);
 
+
+        bool estaDisponivelnaData(Livro* testeLivro, const Data& dataInicial, const Data& dataFinal);
         Reserva* getReservaPorUsuario(Usuario* usuarioBuscado);
 
 };

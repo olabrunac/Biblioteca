@@ -99,6 +99,16 @@ int main() {
 
     Professor Valter(4, "Valter");
 
+    Professor Backes(5, "Backes"); //Testando disponibilidade Turma da Monica
+
+    Aluno Joao(6, "Joao");
+
+    Aluno Mairon(7, "Mairon");
+
+    Aluno Felipe(8, "Felipe");
+
+
+
 
     // ---------------- GERENCIADOR ----------------
 
@@ -146,6 +156,14 @@ int main() {
     // 1. Criando Reservas
     sistema.criarReserva(&Ryan, l3, dataHoje);  // Ryan reserva Turma da Monica (tem muito estoque)
     sistema.criarReserva(&Bruna, l5, dataHoje); // Bruna reserva l5 (estoque zerado)
+    sistema.criarReserva(&Backes, l3, dataHoje);
+    sistema.criarReserva(&Joao,l3, dataHoje);
+    sistema.criarReserva(&Mairon,l3, dataHoje);
+    sistema.criarReserva(&Felipe,l3, dataHoje);
+    sistema.criarReserva(&Joao,l3, dataHoje);
+
+
+
 
     cout << endl;
     sistema.listarTodasReservas();
@@ -172,6 +190,7 @@ int main() {
     cout << "===== EMPRESTIMOS ATUAIS =====" << endl;
 
     sistema.listarTodosEmprestimosAtuais();
+    sistema.listarTodasReservasUsuario(&Backes);
 
     cout << endl;
     cout << "===== FIM DO SISTEMA =====" << endl;
