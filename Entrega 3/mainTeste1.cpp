@@ -27,8 +27,8 @@ int main() {
         vector<Autor*> autoresLivro1 = { &autor1 };
         vector<Autor*> autoresLivro2 = { &autor2 };
 
-        Editora editoraAlpha (10, "Alpha Edicoes");
-        Editora editoraBeta (20, "Beta Letras");
+        Editora editoraAlpha; editoraAlpha.setCodigo(10); editoraAlpha.setNome("Alpha Edicoes");
+        Editora editoraBeta; editoraBeta.setCodigo(20); editoraBeta.setNome("Beta Letras");
 
         // 2. Criando Livros
         // Livro 1: O Senhor dos Anéis (Tem 2 exemplares disponíveis)
@@ -57,17 +57,17 @@ int main() {
         cout << ">>> TESTE 1: EMPRESTIMOS DIRETOS <<<" << endl;
         
         cout << "[Ação] Professor bloqueado tenta pegar 'O Senhor dos Aneis':" << endl;
-        gerenciador.criarEmprestimo(profBloqueado, livro1.getExemplarDisponivel());
+        gerenciador.criarEmprestimo(profBloqueado, livro1.getExemplarDisponivel(), dataAtual);
         
         cout << "\n[Ação] Aluno ativo pega '1984':" << endl;
-        gerenciador.criarEmprestimo(alunoAtivo, livro2.getExemplarDisponivel());
+        gerenciador.criarEmprestimo(alunoAtivo, livro2.getExemplarDisponivel(), dataAtual);
 
         cout << "\n[Ação] Professor tenta pegar '1984' que acabou de esgotar (Exemplar nullptr):" << endl;
         ExemplarLivro* exemplarEsgotado = livro2.getExemplarDisponivel();
         if (exemplarEsgotado == nullptr) {
             cout << "O sistema bloqueou antes de chegar no gerenciador: Livro sem exemplares!" << endl;
         } else {
-            gerenciador.criarEmprestimo(profBloqueado, exemplarEsgotado);
+            gerenciador.criarEmprestimo(profBloqueado, exemplarEsgotado, dataAtual);
         }
         cout << "---------------------------------------------------------" << endl << endl;
 
@@ -99,7 +99,7 @@ int main() {
         
         if (reservaDoCarlos != nullptr) {
             cout << "[Ação] Convertendo a reserva inteira do Carlos em emprestimos:" << endl;
-            gerenciador.criarEmprestimoApartirDaReserva(reservaDoCarlos);
+            gerenciador.criarEmprestimoApartirDaReserva(reservaDoCarlos, dataAtual);
         } else {
             cout << "Erro crítico: A reserva do Carlos sumiu!" << endl;
         }

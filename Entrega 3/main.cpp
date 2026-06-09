@@ -142,23 +142,17 @@ int main() {
     cout << endl;
     cout << "===== TESTANDO SISTEMA DE RESERVAS =====" << endl;
     
-<<<<<<< HEAD
-    // 1. Criando Reservas
-    sistema.criarReserva(&Ryan, l3, dataHoje);  // Ryan reserva Turma da Monica (tem muito estoque)
-    sistema.criarReserva(&Bruna, l5, dataHoje); // Bruna reserva l5 (estoque zerado)
+    // Criação de reservas para diferentes usuários e livros.
+    sistema.criarReserva(&Ryan, l3, dataHoje);  // Ryan (em débito) reserva um livro.
+    sistema.criarReserva(&Bruna, l5, dataHoje); // Bruna reserva um livro sem estoque.
+
+    // Testes adicionais de reserva para o mesmo livro.
     sistema.criarReserva(&Backes, l3, dataHoje);
     sistema.criarReserva(&Joao,l3, dataHoje);
     sistema.criarReserva(&Mairon,l3, dataHoje);
     sistema.criarReserva(&Felipe,l3, dataHoje);
-    sistema.criarReserva(&Joao,l3, dataHoje);
-
-
-
-=======
-    // Criação de reservas para diferentes usuários e livros.
-    sistema.criarReserva(&Ryan, l3, dataHoje);  // Ryan (em débito) reserva um livro.
-    sistema.criarReserva(&Bruna, l5, dataHoje); // Bruna reserva um livro sem estoque.
->>>>>>> 94834e3 (att2)
+    // TENTATIVA DE FALHA: João tenta reservar o mesmo livro duas vezes.
+    sistema.criarReserva(&Joao,l3, dataHoje); 
 
     cout << endl;
     sistema.listarTodasReservas();
@@ -185,6 +179,7 @@ int main() {
     cout << "===== EMPRESTIMOS ATUAIS =====" << endl;
 
     sistema.listarTodosEmprestimosAtuais();
+    // CONSULTA: Visualização de todas as reservas de um determinado usuário.
     sistema.listarTodasReservasUsuario(&Backes);
 
     // -------------------- TESTE 3: REGRAS DE NEGÓCIO E CONSULTAS --------------------
