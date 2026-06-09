@@ -8,16 +8,17 @@ using std::iterator;
 
 Acervo::Acervo() {}
 
-Acervo::Acervo(initializer_list<Livro*> listaLivros) {                  //permite colocar 1 ou mais livros na criação do acervo
-    for (initializer_list<Livro*>::const_iterator temp = listaLivros.begin(); temp != listaLivros.end(); ++temp) {
-        acervo.push_back(*temp);
+Acervo::Acervo(initializer_list<Livro*> listaLivros) {
+    for (auto temp : listaLivros) {
+        acervo.push_back(temp);
     }
 }
 
 
-Acervo::~Acervo() {                                                     //destrutor com os ponteiros e etc
-    for (vector<Livro*>::iterator temp = acervo.begin(); temp != acervo.end(); ++temp) {
-        delete *temp;  //apaga na memória
+Acervo::~Acervo() {
+    // O destrutor é responsável por liberar a memória de todos os objetos Livro* no acervo.
+    for (auto temp : acervo) {
+        delete temp;
     }
     acervo.clear();
 }
@@ -29,20 +30,26 @@ void Acervo::acrescentarLivro(Livro* novoLivro) {
 }
 
 
-// permite colocar um vetor de livros no acervo de uma vez só 
-void Acervo::acrescentarLivro(initializer_list<Livro*> listaLivros) {
-    for (initializer_list<Livro*>::const_iterator temp = listaLivros.begin(); temp != listaLivros.end(); ++temp) {
-        acervo.push_back(*temp);
+void Acervo::acrescentarLivro(initializer_list<Livro*> listaLivros) { // Sobrecarga para adicionar múltiplos livros.
+    for (auto temp : listaLivros) {
+        acervo.push_back(temp);
     }
     cout << listaLivros.size() << " livros foram adicionados ao acervo!" << endl;
+}
+
+Acervo& Acervo::operator+=(Livro* novoLivro) {
+    this->acrescentarLivro(novoLivro);
+    return *this;
 }
 
 
 void Acervo::removerDoAcervo(Livro* removerLivro) {
     cout << " <<<<< REMOVENDO O LIVRO >>>>> " << endl;
-    for (vector<Livro*>::iterator temp = acervo.begin(); temp != acervo.end(); ++temp){
-        if((*temp)->getCodigo() == removerLivro->getCodigo()){       //funciona com ponteiro
-            acervo.erase(temp);
+    for (auto it = acervo.begin(); it != acervo.end(); ++it){
+        // Compara o endereço de memória para garantir que o objeto exato seja removido.
+        if(*it == removerLivro){
+            delete *it; // Libera a memória do objeto Livro antes de remover o ponteiro do vetor.
+            acervo.erase(it);
             cout << "Livro removido do acervo com sucesso" << endl;
             return;
         }
@@ -51,20 +58,20 @@ void Acervo::removerDoAcervo(Livro* removerLivro) {
 }
 
 
-void Acervo::listarTodos() const {                                  //atualizado com ponteiro
+void Acervo::listarTodos() const {
     cout << "===== TODOS OS LIVROS =====" << endl;
-    for (vector<Livro*>::const_iterator temp = acervo.cbegin(); temp != acervo.cend(); ++temp) { 
-        cout << (*temp)->getTitulo() << ", "                        // (*temp) devolve o ponteiro de livro
-        << (*temp)->getStatusAgora() << endl;
+    for (auto temp : acervo) { 
+        cout << temp->getTitulo() << ", "
+        << temp->getStatusAgora() << endl;
     }
 }
 
 
 void Acervo::listarLivrosDisponiveis() const {
     cout << "+++++ TODOS OS LIVROS DISPONIVEIS +++++" << endl;
-    for (vector<Livro*>::const_iterator temp = acervo.cbegin(); temp != acervo.cend(); ++temp) {
-        if ((*temp)->estaDisponivel()) {
-            cout << "Titulo: " << (*temp)->getTitulo() << " | Codigo: " << (*temp)->getCodigo() << endl;
+    for (auto temp : acervo) {
+        if (temp->estaDisponivel()) {
+            cout << "Titulo: " << temp->getTitulo() << " | Codigo: " << temp->getCodigo() << endl;
         }
     }
 }
@@ -72,9 +79,9 @@ void Acervo::listarLivrosDisponiveis() const {
 
 void Acervo::listarLivrosIndisponiveis() const {
     cout << "----- TODOS OS LIVROS INDISPONIVEIS -----" << endl;
-    for (vector<Livro*>::const_iterator temp = acervo.cbegin(); temp != acervo.cend(); ++temp) {
-        if (!(*temp)->estaDisponivel()) {
-            cout << "Titulo: " << (*temp)->getTitulo() << " | Codigo: " << (*temp)->getCodigo() << endl;
+    for (auto temp : acervo) {
+        if (!temp->estaDisponivel()) {
+            cout << "Titulo: " << temp->getTitulo() << " | Codigo: " << temp->getCodigo() << endl;
         }
     }
 }

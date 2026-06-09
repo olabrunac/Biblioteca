@@ -26,14 +26,18 @@ class GerenciadorDeEmprestimos {
 
         void criarEmprestimo(Usuario& emprestimoUsuario, ExemplarLivro* exemplar, const Data& dataAtual);
         void criarEmprestimo(Usuario& emprestimoUsuario, initializer_list<ExemplarLivro*> listaExemplares, const Data& dataAtual);
-        void criarEmprestimoApartirDaReserva(Reserva* reservaExistente);
+        void criarEmprestimoApartirDaReserva(Reserva* reservaExistente, const Data& dataAtual);
 
-        void criarReserva(Usuario* reservaUsuario, Livro* reservaLivro, Data& dataRealizacao); //reserva com uma data int, aprimorar depois
+        void criarReserva(Usuario* reservaUsuario, Livro* reservaLivro, Data& dataRealizacao);
         void listarTodosEmprestimosAtuais();
-        //void listarReservasDoLivro(Livro& listaLivro);
+        void listarReservasDoLivro(Livro& listaLivro);
         void listarTodasReservas();
         void listarTodasReservasUsuario(Usuario* usuario);
         int contarEmprestimosAtivos(Livro& ativos);
+        int contarReservasAtivas(Livro& livro);
+
+        void listarEmprestimosDoUsuario(Usuario* usuario);
+        void listarEmprestimosDoLivro(Livro& livro);
 
 
         bool estaDisponivelnaData(Livro* testeLivro, const Data& dataInicial, const Data& dataFinal);

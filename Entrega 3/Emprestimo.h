@@ -13,7 +13,7 @@ using std::vector;
 class Emprestimo {
     private:
 
-        vector <ItemEmprestimo> itens; // Ponteiro quebrou a classe 
+        vector <ItemEmprestimo*> itens; 
         Usuario* usuario;
         Data dataDeRetirada;
         Data dataPrevistaDevolucao;
@@ -23,15 +23,16 @@ class Emprestimo {
     public:
         Emprestimo();
         Emprestimo(Usuario* novoUsuario, const Data& novaDataDeRetirada, const Data& novaDataPrevistaDevolucao, const Data& novaDataDevolucao, int novoStatus);
+        ~Emprestimo();
         void imprimirEmprestimo();
-        void adicionarItem(const ItemEmprestimo& novoitem);
+        void adicionarItem(ItemEmprestimo* novoitem);
 
         Data getDataDeRetirada() const;
         Data getDataPrevistaDevolucao() const;
         Data getDataDevolucao() const; 
         int getStatus() const;
         Usuario* getUsuario() const;
-        const vector<ItemEmprestimo>& getItens() const;
+        const vector<ItemEmprestimo*>& getItens() const;
 
         void setDataDeRetirada(const Data novaDataDeRetirada);
         void setDataPrevistaDevolucao(const Data novaDataPrevistaDevolucao);

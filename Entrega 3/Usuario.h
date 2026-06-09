@@ -8,16 +8,18 @@ using std::string;
 
 
 class Usuario {
-    protected:  //pra permitir a herança
+    protected:
         int codigo;
         string nome;
         StatusUsuario status;
 
     public:
         Usuario();
-        virtual ~Usuario();   // Destrutor virtual, pode ser vazio pois as classes filhas q vao implementar
+        // Destrutor virtual para garantir que o destrutor da classe derivada (Aluno/Professor) seja chamado corretamente.
+        virtual ~Usuario();
         Usuario(int novoCodigo, string novoNome, StatusUsuario novoStatus = StatusUsuario::HABILITADO);
-        virtual void imprimirUsuario() const;  
+        // Método virtual puro (abstrato) para polimorfismo. Força as classes filhas a implementarem sua própria versão.
+        virtual void imprimirUsuario() const = 0;
 
         int getCodigo() const;
         string getNome() const;

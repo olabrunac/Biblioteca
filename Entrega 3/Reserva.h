@@ -26,7 +26,8 @@ class Reserva {
         int getID() const;
         Data getDataRealizacao() const;
         Usuario* getUsuario() const;
-        vector<ItemReserva*> getItens() const;
+        const vector<ItemReserva*>& getItens() const;
+        bool possuiLivro(const Livro* livroBuscado) const;
 
         void setID(int novoID);
         void setDataRealizacao(Data& novaDataReserva);

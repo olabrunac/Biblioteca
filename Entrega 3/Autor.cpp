@@ -22,8 +22,8 @@ void Autor::imprimirAutor() {
 
 
 void Autor::imprimirTodos(const vector<Autor*>& listaAutores) {
-    for (vector<Autor*>::const_iterator temp = listaAutores.begin(); temp != listaAutores.end(); ++temp) {
-        cout << "Codigo: " << (*temp)->getCodigo() << " | Nome: " << (*temp)->getNome() << endl;
+    for (auto temp : listaAutores) {
+        cout << "Codigo: " << temp->getCodigo() << " | Nome: " << temp->getNome() << endl;
     }
 }
 
