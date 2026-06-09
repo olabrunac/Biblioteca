@@ -13,28 +13,27 @@ using std::vector;
 class Emprestimo {
     private:
 
-        vector <ItemEmprestimo*> itens; // Ponteiro quebrou a classe 
+        vector <ItemEmprestimo> itens; // Ponteiro quebrou a classe 
         Usuario* usuario;
-        Data dataEmprestimo;
+        Data dataDeRetirada;
         Data dataPrevistaDevolucao;
         Data dataDevolucao;
         int status;
 
     public:
         Emprestimo();
-        Emprestimo(Usuario* novoUsuario, const Data& novaDataDEmprestimo, const Data& novaDataPrevistaDevolucao, const Data& novaDataDevolucao, int novoStatus);
-        ~Emprestimo();                                      
+        Emprestimo(Usuario* novoUsuario, const Data& novaDataDeRetirada, const Data& novaDataPrevistaDevolucao, const Data& novaDataDevolucao, int novoStatus);
         void imprimirEmprestimo();
-        void adicionarItem(ItemEmprestimo* novoItem);
+        void adicionarItem(const ItemEmprestimo& novoitem);
 
-        Data getDataEmprestimo() const;
+        Data getDataDeRetirada() const;
         Data getDataPrevistaDevolucao() const;
         Data getDataDevolucao() const; 
         int getStatus() const;
         Usuario* getUsuario() const;
-        const vector<ItemEmprestimo*>& getItens() const;
+        const vector<ItemEmprestimo>& getItens() const;
 
-        void setDataEmprestimo(const Data novaDataEmprestimo);
+        void setDataDeRetirada(const Data novaDataDeRetirada);
         void setDataPrevistaDevolucao(const Data novaDataPrevistaDevolucao);
         void setDataDevolucao(const Data novaDataDevolucao);
         void setStatus(int novoStatus);

@@ -21,9 +21,7 @@ bool Data::testeDataValida(int d, int m, int a) {
     return true;
 }
 
-
 Data::Data(): data(20260607), dia(7), mes(6), ano(2026) {}
-
 
 Data::Data(int dia, int mes, int ano) {
     if (testeDataValida(dia, mes, ano)) {
@@ -38,30 +36,32 @@ Data::Data(int dia, int mes, int ano) {
     }
 }
 
-
 Data::Data(int dataInteira)
     : Data(dataInteira % 100, (dataInteira % 10000) / 100, dataInteira / 10000) {}
 
-
 Data::~Data() {}
 
+void Data::imprimirData() const {
+    cout << "Data: " << dia << "/" << mes << "/" << ano << endl;
+}
 
-void Data::imprimirData() const { cout << "Data: " << dia << "/" << mes << "/" << ano << endl; }
+int Data::getDia() const {
+    return dia;
+}
 
+int Data::getMes() const {
+    return mes;
+}
 
-int Data::getDia() const { return dia; }
+int Data::getAno() const {
+    return ano;
+}
 
+int Data::getDataInteira() const {
+    return ano * 10000 + mes * 100 + dia;
+}
 
-int Data::getMes() const { return mes; }
-
-
-int Data::getAno() const { return ano; }
-
-
-int Data::getDataInteira() const { return ano * 10000 + mes * 100 + dia; }
-
-
-void Data::setDataAtual(int novaData) {
+void Data::setData(int novaData) {
     int novaDia = novaData % 100;
     int novaMes = (novaData % 10000) / 100;
     int novoAno = novaData / 10000;
@@ -74,7 +74,6 @@ void Data::setDataAtual(int novaData) {
         cout << "Data nao alterada devido a entrada invalida." << endl;
     }
 }
-
 
 Data Data::operator+(int dias) const {
     Data novaData = *this;
@@ -92,18 +91,3 @@ Data Data::operator+(int dias) const {
 
     return novaData;
 }
-
-int Data::operator-(const Data& outraData) const {
-    // Converte ambas as datas para dias absolutos (assumindo meses de 30 dias como no seu operator+)
-    int diasDestaData = ano * 360 + mes * 30 + dia;
-    int diasDaOutraData = outraData.ano * 360 + outraData.mes * 30 + outraData.dia;
-    return diasDestaData - diasDaOutraData;
-}
-
-bool Data::operator<(const Data& outraData) const { return this->getDataInteira() < outraData.getDataInteira(); }
-
-
-bool Data::operator>(const Data& outraData) const { return this->getDataInteira() > outraData.getDataInteira(); }
-
-
-bool Data::operator==(const Data& outraData) const { return this->getDataInteira() == outraData.getDataInteira(); }

@@ -22,8 +22,8 @@ class GerenciadorDeEmprestimos {
         GerenciadorDeEmprestimos();
         ~GerenciadorDeEmprestimos();
 
-        void criarEmprestimo(Usuario& emprestimoUsuario, ExemplarLivro* exemplar, const Data& dataAtual);
-        void criarEmprestimo(Usuario& emprestimoUsuario, initializer_list<ExemplarLivro*> listaExemplares, const Data& dataAtual);
+        void criarEmprestimo(Usuario& emprestimoUsuario, ExemplarLivro* exemplar);
+        void criarEmprestimo(Usuario& emprestimoUsuario, initializer_list<ExemplarLivro*> listaExemplares);
         void criarEmprestimoApartirDaReserva(Reserva* reservaExistente);
 
         void criarReserva(Usuario* reservaUsuario, Livro* reservaLivro, Data& dataRealizacao); //reserva com uma data int, aprimorar depois

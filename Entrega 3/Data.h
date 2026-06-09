@@ -31,14 +31,12 @@ class Data {
         int getAno() const;
         int getDataInteira() const;
 
-        void setDataAtual(int novaData);
-
+        void setData(int novaData);
 
         Data operator+(int dias) const; //Utilizado no calculo da DataPrevistaDevolução.
-        int operator-(const Data& outraData) const; //Utilizado para descobrir os dias de atraso
-        bool operator<(const Data& outraData) const;
-        bool operator>(const Data& outraData) const;
-        bool operator==(const Data& outraData) const;
+        //Data operator==(const Data& outraData) const; //Implementar comparação de datas, se necessário
+        //Data operator-(int dias) const; //Implementar subtração de dias, se necessário
+
     };
 
 #endif // DATA
