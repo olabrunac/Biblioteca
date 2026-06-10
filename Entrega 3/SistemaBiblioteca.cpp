@@ -244,8 +244,56 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
 
                 if (!livro) { cout << "Erro: Livro nao encontrado." << endl; break; }
 
-                gerenciadorEmprestimos.criarReserva(usuario, livro, dataAtual);
-                break;
+                cout << "Data para reserva: Quando pretende fazer a reserva?" << endl;
+                cout << "1. Hoje ou o mais rápido possível" << endl;
+                cout << "2. Em uma data especifica" << endl;
+                cout << "Escolha uma opcao: ";
+                int opcaoReserva;
+                cin >> opcaoReserva;
+
+                if (opcaoReserva == 1) {
+                    
+                    gerenciadorEmprestimos.criarReserva(usuario, livro, dataAtual);
+                    break;
+                } else if (opcaoReserva == 2) {
+                
+                bool dataValidaReserva = false;
+                Data dataReserva;
+                int diaReserva, mesReserva, anoReserva;
+
+
+                cout << "\nPor favor, insira a data para a reserva." << endl;
+                cout << "Dia: "; cin >> diaReserva;
+                cout << "Mes: "; cin >> mesReserva;
+                cout << "Ano: "; cin >> anoReserva;
+
+        // verifica se a entrada é um número
+        if (cin.fail()) {
+            cout << "Entrada invalida. Por favor, insira apenas numeros." << endl;
+            cin.clear();
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            continue; // Pula para a próxima iteração do loop
+        }
+
+        // Limpa o restante da linha do buffer de entrada
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        // Usa o método estático da classe Data para validar os valores.
+        if (Data::testeDataValida(diaReserva, mesReserva, anoReserva)) {
+            dataReserva = Data(diaReserva, mesReserva,anoReserva);
+            dataValidaReserva = true;
+            gerenciadorEmprestimos.criarReserva(usuario, livro, dataReserva);
+            break;
+        } else {
+
+            cout << "Data invalida! Por favor, tente novamente." << endl;
+        }   
+                
+                } else {
+                    cout << "Opcao invalida." << endl;
+                    break;
+                }
+
             }
             case 4: {
                 cout << "--- Cancelar Reserva ---" << endl;
