@@ -16,15 +16,9 @@ class Professor : public Usuario {
         ~Professor() override {cout << "Destruindo objeto tipo Professor: " << this->nome << endl; }
 
         void imprimirUsuario() const override {     //implementado aqui para sobrescrever a herança
-            cout << "Professor" << endl;
-            cout << "Nome: " << nome << endl;
-            //cout << "Codigo: " << codigo << endl;
-            cout << "Status do usuario: ";
-            if (status == StatusUsuario::HABILITADO) {
-               cout << "Habilitado" << endl;
-            } else {
-            cout << "Em debito" << endl;
-            }
+            cout << "Professor - Cod: " << codigo << " | Nome: " << nome << " | Status: ";
+            cout << (status == StatusUsuario::HABILITADO ? "Habilitado" : "Em debito");
+            cout << endl;
         }
 };
 

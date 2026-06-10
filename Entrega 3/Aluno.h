@@ -16,15 +16,9 @@ class Aluno : public Usuario {
         ~Aluno() override { cout << "Destruindo objeto tipo Aluno: " << this->nome << endl; } 
 
         void imprimirUsuario() const override {
-            cout << "Aluno" << endl;
-            cout << "Nome: " << nome << endl;
-            //cout << "Codigo: " << codigo << endl;
-            cout << "Status do usuario: ";
-            if (status == StatusUsuario::HABILITADO) {
-                cout << "Habilitado" << endl;
-            } else {
-            cout << "Em debito" << endl;
-            }
+            cout << "Aluno - Cod: " << codigo << " | Nome: " << nome << " | Status: ";
+            cout << (status == StatusUsuario::HABILITADO ? "Habilitado" : "Em debito");
+            cout << endl;
         }
 };
 

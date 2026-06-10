@@ -27,13 +27,13 @@ void Editora::imprimirEditora() {
 }
 
 
-int Editora::getCodigo() { return codigo; }
+int Editora::getCodigo() const { return codigo; }
 
 
-string Editora::getNome() { return nome; }
+string Editora::getNome() const { return nome; }
 
 
-Endereco Editora::getEndereco() { return endereco; }
+Endereco Editora::getEndereco() const { return endereco; }
 
 
 void Editora::setCodigo(int novoCodigo) { this -> codigo = novoCodigo; }

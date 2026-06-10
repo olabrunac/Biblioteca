@@ -101,7 +101,7 @@ int Livro::getEdicao() const {return edicao; }
 float Livro::getPreco() const { return preco; }
 
 
-Editora Livro::getEditora() const { return editora; }
+const Editora& Livro::getEditora() const { return editora; }
 
 
 int Livro::getAnoPublicacao() const { return anoPublicacao; }

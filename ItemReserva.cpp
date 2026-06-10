@@ -10,8 +10,10 @@ ItemReserva::ItemReserva(int novoNroDoItem, const Data& novaDataDeRetirada, Livr
     : nroDoItem(novoNroDoItem), dataDeRetirada(novaDataDeRetirada), livro(novoLivro) {}
 
 void ItemReserva::imprimirItemReserva() const{
-    cout << "Numero do Item: " << nroDoItem << endl;
-    cout << "Data de Retirada: " << dataDeRetirada.getDataInteira() << endl;
+    cout << "| Numero do Item: " << nroDoItem << endl;
+    cout << "Data de Retirada: ";
+    dataDeRetirada.imprimirData();
+    cout << endl;
     cout << "Livro: " << livro->getTitulo() << endl;
 }
 

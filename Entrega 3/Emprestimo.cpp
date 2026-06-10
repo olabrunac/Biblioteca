@@ -97,11 +97,10 @@ void Emprestimo::setItens(Livro& novoLivro){
 
 bool Emprestimo::possuiLivro(Livro* livroTeste) const {
 
-      for (vector<ItemEmprestimo*>::const_iterator temp = itens.begin(); temp != itens.end(); ++temp){
-        Livro* livro = (*temp)->getLivro();
+      for (const auto& temp : itens){
+        Livro* livro = temp->getLivro();
 
-        if (*livro == *livroTeste)
-        {
+        if (livro && livroTeste && *livro == *livroTeste) {
             return true;
         }
     }

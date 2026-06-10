@@ -45,7 +45,7 @@ class Livro {
         string getTitulo() const;
         int getEdicao() const;
         float getPreco() const;
-        Editora getEditora() const;
+        const Editora& getEditora() const;
         int getAnoPublicacao() const;
         int getQuantidadeDeExemplares() const;
         int getNroDiasPermitidoEmprestimo() const;

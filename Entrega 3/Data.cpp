@@ -51,7 +51,7 @@ Data::Data(const Data& outra)
 Data::~Data() {}
 
 void Data::imprimirData() const {
-    cout << "Data: " << dia << "/" << mes << "/" << ano << endl;
+    cout << (dia < 10 ? "0" : "") << dia << "/" << (mes < 10 ? "0" : "") << mes << "/" << ano;
 }
 
 int Data::getDia() const {

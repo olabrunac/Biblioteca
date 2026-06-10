@@ -18,7 +18,6 @@ Reserva::Reserva(int novoID, const Data& novaDataRealizacao, Usuario* novoUsuari
 Reserva::~Reserva() {
     for (auto temp : itens) {
          delete temp;
-         cout << "-Destruindo a reserva ID: " << this->ID << " e liberando a memória" << endl;
     }
     itens.clear();
 }
@@ -31,9 +30,9 @@ void Reserva::adicionarItem(ItemReserva* novoItem) {
 
 void Reserva::imprimirReserva() const {
     cout << "Reserva ID: " << ID << endl;
-    dataRealizacao.imprimirData(); //Imprime a data no formato AAAAMMDD
+    cout << "Data da Reserva: "; dataRealizacao.imprimirData(); cout << endl;
     if (usuario != nullptr) {
-        cout << "Reservado por: ";
+        cout << "Usuario: ";
         usuario->imprimirUsuario(); // polimorfismo aqui
     }
     for (auto temp : itens) {
@@ -51,11 +50,25 @@ Data Reserva::getDataRealizacao() const { return dataRealizacao; }
 Usuario* Reserva::getUsuario() const { return usuario; }
 
 
-const vector<ItemReserva*>& Reserva::getItens() const { return itens; }
+const vector<ItemReserva*>& Reserva::getItens() const { 
+    return itens; 
+}
 
 bool Reserva::possuiLivro(const Livro* livroBuscado) const {
     for (auto temp : itens) {
         if (temp->getLivro() == livroBuscado) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Reserva::removerItemPorLivro(int codigoLivro) {
+    for (auto temp = itens.begin(); temp != itens.end(); ++temp) {
+        if ((*temp)->getLivro()->getCodigo() == codigoLivro) {
+            cout << "Removendo item da reserva: " << (*temp)->getLivro()->getTitulo() << endl;
+            delete *temp; // Libera a memória do ItemReserva
+            itens.erase(temp); // Remove o ponteiro do vetor
             return true;
         }
     }

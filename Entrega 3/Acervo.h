@@ -19,12 +19,11 @@ class Acervo {
         
         void acrescentarLivro(Livro* novoLivro);
         void acrescentarLivro(initializer_list<Livro*> listaLivros); //sobrecarga de metodos
-        Acervo& operator+=(Livro* novoLivro); //sobrecarga de operador
         void removerDoAcervo(Livro* removerLivro);
 
         void listarTodos() const;
-        void listarLivrosDisponiveis() const;
-        void listarLivrosIndisponiveis() const;
+
+        const vector<Livro*>& getLivros() const { return acervo; }
 
 };
 

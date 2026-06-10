@@ -19,9 +19,9 @@ class Editora {
         ~Editora();
         void imprimirEditora();
 
-        int getCodigo();
-        string getNome();
-        Endereco getEndereco();
+        int getCodigo() const;
+        string getNome() const;
+        Endereco getEndereco() const;
 
         void setCodigo(int novoCodigo);
         void setNome(string novoNome);

@@ -15,13 +15,12 @@ class Data {
         int mes;
         int ano;
 
-        bool testeDataValida(int d, int m, int a);
-
     public:
         Data();
         Data(int dia, int mes, int ano);
         Data(int dataInteira);
         Data(int d, int m, int a, bool pularValidacao); //Construtor pula validacao
+        static bool testeDataValida(int d, int m, int a);
 
         Data(const Data& outra); //Construtor de copia
         ~Data();
@@ -44,8 +43,6 @@ class Data {
         bool operator==(const Data& outraData) const;
         int operator-(const Data& outraData) const; //Talvez use
 
-        //Data operator==(const Data& outraData) const; //Implementar comparação de datas, se necessário
-        //Data operator-(int dias) const; //Implementar subtração de dias, se necessário
 
     };
 
