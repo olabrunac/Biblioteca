@@ -120,6 +120,16 @@ int Livro::getNroDiasPermitidoEmprestimo() const {
     return nroDiasPermitidoEmprestimo; }
 
 
+int Livro::getQuantidadeDisponivel() const {
+    int contador = 0;
+    for (const ExemplarLivro& temp : exemplares) {
+        if (temp.getStatus() == StatusEmprestimo::DISPONIVEL) {
+            contador++;
+        }
+    }
+    return contador;
+}
+
 const vector<Autor*>& Livro::getAutor() const { return autores; }
 
 
@@ -132,18 +142,6 @@ string Livro::getStatusAgora() const {
 
 
 //int Livro::getStatusFuturo(Data& data) const {} //Nao tenho a menor ideia de como fazer isso por enquanto, precisa acessar o vetor de Reservas e Emprestimos.
-
-
-int Livro::getQuantidadeDisponivel() const {
-    int contador = 0;
-    for (const ExemplarLivro& temp : exemplares) {
-        if (temp.getStatus() == StatusEmprestimo::DISPONIVEL) {
-            contador++;
-        }
-    }
-    return contador;
-}
-
 
 int Livro::getNroPaginas() const { return nroPaginas; }
 

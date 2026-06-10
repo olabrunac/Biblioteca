@@ -2,25 +2,6 @@
 #include <string>
 #include "Data.h"
 
-using std::cout;
-using std::endl;
-
-bool Data::testeDataValida(int d, int m, int a) {
-    if (a < 1500) {
-        cout << "Erro: Ano invalido" << endl;
-        return false;
-    }
-    if (m < 1 || m > 12) {
-        cout << "Erro: Mes invalido." << endl;
-        return false;
-    }
-    if (d < 1 || d > 31) {
-        cout << "Erro: Dia invalido." << endl;
-        return false;
-    }
-    return true;
-}
-
 Data::Data(): dia(7), mes(6), ano(2026) {}
 
 Data::Data(int dia, int mes, int ano) {
@@ -47,6 +28,23 @@ Data::Data(int d, int m, int a, bool pularValidacao) {
 
 Data::Data(const Data& outra) 
     : dia(outra.dia), mes(outra.mes), ano(outra.ano) {}
+
+bool Data::testeDataValida(int d, int m, int a) {
+    if (a < 1500) {
+        cout << "Erro: Ano invalido" << endl;
+        return false;
+    }
+    if (m < 1 || m > 12) {
+        cout << "Erro: Mes invalido." << endl;
+        return false;
+    }
+    if (d < 1 || d > 31) {
+        cout << "Erro: Dia invalido." << endl;
+        return false;
+    }
+    return true;
+}
+
 
 Data::~Data() {}
 
@@ -103,14 +101,6 @@ Data Data::operator+(int dias) const {
     return Data(novoDia, novoMes, novoAno, true);
 }
 
-
-int Data::operator-(const Data& outraData) const {
-    // Converte ambas as datas para dias absolutos (assumindo meses de 30 dias como no seu operator+)
-    int diasDestaData = ano * 360 + mes * 30 + dia;
-    int diasDaOutraData = outraData.ano * 360 + outraData.mes * 30 + outraData.dia;
-    return diasDestaData - diasDaOutraData;
-}
-
 bool Data::operator<(const Data& outraData) const { return this->getDataInteira() < outraData.getDataInteira(); }
 
 
@@ -118,3 +108,10 @@ bool Data::operator>(const Data& outraData) const { return this->getDataInteira(
 
 
 bool Data::operator==(const Data& outraData) const { return this->getDataInteira() == outraData.getDataInteira(); }
+
+int Data::operator-(const Data& outraData) const {
+    // Converte ambas as datas para dias absolutos (assumindo meses de 30 dias como no seu operator+)
+    int diasDestaData = ano * 360 + mes * 30 + dia;
+    int diasDaOutraData = outraData.ano * 360 + outraData.mes * 30 + outraData.dia;
+    return diasDestaData - diasDaOutraData;
+}

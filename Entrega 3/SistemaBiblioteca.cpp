@@ -50,40 +50,6 @@ SistemaBiblioteca::SistemaBiblioteca(GerenciadorDeLivros& gl, GerenciadorDeUsuar
 
 SistemaBiblioteca::~SistemaBiblioteca() {}
 
-// Método principal que executa o loop do menu.
-void SistemaBiblioteca::executar() {
-    int opcao;
-    do {
-        system("clear || cls"); // Limpa a tela
-        mostrarMenuPrincipal();
-        cin >> opcao;
-
-        if (cin.fail()) {
-            cout << "Entrada invalida. Por favor, insira um numero." << endl;
-            cin.clear();
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            opcao = -1; // Força o loop a continuar
-        } else {
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        }
-
-        switch (opcao) {
-            case 1: menuCadastros(); break;
-            case 2: menuEmprestimosEReservas(); break;
-            case 3: menuConsultas(); break;
-            case 0: break; // Sair
-            default:
-                cout << "Opcao invalida! Tente novamente." << endl;
-                break;
-        }
-        if (opcao != 0) {
-            cout << "\nPressione Enter para continuar...";
-            cin.get();
-        }
-
-    } while (opcao != 0);
-}
-
 void SistemaBiblioteca::mostrarMenuPrincipal() {
     cout << "\n===== MENU PRINCIPAL =====" << endl;
     cout << "Data Atual: ";
@@ -130,6 +96,40 @@ void SistemaBiblioteca::menuCadastros() {
             cout << "\nPressione Enter para continuar...";
             cin.get();
         }
+    } while (opcao != 0);
+}
+
+// Método principal que executa o loop do menu.
+void SistemaBiblioteca::executar() {
+    int opcao;
+    do {
+        system("clear || cls"); // Limpa a tela
+        mostrarMenuPrincipal();
+        cin >> opcao;
+
+        if (cin.fail()) {
+            cout << "Entrada invalida. Por favor, insira um numero." << endl;
+            cin.clear();
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            opcao = -1; // Força o loop a continuar
+        } else {
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+
+        switch (opcao) {
+            case 1: menuCadastros(); break;
+            case 2: menuEmprestimosEReservas(); break;
+            case 3: menuConsultas(); break;
+            case 0: break; // Sair
+            default:
+                cout << "Opcao invalida! Tente novamente." << endl;
+                break;
+        }
+        if (opcao != 0) {
+            cout << "\nPressione Enter para continuar...";
+            cin.get();
+        }
+
     } while (opcao != 0);
 }
 

@@ -140,14 +140,6 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, initi
     }
 }
 
-
-void GerenciadorDeEmprestimos::listarTodosEmprestimosAtuais() { 
-    for (auto temp : emprestimos) {
-        temp->imprimirEmprestimo();
-    }
-}
-
-
 // Função de apoio para a regra de negócio que impede a exclusão de livros em uso.
 int GerenciadorDeEmprestimos::contarEmprestimosAtivos(Livro& livro) const {  
     int contador = 0;
@@ -289,6 +281,12 @@ void GerenciadorDeEmprestimos::criarEmprestimoApartirDaReserva(Reserva* reservaE
         cout << "+Sucesso: Reserva convertida em emprestimo" << endl;
 }
 
+void GerenciadorDeEmprestimos::listarTodosEmprestimosAtuais() { 
+    for (auto temp : emprestimos) {
+        temp->imprimirEmprestimo();
+    }
+}
+
 
 void GerenciadorDeEmprestimos::listarTodasReservas() {
     cout << endl << "----- Lista de Reservas Ativas -----" << endl;
@@ -380,6 +378,65 @@ bool GerenciadorDeEmprestimos::estaDisponivelnaData(Livro* testeLivro, const Dat
 
 }
 
+void GerenciadorDeEmprestimos::listarEmprestimosDoUsuario(Usuario* usuario) {
+    // CONSULTA: Visualização de todos os empréstimos de um determinado usuário.
+    cout << "\n----- Emprestimos do usuario: " << usuario->getNome() << " -----" << endl;
+    bool encontrou = false;
+    for (const auto& temp : emprestimos) {
+        if (temp->getUsuario() == usuario) {
+            temp->imprimirEmprestimo();
+            encontrou = true;
+        }
+    }
+    if (!encontrou) {
+        cout << "Nenhum emprestimo ativo para este usuario." << endl;
+    }
+}
+
+void GerenciadorDeEmprestimos::listarEmprestimosDoLivro(Livro& livro) {
+    // CONSULTA: Visualização de todos os empréstimos de um determinado livro.
+    cout << "\n----- Emprestimos para o livro: '" << livro.getTitulo() << "' -----" << endl;
+    bool encontrou = false;
+    for (const auto& temp : emprestimos) {
+        for (const auto& tempItem : temp->getItens()) {
+            if (tempItem->getExemplar()->getLivro()->getCodigo() == livro.getCodigo()) {
+                cout << "- Emprestado para: " << temp->getUsuario()->getNome();
+                cout << " (Cod: " << temp->getUsuario()->getCodigo() << ") | Exemplar ID: " << tempItem->getExemplar()->getNroExemplar();
+                cout << " | Devolucao: ";
+                tempItem->getDataParaDevolucao().imprimirData();
+                cout << endl;
+                encontrou = true;
+            }
+        }
+    }
+    if (!encontrou) {
+        cout << "Nenhum exemplar deste livro esta emprestado no momento." << endl;
+    }
+}
+
+void GerenciadorDeEmprestimos::listarReservasDoLivro(Livro& listaLivro) {
+    // CONSULTA: Visualização de todas as reservas de um determinado livro.
+    cout << "----- Reservas para o livro: '" << listaLivro.getTitulo() << "' -----" << endl;
+    bool encontrou = false;
+
+    for (auto temp : reservas) {
+        if (temp->possuiLivro(&listaLivro)) {
+            for (auto tempItem : temp->getItens()) {
+                if (tempItem->getLivro() == &listaLivro) {
+                    encontrou = true;
+                    cout << "- Reservado por: " << temp->getUsuario()->getNome();
+                    cout << " (Cod: " << temp->getUsuario()->getCodigo() << ") | Retirada prevista para: ";
+                    tempItem->getDataDeRetirada().imprimirData();
+                    cout << endl;
+                }
+            }
+        }
+    }
+
+    if (!encontrou) {
+        cout << "Nenhum usuario reservou este livro no momento." << endl;
+    }
+}
 
 Reserva* GerenciadorDeEmprestimos::getReservaPorUsuario(Usuario* usuarioBuscado) const {
     for (auto temp : reservas) {
@@ -451,66 +508,6 @@ bool GerenciadorDeEmprestimos::cancelarReservaItem(Usuario* usuario, int codigoL
     
     cout << "Erro: Livro com codigo " << codigoLivro << " nao encontrado na reserva deste usuario." << endl;
     return false;
-}
-
-void GerenciadorDeEmprestimos::listarEmprestimosDoUsuario(Usuario* usuario) {
-    // CONSULTA: Visualização de todos os empréstimos de um determinado usuário.
-    cout << "\n----- Emprestimos do usuario: " << usuario->getNome() << " -----" << endl;
-    bool encontrou = false;
-    for (const auto& temp : emprestimos) {
-        if (temp->getUsuario() == usuario) {
-            temp->imprimirEmprestimo();
-            encontrou = true;
-        }
-    }
-    if (!encontrou) {
-        cout << "Nenhum emprestimo ativo para este usuario." << endl;
-    }
-}
-
-void GerenciadorDeEmprestimos::listarEmprestimosDoLivro(Livro& livro) {
-    // CONSULTA: Visualização de todos os empréstimos de um determinado livro.
-    cout << "\n----- Emprestimos para o livro: '" << livro.getTitulo() << "' -----" << endl;
-    bool encontrou = false;
-    for (const auto& temp : emprestimos) {
-        for (const auto& tempItem : temp->getItens()) {
-            if (tempItem->getExemplar()->getLivro()->getCodigo() == livro.getCodigo()) {
-                cout << "- Emprestado para: " << temp->getUsuario()->getNome();
-                cout << " (Cod: " << temp->getUsuario()->getCodigo() << ") | Exemplar ID: " << tempItem->getExemplar()->getNroExemplar();
-                cout << " | Devolucao: ";
-                tempItem->getDataParaDevolucao().imprimirData();
-                cout << endl;
-                encontrou = true;
-            }
-        }
-    }
-    if (!encontrou) {
-        cout << "Nenhum exemplar deste livro esta emprestado no momento." << endl;
-    }
-}
-
-void GerenciadorDeEmprestimos::listarReservasDoLivro(Livro& listaLivro) {
-    // CONSULTA: Visualização de todas as reservas de um determinado livro.
-    cout << "----- Reservas para o livro: '" << listaLivro.getTitulo() << "' -----" << endl;
-    bool encontrou = false;
-
-    for (auto temp : reservas) {
-        if (temp->possuiLivro(&listaLivro)) {
-            for (auto tempItem : temp->getItens()) {
-                if (tempItem->getLivro() == &listaLivro) {
-                    encontrou = true;
-                    cout << "- Reservado por: " << temp->getUsuario()->getNome();
-                    cout << " (Cod: " << temp->getUsuario()->getCodigo() << ") | Retirada prevista para: ";
-                    tempItem->getDataDeRetirada().imprimirData();
-                    cout << endl;
-                }
-            }
-        }
-    }
-
-    if (!encontrou) {
-        cout << "Nenhum usuario reservou este livro no momento." << endl;
-    }
 }
 
 bool GerenciadorDeEmprestimos::usuarioTemPendencias(Usuario* usuario) const {

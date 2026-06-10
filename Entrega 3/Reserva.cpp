@@ -22,12 +22,6 @@ Reserva::~Reserva() {
     itens.clear();
 }
 
-
-void Reserva::adicionarItem(ItemReserva* novoItem) {
-    itens.push_back(novoItem);
-}
-
-
 void Reserva::imprimirReserva() const {
     cout << "Reserva ID: " << ID << endl;
     cout << "Data da Reserva: "; dataRealizacao.imprimirData(); cout << endl;
@@ -38,6 +32,10 @@ void Reserva::imprimirReserva() const {
     for (auto temp : itens) {
         temp->imprimirItemReserva();
     }
+}
+
+void Reserva::adicionarItem(ItemReserva* novoItem) {
+    itens.push_back(novoItem);
 }
 
 
