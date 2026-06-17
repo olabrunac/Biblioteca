@@ -1,0 +1,25 @@
+pendencias????
+
+    arrumar 2 pessoas fazendo a mesma reserva
+    classe de erros try catch
+    
+
+    Adicionar a lógico de Usuario em débito, para isso, Adicionar a opção de trocar a data
+
+
+    adicionar quantidade de dias certos por mes (ENUM dos meses);
+
+    opção "secreta" do menu inicial, que Simula a passagem do tempo no sistema e verifica se usuarios estão em débito; 
+    
+    comparação da dataInicial do sistema com a segunda data, vendo a diferença de dias(int Data::operator-(const Data& outraData) const) e adiciona na data(formato int)
+    e após isso
+    
+    estudar como salvar o estado do programa, em um arquivo ou banco de dados: utilizando como base a lógica de void "GerenciadorDeLivros::inicializarDados()"
+    em que o usuario não precisa cadastrar os dados novamente e permite o acesso em dias diferentes, permitindo ver uma evolução e permanencia de dados no sistema
+    ideia tal -- ?Continuação pessoal do projeto?
+
+    adicionar opção de Sim|Não para escolher caso o livro que tentou fazer emprestimo não esteja disponível
+
+    numero de espera na lista de reserva POR Livro
+
+    

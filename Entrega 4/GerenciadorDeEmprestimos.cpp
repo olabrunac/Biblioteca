@@ -3,6 +3,8 @@
 #include "StatusEmprestimo.h"
 #include <iostream>
 
+#include "Erros.h"
+
 using std::cout;
 using std::endl;
 
