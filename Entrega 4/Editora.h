@@ -1,0 +1,32 @@
+#ifndef EDITORA_H
+#define EDITORA_H
+
+#include "Endereco.h"
+#include <string>
+
+using std::string;
+
+class Editora {
+    private:
+        int codigo;
+        string nome;
+        Endereco endereco;
+
+    public:
+        Editora();
+        Editora(int novoCodigo, string novoNome);
+        Editora(int novoCodigo, string novoNome, const Endereco& novoEndereco);
+        ~Editora();
+        void imprimirEditora();
+
+        int getCodigo() const;
+        string getNome() const;
+        Endereco getEndereco() const;
+
+        void setCodigo(int novoCodigo);
+        void setNome(string novoNome);
+        void setEndereco(Endereco& novoEndereco);
+
+};
+
+#endif
