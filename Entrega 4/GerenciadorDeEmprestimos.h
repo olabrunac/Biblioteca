@@ -43,6 +43,8 @@ class GerenciadorDeEmprestimos {
         bool cancelarReservaItem(Usuario* usuario, int codigoLivro);
         bool usuarioTemPendencias(Usuario* usuario) const;
 
+        void atualizaPendenciasEmprestimos(Data& dataFutura);
+
 
         bool estaDisponivelnaData(Livro* testeLivro, const Data& dataInicial, const Data& dataFinal);
         Reserva* getReservaPorUsuario(Usuario* usuarioBuscado) const;

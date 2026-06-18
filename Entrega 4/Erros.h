@@ -23,9 +23,17 @@ class ErroUsuarioNaoHabilitado : public Erros {
         ErroUsuarioNaoHabilitado()
             : Erros("Erro relacionado ao usuario") {}
 
-            //emprestimo.cpp nao imprime emprestimo se o usuario for nulo
+            //emprestimo.cpp nao imprime emprestimo se o usuario for nulo 
+            //gerenciadorDeEmprestimo.cpp | linha 33; 95; 178; 237 | acontece se o usúario não estiver com status "Habilitado"
 };
 
+class ErroUsuarioJaReservouLivro: public Erros {
+
+    public:
+
+        ErroUsuarioJaReservouLivro() : Erros("O usuario já tem uma reserva desse livro") {}
+        //gerenciadorEmprestimo.cpp| linha 187
+}; 
 
 class ErroLivro : public Erros {
 

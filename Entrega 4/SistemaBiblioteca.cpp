@@ -416,6 +416,10 @@ void SistemaBiblioteca::menuNovaData() { //o menu ainda nao atualiza os status
             } else {
                 dataAtual = novaData;
                 dataValida = true;
+                gerenciadorEmprestimos.atualizaPendenciasEmprestimos(dataAtual);
+
+                //Chamar aqui a função que atualiza e compara a data dos empréstimos.
+                //Vou chama-la de verificar pendências
             }
         } else {
             cout << "Data invalida! Por favor, tente novamente." << endl;

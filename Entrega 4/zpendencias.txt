@@ -12,7 +12,7 @@ pendencias????
 
     opção "secreta" do menu inicial, que Simula a passagem do tempo no sistema e verifica se usuarios estão em débito; 
     
-    comparação da dataInicial do sistema com a segunda data, vendo a diferença de dias(int Data::operator-(const Data& outraData) const) e adiciona na data(formato int)
+    -* comparação da dataInicial do sistema com a segunda data, vendo a diferença de dias(int Data::operator-(const Data& outraData) const) e adiciona na data(formato int)
     e após isso
     
     estudar como salvar o estado do programa, em um arquivo ou banco de dados: utilizando como base a lógica de void "GerenciadorDeLivros::inicializarDados()"
@@ -23,4 +23,10 @@ pendencias????
 
     numero de espera na lista de reserva POR Livro
 
+    Sobre: void GerenciadorDeEmprestimos::atualizaPendenciasEmprestimos(Data& dataFutura)
+    a partir do status do emprestimo (1 ou 0) usei isso pra ver os emprestimos ativos
     
+    -* ainda usar isso para imprimir a quantidade de dias atrasado
+    
+    Teste a opção de devolver empréstimo no menu, e após devolver ele ainda aparece no Consultar todos os emprestimos, porém ele está com status 0
+    o livro não ficou disponivel para emprestimo apos devolver ele

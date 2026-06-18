@@ -175,7 +175,7 @@ void GerenciadorDeEmprestimos::criarReserva(Usuario* reservaUsuario, Livro* rese
     // 1. Validação do Usuario
     if (reservaUsuario->getStatus() != StatusUsuario::HABILITADO) {
         cout << "-Erro: o usuario '" << reservaUsuario->getNome() << "' esta em debito e nao pode reservar." << endl;
-        return;
+        return; //Usar tratamento de exceções
     }
 
     // 2. Busca se o usuário já possui um "Carrinho" de reservas aberto
@@ -184,7 +184,7 @@ void GerenciadorDeEmprestimos::criarReserva(Usuario* reservaUsuario, Livro* rese
     // 3. Validação do Livro Repetido
     if (reservaDoUsuario != nullptr && reservaDoUsuario->possuiLivro(reservaLivro)) {
         cout << "-Erro: o usuario ja possui uma reserva ativa para o livro '" << reservaLivro->getTitulo() << "'." << endl;
-        return; 
+        return;  //Usar tratamento de exceções
     }
 
     // 4. Teste de Disponibilidade para definir a Data de Retirada
@@ -234,7 +234,7 @@ void GerenciadorDeEmprestimos::criarEmprestimoApartirDaReserva(Reserva* reservaE
     // REGRA DE NEGÓCIO: Verifica se o usuário da reserva está habilitado.
     if (reservaExistente->getUsuario()->getStatus() != StatusUsuario::HABILITADO) {
         cout << "Erro: o usuário associado a esta reserva não pode fazer empréstimos." << endl;
-        return;
+        return; //Usar tratamento de exceções
     }   
 
     // 1. Validação: Verifica a disponibilidade de todos os livros na reserva.
@@ -307,7 +307,7 @@ void GerenciadorDeEmprestimos::listarTodasReservas() {
 void GerenciadorDeEmprestimos::listarTodasReservasUsuario(Usuario* usuarioBuscado) const {
     if (usuarioBuscado == nullptr) {
         cout << "Erro: Usuario invalido (ponteiro nulo)." << endl;
-        return;
+        return; //Usar tratamento de exceções
     }
 
     cout << "\n----- Reservas Ativas de: " << usuarioBuscado->getNome() << " -----" << endl;
@@ -331,7 +331,7 @@ void GerenciadorDeEmprestimos::listarTodasReservasUsuario(Usuario* usuarioBuscad
     // Feedback final
     if (totalReservasEncontradas == 0) {
         cout << "Nenhuma reserva ativa encontrada para este usuario." << endl;
-    } else {
+    } else { //Usar tratamento de exceções
         cout << "\nTotal de reservas encontradas: " << totalReservasEncontradas << endl;
     }
 }
@@ -392,7 +392,7 @@ void GerenciadorDeEmprestimos::listarEmprestimosDoUsuario(Usuario* usuario) {
     }
     if (!encontrou) {
         cout << "Nenhum emprestimo ativo para este usuario." << endl;
-    }
+    } //Usar tratamento de exceções
 }
 
 void GerenciadorDeEmprestimos::listarEmprestimosDoLivro(Livro& livro) {
@@ -413,13 +413,13 @@ void GerenciadorDeEmprestimos::listarEmprestimosDoLivro(Livro& livro) {
     }
     if (!encontrou) {
         cout << "Nenhum exemplar deste livro esta emprestado no momento." << endl;
-    }
+    } //Usar tratamento de exceções
 }
 
 void GerenciadorDeEmprestimos::listarReservasDoLivro(Livro& listaLivro) {
     // CONSULTA: Visualização de todas as reservas de um determinado livro.
     cout << "----- Reservas para o livro: '" << listaLivro.getTitulo() << "' -----" << endl;
-    bool encontrou = false;
+    bool encontrou = false; 
 
     for (auto temp : reservas) {
         if (temp->possuiLivro(&listaLivro)) {
@@ -437,7 +437,7 @@ void GerenciadorDeEmprestimos::listarReservasDoLivro(Livro& listaLivro) {
 
     if (!encontrou) {
         cout << "Nenhum usuario reservou este livro no momento." << endl;
-    }
+    } //Usar tratamento de exceções
 }
 
 Reserva* GerenciadorDeEmprestimos::getReservaPorUsuario(Usuario* usuarioBuscado) const {
@@ -475,21 +475,22 @@ bool GerenciadorDeEmprestimos::realizarDevolucao(Usuario* usuario, int codigoLiv
                         temp->setStatus(0); // Marca o empréstimo como finalizado
                         cout << "Todos os itens deste emprestimo foram devolvidos." << endl;
                     }
-
+                    
+                    //remover do vetor emprestimos
                     return true;
                 }
             }
         }
     }
     cout << "Nenhum emprestimo ativo encontrado para este livro e usuario." << endl;
-    return false;
+    return false; 
 }
 
 bool GerenciadorDeEmprestimos::cancelarReservaItem(Usuario* usuario, int codigoLivro) {
     Reserva* reserva = getReservaPorUsuario(usuario);
     if (!reserva) {
         cout << "Erro: Nenhuma reserva encontrada para o usuario " << usuario->getNome() << "." << endl;
-        return false;
+        return false; //Usar tratamento de exceções
     }
 
     if (reserva->removerItemPorLivro(codigoLivro)) {
@@ -509,12 +510,12 @@ bool GerenciadorDeEmprestimos::cancelarReservaItem(Usuario* usuario, int codigoL
     }
     
     cout << "Erro: Livro com codigo " << codigoLivro << " nao encontrado na reserva deste usuario." << endl;
-    return false;
+    return false; //Usar tratamento de exceções
 }
 
 bool GerenciadorDeEmprestimos::usuarioTemPendencias(Usuario* usuario) const {
     // Verifica se tem empréstimos ativos
-    for (auto temp : emprestimos) {
+    for (auto& temp : emprestimos) {
         if (temp->getUsuario() == usuario && temp->getStatus() == 1) {
             return true;
         }
@@ -524,4 +525,31 @@ bool GerenciadorDeEmprestimos::usuarioTemPendencias(Usuario* usuario) const {
         return true;
     }
     return false;
+}
+
+
+void GerenciadorDeEmprestimos::atualizaPendenciasEmprestimos(Data& dataFutura){
+
+    cout << "---------- VERIFICANDO EMPRESTIMOS ATRASADOS" << endl;
+
+    for(auto& temp: emprestimos)
+
+        if(temp->getStatus() == 1) //se o emprestimo está ativo
+            //tendo o emprestimo ativo, agora verificamos se a dataFutura(quando utilizamos a função secreta novaData)
+            //verifica se era para o emprestimo ser devolvido antes dessa data que foi passada
+            if (Data(temp->getDataPrevistaDevolucao()) < dataFutura ){
+                //usei o construtor de data, pois getDataPrevistaDevolucao é int
+
+                temp->getUsuario()->setStatus(StatusUsuario::EM_DEBITO);
+                //pega o usuario do emprestimo que atrasou e muda o status dele
+                cout << "Empréstimo de:" << temp->getUsuario()->getNome() << " está atrasado" << endl;
+                cout <<"Usuario está em débito" << endl;
+                
+
+
+                //testar essa logica basica, depois adicionar qtd de dias atrasado
+
+              
+            }
+
 }
