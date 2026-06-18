@@ -16,8 +16,7 @@ Autor::~Autor() {}      //nao precisa de delete pois nao faz alocacao dinamica (
 
 
 void Autor::imprimirAutor() {  
-        cout << "Codigao: " << codigo << endl;
-        cout << "Nome: " << nome << endl;
+        cout << "Codigo: " << codigo << " | Nome: " << nome << endl;
 }
 
 

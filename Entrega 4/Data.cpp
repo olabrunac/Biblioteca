@@ -4,6 +4,7 @@
 
 Data::Data(): dia(7), mes(6), ano(2026) {}
 
+
 Data::Data(int dia, int mes, int ano) {
     if (testeDataValida(dia, mes, ano)) {
         this->dia = dia;
@@ -17,8 +18,10 @@ Data::Data(int dia, int mes, int ano) {
     }
 }
 
+
 Data::Data(int dataInteira)
     : Data(dataInteira % 100, (dataInteira % 10000) / 100, dataInteira / 10000) {}
+
 
 Data::Data(int d, int m, int a, bool pularValidacao) {
     this->dia = d;
@@ -26,8 +29,13 @@ Data::Data(int d, int m, int a, bool pularValidacao) {
     this->ano = a;
 }
 
+
 Data::Data(const Data& outra) 
     : dia(outra.dia), mes(outra.mes), ano(outra.ano) {}
+
+
+Data::~Data() {}
+
 
 bool Data::testeDataValida(int d, int m, int a) {
     if (a < 1500) {
@@ -46,27 +54,30 @@ bool Data::testeDataValida(int d, int m, int a) {
 }
 
 
-Data::~Data() {}
-
 void Data::imprimirData() const {
     cout << (dia < 10 ? "0" : "") << dia << "/" << (mes < 10 ? "0" : "") << mes << "/" << ano;
 }
+
 
 int Data::getDia() const {
     return dia;
 }
 
+
 int Data::getMes() const {
     return mes;
 }
+
 
 int Data::getAno() const {
     return ano;
 }
 
+
 int Data::getDataInteira() const {
     return ano * 10000 + mes * 100 + dia;
 }
+
 
 void Data::setData(int novaData) {
     int novaDia = novaData % 100;
@@ -81,6 +92,7 @@ void Data::setData(int novaData) {
         cout << "Data nao alterada devido a entrada invalida." << endl;
     }
 }
+
 
 Data Data::operator+(int dias) const {
     int novoDia = this->dia + dias;
@@ -101,6 +113,7 @@ Data Data::operator+(int dias) const {
     return Data(novoDia, novoMes, novoAno, true);
 }
 
+
 bool Data::operator<(const Data& outraData) const { return this->getDataInteira() < outraData.getDataInteira(); }
 
 
@@ -108,6 +121,7 @@ bool Data::operator>(const Data& outraData) const { return this->getDataInteira(
 
 
 bool Data::operator==(const Data& outraData) const { return this->getDataInteira() == outraData.getDataInteira(); }
+
 
 int Data::operator-(const Data& outraData) const {
     // Converte ambas as datas para dias absolutos (assumindo meses de 30 dias como no seu operator+)

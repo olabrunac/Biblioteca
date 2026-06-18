@@ -5,40 +5,59 @@
 #include <string>
 
 using std::string;
-
 using std::runtime_error;
 
 class Erros : public runtime_error {
 
-public:
+    public:
 
-    Erros(string msg)
-        : runtime_error(msg) {}
+        Erros(string msg)
+            : runtime_error(msg) {}
 
 };
 
-class ErroUsuarioNãoHabilitado : public Erros {
+class ErroUsuarioNaoHabilitado : public Erros {
 
-public:
+    public:
 
-    ErroUsuarioNãoHabilitado()
-        : Erros("Erro relacionado ao usuario") {}
+        ErroUsuarioNaoHabilitado()
+            : Erros("Erro relacionado ao usuario") {}
 
+            //emprestimo.cpp nao imprime emprestimo se o usuario for nulo
 };
 
 
 class ErroLivro : public Erros {
 
-public:
+    public:
 
-    ErroLivro()
-        : Erros("Erro relacionado ao livro") {}
+        ErroLivro()
+            : Erros("Erro relacionado ao livro") {}
+
+            //no acervo.cpp ao remover um livro tem uma verificacão
+            //emprestimo.cpp nao adiciona item se o exemplar for nulo
+            //emprestimo.cpp nao permite set item no emprestimo se nao tiver exemplar disponivel
 
 };
 
 
+class ErroData : public Erros {
+    public:
+        ErroData()
+            : Erros("Erro relacionado a data") {}
+
+            //na data.cpp tem o teste de data valida
+
+};
 
 
+class ErroEmprestimo : public Erros {
+    public:
+        ErroEmprestimo()
+            : Erros("Erro relacionado ao emprestimo") {}
+
+            //gerenciadordeemprestimos.cpp nao criaemprestimo para usuario em débito
+};
 
 
 

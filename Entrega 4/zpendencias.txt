@@ -1,6 +1,7 @@
 pendencias????
 
     arrumar 2 pessoas fazendo a mesma reserva
+    fiz o emprestimo do mesmo livro 2x e passou?? aí ao fazer emprestimos de outros livros aparece um spam de mensagem de erro e depois confirma o novo emprestimo, algo em relacao ao Emprestimo::possuiLivro
     classe de erros try catch
     
 

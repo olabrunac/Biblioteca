@@ -36,6 +36,7 @@ void Acervo::acrescentarLivro(initializer_list<Livro*> listaLivros) { // Sobreca
     cout << listaLivros.size() << " livros foram adicionados ao acervo!" << endl;
 }
 
+
 void Acervo::removerDoAcervo(Livro* removerLivro) {
     cout << " <<<<< REMOVENDO O LIVRO >>>>> " << endl;
     for (auto temp = acervo.begin(); temp != acervo.end(); ++temp){

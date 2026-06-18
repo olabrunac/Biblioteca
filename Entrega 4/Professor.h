@@ -22,4 +22,4 @@ class Professor : public Usuario {
         }
 };
 
-#endif]
+#endif

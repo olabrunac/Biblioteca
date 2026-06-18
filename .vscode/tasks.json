@@ -2,16 +2,31 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "type": "cppbuild",
-            "label": "C/C++: g++ compilar projeto",
-            "command": "/usr/bin/g++",
+            "type": "shell",
+            "label": "build_g++",
+            "command": "g++",
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
                 "*.cpp",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}"
+                "${fileBasenameNoExtension}"
             ],
+            "windows": {
+                "command": "g++.exe",
+                "args": [
+                    "-fdiagnostics-color=always",
+                    "-g",
+                    "*.cpp",
+                    "-o",
+                    "${fileBasenameNoExtension}.exe"
+                ]
+            },
+        // Dica: Para instalar o g++ e o depurador no Ubuntu, use o comando no terminal:
+        // sudo apt update && sudo apt install build-essential gdb
+            "linux": {
+                "command": "/usr/bin/g++"
+            },
             "options": {
                 "cwd": "${fileDirname}"
             },

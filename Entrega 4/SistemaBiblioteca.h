@@ -22,6 +22,7 @@ private:
     void menuCadastros();
     void menuEmprestimosEReservas();
     void menuConsultas();
+    void menuNovaData();
 
 public:
     // O construtor agora recebe referências para os gerenciadores

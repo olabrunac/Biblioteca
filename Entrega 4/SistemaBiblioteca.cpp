@@ -61,6 +61,41 @@ void SistemaBiblioteca::mostrarMenuPrincipal() {
     cout << "Escolha uma opcao: ";
 }
 
+// Método principal que executa o loop do menu.
+void SistemaBiblioteca::executar() {
+    int opcao;
+    do {
+        system("clear || cls"); // Limpa a tela
+        mostrarMenuPrincipal();
+        cin >> opcao;
+
+        if (cin.fail()) {
+            cout << "Entrada invalida. Por favor, insira um numero." << endl;
+            cin.clear();
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            opcao = -1; // Força o loop a continuar
+        } else {
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+
+        switch (opcao) {
+            case 1: menuCadastros(); break;
+            case 2: menuEmprestimosEReservas(); break;
+            case 3: menuConsultas(); break;
+            case 9: menuNovaData(); break;                      //menu para mudar a data
+            case 0: break; // Sair
+            default:
+                cout << "Opcao invalida! Tente novamente." << endl;
+                break;
+        }
+        if (opcao != 0) {
+            cout << "\nPressione Enter para continuar...";
+            cin.get();
+        }
+
+    } while (opcao != 0);
+}
+
 void SistemaBiblioteca::menuCadastros() {
     int opcao;
     do {
@@ -96,40 +131,6 @@ void SistemaBiblioteca::menuCadastros() {
             cout << "\nPressione Enter para continuar...";
             cin.get();
         }
-    } while (opcao != 0);
-}
-
-// Método principal que executa o loop do menu.
-void SistemaBiblioteca::executar() {
-    int opcao;
-    do {
-        system("clear || cls"); // Limpa a tela
-        mostrarMenuPrincipal();
-        cin >> opcao;
-
-        if (cin.fail()) {
-            cout << "Entrada invalida. Por favor, insira um numero." << endl;
-            cin.clear();
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            opcao = -1; // Força o loop a continuar
-        } else {
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        }
-
-        switch (opcao) {
-            case 1: menuCadastros(); break;
-            case 2: menuEmprestimosEReservas(); break;
-            case 3: menuConsultas(); break;
-            case 0: break; // Sair
-            default:
-                cout << "Opcao invalida! Tente novamente." << endl;
-                break;
-        }
-        if (opcao != 0) {
-            cout << "\nPressione Enter para continuar...";
-            cin.get();
-        }
-
     } while (opcao != 0);
 }
 
@@ -386,4 +387,38 @@ void SistemaBiblioteca::menuConsultas() {
             cin.get();
         }
     } while (opcao != 0);
+}
+
+void SistemaBiblioteca::menuNovaData() { //o menu ainda nao atualiza os status
+    cout << "\nMenu Secreto shhhhhh" << endl;
+    
+    int dia, mes, ano;
+    bool dataValida = false;
+    do {
+        cout << "\nInsira a nova data para atualizar o sistema. (tem que ser igual ou posterior a atual)" << endl;
+        cout << "Dia: "; cin >> dia;
+        cout << "Mes: "; cin >> mes;
+        cout << "Ano: "; cin >> ano;
+
+        if (cin.fail()) {
+            cout << "Entrada invalida. Por favor, insira apenas numeros." << endl;
+            cin.clear();
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            continue; // Pula para a próxima iteração do loop
+        }
+
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        if (Data::testeDataValida(dia, mes, ano)) {
+            Data novaData(dia, mes, ano);
+            if (novaData.getDataInteira() < dataAtual.getDataInteira()) {
+                cout << "Erro: a nova data nao pode ser no passado" << endl;
+            } else {
+                dataAtual = novaData;
+                dataValida = true;
+            }
+        } else {
+            cout << "Data invalida! Por favor, tente novamente." << endl;
+        }
+    } while (!dataValida);
 }

@@ -20,7 +20,7 @@ void ExemplarLivro::imprimirExemplarLivro(int dataDevolucao) {          //retorn
         int a = dataDevolucao / 10000;
         
         cout << livro->getTitulo() << ", " << nroExemplar << ", " << toString(status)
-             << " até " << (d < 10 ? "0" : "") << d << "/" << (m < 10 ? "0" : "") << m << "/" << a << endl;
+             << " ate " << (d < 10 ? "0" : "") << d << "/" << (m < 10 ? "0" : "") << m << "/" << a << endl;
     } else {
         cout << livro->getTitulo() << ", " << nroExemplar << ", " << toString(status) << endl;
     }

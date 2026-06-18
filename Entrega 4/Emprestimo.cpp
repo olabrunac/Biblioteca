@@ -8,6 +8,7 @@
 using std::cout;
 using std::endl;
 
+
 Emprestimo::Emprestimo(): usuario(nullptr), status(0) {}
 
 
@@ -65,9 +66,6 @@ Usuario* Emprestimo::getUsuario() const {return usuario; }
 const vector<ItemEmprestimo*>& Emprestimo::getItens() const { return itens; }
 
 
-/*Os setters de data utilizam o próprio construtor da classe data, o que
-possibilita receber um inteiro, testar, tratar erro, e atribui-la */
-
 void Emprestimo::setDataDeRetirada(Data novaDataDeRetirada) { this -> dataDeRetirada = Data(novaDataDeRetirada); }
     
 
@@ -95,6 +93,7 @@ void Emprestimo::setItens(Livro& novoLivro){
     }
 }
 
+
 bool Emprestimo::possuiLivro(Livro* livroTeste) const {
 
       for (const auto& temp : itens){
@@ -104,6 +103,6 @@ bool Emprestimo::possuiLivro(Livro* livroTeste) const {
             return true;
         }
     }
-
+    cout << "Não possui o livro no emprestimo" << endl;
     return false;
 }

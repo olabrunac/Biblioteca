@@ -10,7 +10,7 @@
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
-            "externalConsole": false,
+            "externalConsole": true,
             "MIMode": "gdb",
             "setupCommands": [
                 {
@@ -19,8 +19,12 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "C/C++: g++ compilar projeto",
-            "miDebuggerPath": "/usr/bin/gdb"
+            "preLaunchTask": "build_g++",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "windows": {
+                "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
+                "miDebuggerPath": "C:\\MinGW\\bin\\gdb.exe"
+            }
         }
     ]
 }

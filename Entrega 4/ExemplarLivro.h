@@ -4,7 +4,6 @@
 class Livro;
 
 #include "StatusEmprestimo.h"
-#include "LocalizacaoPrateleira.h"
 
 
 class ExemplarLivro {
