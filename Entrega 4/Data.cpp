@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "Data.h"
+#include "Erros.h"
 
 Data::Data(): dia(7), mes(6), ano(2026) {}
 
@@ -39,16 +40,13 @@ Data::~Data() {}
 
 bool Data::testeDataValida(int d, int m, int a) {
     if (a < 1500) {
-        cout << "Erro: Ano invalido" << endl;
-        return false;
+        throw ErroData();
     }
     if (m < 1 || m > 12) {
-        cout << "Erro: Mes invalido." << endl;
-        return false;
+       throw ErroData();
     }
     if (d < 1 || d > 31) {
-        cout << "Erro: Dia invalido." << endl;
-        return false;
+        throw ErroData();
     }
     return true;
 }
@@ -89,7 +87,7 @@ void Data::setData(int novaData) {
         this->mes = novaMes;
         this->ano = novoAno;
     } else {
-        cout << "Data nao alterada devido a entrada invalida." << endl;
+        throw ErroData();
     }
 }
 

@@ -1,6 +1,7 @@
 #include "Acervo.h"
 #include "Livro.h"
 #include <iostream>
+#include "Erros.h"
 
 using std::cout;
 using std::endl;
@@ -48,7 +49,7 @@ void Acervo::removerDoAcervo(Livro* removerLivro) {
             return;
         }
     }
-    cout <<"Livro nao encontrado no acervo" << endl;
+    throw ErroLivroNaoExisteAcervo();
 }
 
 

@@ -18,29 +18,45 @@ class Erros : public runtime_error {
 
 class ErroUsuarioNaoHabilitado : public Erros {
 
-    public:
+    public:ErroUsuarioNaoHabilitado()
 
-        ErroUsuarioNaoHabilitado()
-            : Erros("Erro relacionado ao usuario") {}
+        
+            : Erros("Osuario está em débito e não pode realizar emprestimos") {}
 
             //emprestimo.cpp nao imprime emprestimo se o usuario for nulo 
             //gerenciadorDeEmprestimo.cpp | linha 33; 95; 178; 237 | acontece se o usúario não estiver com status "Habilitado"
 };
 
-class ErroUsuarioJaReservouLivro: public Erros {
+class ErroNenhumaReserva : public Erros {
 
     public:
 
+        ErroNenhumaReserva()
+            : Erros("O usuario não possui nenhuma reserva ativa") {}
+};
+
+class ErroUsuarioNaoExiste: public Erros {
+
+    public:
+
+        ErroUsuarioNaoExiste()
+            : Erros("O usuario informado não existe"){}
+
+
+};
+class ErroUsuarioJaReservouLivro: public Erros {
+
+    public:
         ErroUsuarioJaReservouLivro() : Erros("O usuario já tem uma reserva desse livro") {}
         //gerenciadorEmprestimo.cpp| linha 187
 }; 
 
-class ErroLivro : public Erros {
+class ErroLivroNaoExisteAcervo : public Erros {
 
     public:
 
-        ErroLivro()
-            : Erros("Erro relacionado ao livro") {}
+        ErroLivroNaoExisteAcervo()
+            : Erros("Livro não encontrado") {}
 
             //no acervo.cpp ao remover um livro tem uma verificacão
             //emprestimo.cpp nao adiciona item se o exemplar for nulo
@@ -48,28 +64,83 @@ class ErroLivro : public Erros {
 
 };
 
+class ErroExemplarGuardado : public Erros {
+
+    public:
+        ErroExemplarGuardado()
+        : Erros("Nenhum exemplar do livro está emprestado"){}
+        
+};
+class ErroExemplarNulo : public Erros {
+
+    ErroExemplarNulo ()
+     : Erros("O exemplar informado não existe ou não foi encontrado"){}
+
+};
+
+
+class ErroIndisponivel: public Erros {
+
+    ErroIndisponivel()
+        : Erros(" O exemplar informado não está disponível"){
+
+        }
+};
 
 class ErroData : public Erros {
     public:
         ErroData()
-            : Erros("Erro relacionado a data") {}
+            : Erros("A data informada é inválida") {}
 
             //na data.cpp tem o teste de data valida
 
 };
 
 
-class ErroEmprestimo : public Erros {
+class ErroNenhumEmprestimo : public Erros {
     public:
-        ErroEmprestimo()
-            : Erros("Erro relacionado ao emprestimo") {}
+        ErroNenhumEmprestimo()
+            : Erros("Nenhum empréstimo relacionado com o usuário informado") {}
 
-            //gerenciadordeemprestimos.cpp nao criaemprestimo para usuario em débito
+
+};
+
+class ErroNenhumaReserva : public Erros {
+    public:
+        ErroNenhumaReserva()
+            : Erros("Nenhuma reserva relacionada com o usuário informado") {}
+
+
+};
+
+class ErroLivroIndisponivel : public Erros {
+
+    public:
+        ErroLivroIndisponivel()
+            : Erros("O livro informado está indisponível no periodo"){}
 };
 
 
+class ErroNaoLivro : public Erros {
+    public:
+        ErroNaoLivro()
+            : Erros(" A existência do livro é um mistério") {}
+};
 
+class ErroEmprestimoVazio : public Erros {
 
+    public:
+        ErroEmprestimoVazio()
+            : Erros("O empréstimo está vazio") {}
+
+};
+
+class ErroSistemaVazio : public Erros {
+
+    public:
+        ErroSistemaVazio()
+            : Erros("O sistema está vazio") {}
+};
 
 
 

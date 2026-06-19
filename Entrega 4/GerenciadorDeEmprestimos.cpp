@@ -29,9 +29,8 @@ GerenciadorDeEmprestimos::~GerenciadorDeEmprestimos() {
 void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, ExemplarLivro* exemplar, const Data& dataAtual) {
     // REGRA DE NEGÓCIO: Verifica se o usuário está habilitado para empréstimos.
     if (emprestimoUsuario.getStatus() != StatusUsuario::HABILITADO) {
-        cout << "O usuario: '" << emprestimoUsuario.getNome();
-        cout << "' nao esta habilitado para realizar emprestimos." << endl;
-        return;
+        
+        throw ErroUsuarioNaoHabilitado();
     }
 
     Emprestimo* novoEmprestimo = new Emprestimo();
@@ -67,9 +66,9 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, Exemp
         itensAdicionados++;
     } else {
         if (exemplar != nullptr && !disponivelNoPeriodo) {
-            cout << "-Nao foi possivel realizar o emprestimo: O livro '" << exemplar->getLivro()->getTitulo() << "' ja possui reservas para este periodo." << endl;
+            throw ErroUsuarioJaReservouLivro();
         } else {
-            cout << "-Nao foi possivel realizar o emprestimo para " << emprestimoUsuario.getNome() << "." << endl;
+           throw ErroNaoLivro();
         }
     }
     if (itensAdicionados > 0) {
@@ -82,7 +81,7 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, Exemp
     } else {
         // Se nenhum item foi adicionado, o empréstimo não é criado e a memória é liberada.
         delete novoEmprestimo;
-        cout << "-Nenhum item adicionado. Emprestimo cancelado." << endl;
+        throw ErroEmprestimoVazio();
     }
 }
 
@@ -91,9 +90,8 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, initi
     
     // REGRA DE NEGÓCIO: Verifica se o usuário está habilitado para empréstimos.
     if (emprestimoUsuario.getStatus() != StatusUsuario::HABILITADO) {
-        cout << "O usuario: '" << emprestimoUsuario.getNome();
-        cout << "' nao esta habilitado para realizar emprestimos." << endl;
-        return;
+      
+        throw ErroUsuarioNaoHabilitado();
     }
 
     Emprestimo* novoEmprestimo = new Emprestimo();
@@ -126,7 +124,7 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, initi
             novoEmprestimo->adicionarItem(novoItem);
             itensAdicionados++;
         } else if (exemplar != nullptr && !disponivelNoPeriodo) {
-            cout << "Aviso: O livro '" << exemplar->getLivro()->getTitulo() << "' possui conflito com reservas futuras." << endl;
+           throw ErroNaoLivro();
         }
     }
 
@@ -138,7 +136,7 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, initi
     } else {
         // Se a lista de entrada não continha exemplares válidos, cancela a operação.
         delete novoEmprestimo;
-        cout << "-Nenhum item adicionado. Emprestimo cancelado." << endl;
+            throw ErroEmprestimoVazio();
     }
 }
 
@@ -174,8 +172,7 @@ void GerenciadorDeEmprestimos::criarReserva(Usuario* reservaUsuario, Livro* rese
 
     // 1. Validação do Usuario
     if (reservaUsuario->getStatus() != StatusUsuario::HABILITADO) {
-        cout << "-Erro: o usuario '" << reservaUsuario->getNome() << "' esta em debito e nao pode reservar." << endl;
-        return; //Usar tratamento de exceções
+        ErroUsuarioNaoHabilitado();
     }
 
     // 2. Busca se o usuário já possui um "Carrinho" de reservas aberto
@@ -183,8 +180,7 @@ void GerenciadorDeEmprestimos::criarReserva(Usuario* reservaUsuario, Livro* rese
 
     // 3. Validação do Livro Repetido
     if (reservaDoUsuario != nullptr && reservaDoUsuario->possuiLivro(reservaLivro)) {
-        cout << "-Erro: o usuario ja possui uma reserva ativa para o livro '" << reservaLivro->getTitulo() << "'." << endl;
-        return;  //Usar tratamento de exceções
+        ErroUsuarioJaReservouLivro();
     }
 
     // 4. Teste de Disponibilidade para definir a Data de Retirada
@@ -233,14 +229,13 @@ void GerenciadorDeEmprestimos::criarEmprestimoApartirDaReserva(Reserva* reservaE
     
     // REGRA DE NEGÓCIO: Verifica se o usuário da reserva está habilitado.
     if (reservaExistente->getUsuario()->getStatus() != StatusUsuario::HABILITADO) {
-        cout << "Erro: o usuário associado a esta reserva não pode fazer empréstimos." << endl;
-        return; //Usar tratamento de exceções
+       ErroUsuarioNaoHabilitado();
     }   
 
     // 1. Validação: Verifica a disponibilidade de todos os livros na reserva.
     for(auto temp : reservaExistente->getItens()) { 
         if(temp->getLivro()->getExemplarDisponivel() == nullptr) {
-            cout << "Erro: o livro '" << temp->getLivro()->getTitulo() << "' nao possui exemplares disponiveis no momento" << endl;
+            throw ErroLivroIndisponivel();
             return;
         }
     }
@@ -294,8 +289,7 @@ void GerenciadorDeEmprestimos::listarTodasReservas() {
     cout << endl << "----- Lista de Reservas Ativas -----" << endl;
     
     if (reservas.empty()) {
-        cout << "Nenhuma reserva no sistema." << endl;
-        return;
+        throw ErroSistemaVazio();
     }
     // Itera sobre o vetor de reservas e chama o método de impressão de cada uma.
     for (auto temp : reservas) {
@@ -306,8 +300,8 @@ void GerenciadorDeEmprestimos::listarTodasReservas() {
 
 void GerenciadorDeEmprestimos::listarTodasReservasUsuario(Usuario* usuarioBuscado) const {
     if (usuarioBuscado == nullptr) {
-        cout << "Erro: Usuario invalido (ponteiro nulo)." << endl;
-        return; //Usar tratamento de exceções
+
+      throw ErroUsuarioNaoExiste();
     }
 
     cout << "\n----- Reservas Ativas de: " << usuarioBuscado->getNome() << " -----" << endl;
@@ -330,7 +324,7 @@ void GerenciadorDeEmprestimos::listarTodasReservasUsuario(Usuario* usuarioBuscad
 
     // Feedback final
     if (totalReservasEncontradas == 0) {
-        cout << "Nenhuma reserva ativa encontrada para este usuario." << endl;
+        throw ErroNenhumaReserva();
     } else { //Usar tratamento de exceções
         cout << "\nTotal de reservas encontradas: " << totalReservasEncontradas << endl;
     }
@@ -363,7 +357,7 @@ bool GerenciadorDeEmprestimos::estaDisponivelnaData(Livro* testeLivro, const Dat
     //Verificação dos Emprestimos    
     for (const auto& temp : emprestimos ){
 
-        if(temp->possuiLivro(testeLivro)){ //Se ele já foi Emprestado
+        if(temp->possuiLivro(testeLivro) && temp->getStatus() == 1){ //Se ele já foi Emprestado
             if(temp->getDataPrevistaDevolucao() > dataInicial){ //Se vai ser devolvido depois da data Inicial
 
             ContadorConflito++;
@@ -391,8 +385,8 @@ void GerenciadorDeEmprestimos::listarEmprestimosDoUsuario(Usuario* usuario) {
         }
     }
     if (!encontrou) {
-        cout << "Nenhum emprestimo ativo para este usuario." << endl;
-    } //Usar tratamento de exceções
+       throw ErroNenhumEmprestimo();
+    } 
 }
 
 void GerenciadorDeEmprestimos::listarEmprestimosDoLivro(Livro& livro) {
@@ -412,8 +406,8 @@ void GerenciadorDeEmprestimos::listarEmprestimosDoLivro(Livro& livro) {
         }
     }
     if (!encontrou) {
-        cout << "Nenhum exemplar deste livro esta emprestado no momento." << endl;
-    } //Usar tratamento de exceções
+       throw ErroExemplarGuardado();
+    } 
 }
 
 void GerenciadorDeEmprestimos::listarReservasDoLivro(Livro& listaLivro) {
@@ -436,8 +430,8 @@ void GerenciadorDeEmprestimos::listarReservasDoLivro(Livro& listaLivro) {
     }
 
     if (!encontrou) {
-        cout << "Nenhum usuario reservou este livro no momento." << endl;
-    } //Usar tratamento de exceções
+        ErroExemplarGuardado();
+    } 
 }
 
 Reserva* GerenciadorDeEmprestimos::getReservaPorUsuario(Usuario* usuarioBuscado) const {
@@ -472,6 +466,8 @@ bool GerenciadorDeEmprestimos::realizarDevolucao(Usuario* usuario, int codigoLiv
                         }
                     }
                     if (todosDevolvidos) {
+
+                        
                         temp->setStatus(0); // Marca o empréstimo como finalizado
                         cout << "Todos os itens deste emprestimo foram devolvidos." << endl;
                     }
@@ -482,15 +478,15 @@ bool GerenciadorDeEmprestimos::realizarDevolucao(Usuario* usuario, int codigoLiv
             }
         }
     }
-    cout << "Nenhum emprestimo ativo encontrado para este livro e usuario." << endl;
+    throw ErroNenhumEmprestimo();
     return false; 
 }
 
 bool GerenciadorDeEmprestimos::cancelarReservaItem(Usuario* usuario, int codigoLivro) {
     Reserva* reserva = getReservaPorUsuario(usuario);
     if (!reserva) {
-        cout << "Erro: Nenhuma reserva encontrada para o usuario " << usuario->getNome() << "." << endl;
-        return false; //Usar tratamento de exceções
+        throw ErroNenhumaReserva();
+        return false; 
     }
 
     if (reserva->removerItemPorLivro(codigoLivro)) {
@@ -509,8 +505,8 @@ bool GerenciadorDeEmprestimos::cancelarReservaItem(Usuario* usuario, int codigoL
         return true;
     }
     
-    cout << "Erro: Livro com codigo " << codigoLivro << " nao encontrado na reserva deste usuario." << endl;
-    return false; //Usar tratamento de exceções
+    throw ErroLivroNaoExisteAcervo();
+    return false; 
 }
 
 bool GerenciadorDeEmprestimos::usuarioTemPendencias(Usuario* usuario) const {
@@ -543,7 +539,7 @@ void GerenciadorDeEmprestimos::atualizaPendenciasEmprestimos(Data& dataFutura){
                 temp->getUsuario()->setStatus(StatusUsuario::EM_DEBITO);
                 //pega o usuario do emprestimo que atrasou e muda o status dele
                 cout << "Empréstimo de:" << temp->getUsuario()->getNome() << " está atrasado" << endl;
-                cout <<"Usuario está em débito" << endl;
+                throw ErroUsuarioNaoHabilitado();
                 
 
 
