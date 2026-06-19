@@ -124,7 +124,8 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, initi
             novoEmprestimo->adicionarItem(novoItem);
             itensAdicionados++;
         } else if (exemplar != nullptr && !disponivelNoPeriodo) {
-           throw ErroNaoLivro();
+            delete novoEmprestimo;
+            throw ErroNaoLivro();
         }
     }
 
@@ -172,7 +173,7 @@ void GerenciadorDeEmprestimos::criarReserva(Usuario* reservaUsuario, Livro* rese
 
     // 1. Validação do Usuario
     if (reservaUsuario->getStatus() != StatusUsuario::HABILITADO) {
-        ErroUsuarioNaoHabilitado();
+        throw ErroUsuarioNaoHabilitado();
     }
 
     // 2. Busca se o usuário já possui um "Carrinho" de reservas aberto
@@ -180,7 +181,7 @@ void GerenciadorDeEmprestimos::criarReserva(Usuario* reservaUsuario, Livro* rese
 
     // 3. Validação do Livro Repetido
     if (reservaDoUsuario != nullptr && reservaDoUsuario->possuiLivro(reservaLivro)) {
-        ErroUsuarioJaReservouLivro();
+        throw ErroUsuarioJaReservouLivro();
     }
 
     // 4. Teste de Disponibilidade para definir a Data de Retirada
@@ -484,13 +485,15 @@ bool GerenciadorDeEmprestimos::realizarDevolucao(Usuario* usuario, int codigoLiv
 
 bool GerenciadorDeEmprestimos::cancelarReservaItem(Usuario* usuario, int codigoLivro) {
     Reserva* reserva = getReservaPorUsuario(usuario);
+    
     if (!reserva) {
         throw ErroNenhumaReserva();
-        return false; 
+        return false; // Retorno de segurança
     }
 
     if (reserva->removerItemPorLivro(codigoLivro)) {
         cout << "Item da reserva cancelado com sucesso." << endl;
+        
         // Se a reserva ficou vazia, remove ela completamente
         if (reserva->getItens().empty()) {
             cout << "A reserva ficou vazia e foi removida do sistema." << endl;
@@ -502,13 +505,13 @@ bool GerenciadorDeEmprestimos::cancelarReservaItem(Usuario* usuario, int codigoL
                 }
             }
         }
-        return true;
+        
+        return true; // CORRETO: Retorna sucesso para quem chamou a função
     }
     
     throw ErroLivroNaoExisteAcervo();
-    return false; 
+    return false; // CORRETO: Retorno de segurança caso o compilador reclame do throw
 }
-
 bool GerenciadorDeEmprestimos::usuarioTemPendencias(Usuario* usuario) const {
     // Verifica se tem empréstimos ativos
     for (auto& temp : emprestimos) {

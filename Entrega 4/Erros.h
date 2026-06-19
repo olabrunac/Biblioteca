@@ -104,15 +104,6 @@ class ErroNenhumEmprestimo : public Erros {
 
 
 };
-
-class ErroNenhumaReserva : public Erros {
-    public:
-        ErroNenhumaReserva()
-            : Erros("Nenhuma reserva relacionada com o usuário informado") {}
-
-
-};
-
 class ErroLivroIndisponivel : public Erros {
 
     public:

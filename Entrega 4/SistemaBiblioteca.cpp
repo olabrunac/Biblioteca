@@ -2,6 +2,7 @@
 #include "GerenciadorDeLivros.h"
 #include "GerenciadorDeUsuarios.h"
 #include "GerenciadorDeEmprestimos.h"
+#include "Erros.h"
 #include "Usuario.h"
 #include "Livro.h"
 #include <iostream>
@@ -188,7 +189,14 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                 if (!livro) { cout << "Erro: Livro nao encontrado." << endl; break; }
 
                 ExemplarLivro* exemplar = livro->getExemplarDisponivel();
-                if (!exemplar) { cout << "Nao ha exemplares disponiveis." << endl; break; }
+                if (!exemplar) { 
+
+                cout << "Nao ha exemplares disponiveis." << endl; 
+
+                
+                //Aqui pra implementar apenas selecionar SIM para reservar o livro, se não esteja disponível para emprestimo
+                
+                break; }
 
                 gerenciadorEmprestimos.criarEmprestimo(*usuario, exemplar, dataAtual);
                 break;
@@ -213,7 +221,8 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                 cout << "Codigo do Usuario: ";
                 int codUsuario;
                 cin >> codUsuario;
-                cin.ignore();
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
+                
                 Usuario* usuario = gerenciadorUsuarios.buscarUsuarioPorCodigo(codUsuario);
                 if (!usuario) { cout << "Erro: Usuario nao encontrado." << endl; break; }
 
@@ -246,56 +255,83 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                 if (!livro) { cout << "Erro: Livro nao encontrado." << endl; break; }
 
                 cout << "Data para reserva: Quando pretende fazer a reserva?" << endl;
-                cout << "1. Hoje ou o mais rápido possível" << endl;
+                cout << "1. Hoje ou o mais rapido possivel" << endl;
                 cout << "2. Em uma data especifica" << endl;
                 cout << "Escolha uma opcao: ";
                 int opcaoReserva;
                 cin >> opcaoReserva;
+                
+                // CORREÇÃO 1: Limpando o \n que o usuário deu ao digitar a opcaoReserva
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
                 if (opcaoReserva == 1) {
+                    try {
+                        gerenciadorEmprestimos.criarReserva(usuario, livro, dataAtual);
+                        cout << "\nReserva efetuada com sucesso!" << endl;
+                    } catch (const ErroUsuarioNaoHabilitado& e) {
+                        cout << "\n[ERRO DE ACESSO]: " << e.what() << endl;
+                        cout << "Por favor, peca ao usuario para regularizar suas pendencias." << endl;
+                    } catch (const ErroUsuarioJaReservouLivro& e) {
+                        cout << "\n[AVISO]: " << e.what() << endl;
+                    } catch (const Erros& e) {
+                        cout << "\n[FALHA NA OPERACAO]: " << e.what() << endl;
+                    } catch (const std::exception& e) {
+                        cout << "\n[ERRO FATAL DO SISTEMA]: " << e.what() << endl;
+                    }
                     
-                    gerenciadorEmprestimos.criarReserva(usuario, livro, dataAtual);
-                    break;
-                } else if (opcaoReserva == 2) {
+                    break; // Sai do case 3 e vai para o "Pressione enter para continuar"
                 
-                bool dataValidaReserva = false;
-                Data dataReserva;
-                int diaReserva, mesReserva, anoReserva;
+                } else if (opcaoReserva == 2) {
+                    int diaReserva, mesReserva, anoReserva;
 
+                    cout << "\nPor favor, insira a data para a reserva." << endl;
+                    cout << "Dia: "; cin >> diaReserva;
+                    cout << "Mes: "; cin >> mesReserva;
+                    cout << "Ano: "; cin >> anoReserva;
 
-                cout << "\nPor favor, insira a data para a reserva." << endl;
-                cout << "Dia: "; cin >> diaReserva;
-                cout << "Mes: "; cin >> mesReserva;
-                cout << "Ano: "; cin >> anoReserva;
+                    if (cin.fail()) {
+                        cout << "Entrada invalida. Por favor, insira apenas numeros." << endl;
+                        cin.clear();
+                        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                        break; // CORREÇÃO 2: Substituído continue por break
+                    }
 
-        // verifica se a entrada é um número
-        if (cin.fail()) {
-            cout << "Entrada invalida. Por favor, insira apenas numeros." << endl;
-            cin.clear();
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            continue; // Pula para a próxima iteração do loop
-        }
+                    // CORREÇÃO 3: Limpando o \n que sobrou do anoReserva
+                    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-        // Limpa o restante da linha do buffer de entrada
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    if (Data::testeDataValida(diaReserva, mesReserva, anoReserva)) {
+                        Data dataReserva(diaReserva, mesReserva, anoReserva);
+                         if(dataReserva < dataAtual) {
 
-        // Usa o método estático da classe Data para validar os valores.
-        if (Data::testeDataValida(diaReserva, mesReserva, anoReserva)) {
-            dataReserva = Data(diaReserva, mesReserva,anoReserva);
-            dataValidaReserva = true;
-            gerenciadorEmprestimos.criarReserva(usuario, livro, dataReserva);
-            break;
-        } else {
+                            dataReserva = dataAtual; // Posteriormente adicionar erro especifico
+                         }
+                        
+                        // CORREÇÃO 4: Adicionado try-catch na Opção 2!
+                        try {
+                            gerenciadorEmprestimos.criarReserva(usuario, livro, dataReserva);
+                            cout << "\nReserva efetuada com sucesso para a data desejada!" << endl;
+                        } catch (const ErroUsuarioNaoHabilitado& e) {
+                            cout << "\n[ERRO DE ACESSO]: " << e.what() << endl;
+                        } catch (const ErroUsuarioJaReservouLivro& e) {
+                            cout << "\n[AVISO]: " << e.what() << endl;
+                        } catch (const Erros& e) {
+                            cout << "\n[FALHA NA OPERACAO]: " << e.what() << endl;
+                        } catch (const std::exception& e) {
+                            cout << "\n[ERRO FATAL DO SISTEMA]: " << e.what() << endl;
+                        }
 
-            cout << "Data invalida! Por favor, tente novamente." << endl;
-        }   
+                        break; 
+                    } else {
+                        cout << "Data invalida! Por favor, tente novamente." << endl;
+                        break; // CORREÇÃO 5: Faltava esse break. Ele impedia que o código invadisse o case 4 sem querer.
+                    }   
                 
                 } else {
                     cout << "Opcao invalida." << endl;
                     break;
                 }
+            } // FIM DO CASE 3
 
-            }
             case 4: {
                 cout << "--- Cancelar Reserva ---" << endl;
                 cout << "Codigo do Usuario: ";
@@ -304,11 +340,30 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                 Usuario* usuario = gerenciadorUsuarios.buscarUsuarioPorCodigo(codUsuario);
                 if (!usuario) { cout << "Erro: Usuario nao encontrado." << endl; break; }
 
-                gerenciadorEmprestimos.listarTodasReservasUsuario(usuario);
-                cout << "\nDigite o codigo do livro para cancelar a reserva: ";
-                int codLivro;
-                cin >> codLivro;
-                gerenciadorEmprestimos.cancelarReservaItem(usuario, codLivro);
+                // ADICIONANDO O TRY-CATCH
+               try {
+                        gerenciadorEmprestimos.listarTodasReservasUsuario(usuario);
+    
+                        cout << "\nDigite o codigo do livro para cancelar a reserva: ";
+                        int codLivro;
+                        cin >> codLivro;
+    
+                    // ADICIONE ESTA LINHA PARA LIMPAR O BUFFER:
+                    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    
+                    // Tenta cancelar.
+                    gerenciadorEmprestimos.cancelarReservaItem(usuario, codLivro);
+    
+                } catch (const ErroNenhumaReserva& e) {
+                    cout << "\n[AVISO]: " << e.what() << endl;
+                } catch (const ErroLivroNaoExisteAcervo& e) {
+                    cout << "\n[ERRO]: O livro informado nao esta nas reservas deste usuario." << endl;
+                } catch (const Erros& e) {
+                    cout << "\n[FALHA NA OPERACAO]: " << e.what() << endl;
+                } catch (const std::exception& e) {
+                    cout << "\n[ERRO FATAL DO SISTEMA]: " << e.what() << endl;
+                }
+                
                 break;
             }
             case 5: {
@@ -351,9 +406,24 @@ void SistemaBiblioteca::menuConsultas() {
 
         switch (opcao) {
             case 1: 
-                gerenciadorEmprestimos.listarTodosEmprestimosAtuais(); 
-                gerenciadorEmprestimos.listarTodasReservas(); 
+                // Colocamos em blocos try-catch separados. 
+                // Assim, se falhar ao listar empréstimos, ele ainda tenta listar as reservas!
+                try {
+                    gerenciadorEmprestimos.listarTodosEmprestimosAtuais(); 
+                } catch (const Erros& e) {
+                    cout << "[AVISO EMPRESTIMOS]: " << e.what() << endl;
+                }
+
+                try {
+                    gerenciadorEmprestimos.listarTodasReservas(); 
+                } catch (const ErroSistemaVazio& e) {
+                    // Captura o erro específico que causou o crash da sua imagem
+                    cout << "[AVISO RESERVAS]: " << e.what() << endl;
+                } catch (const Erros& e) {
+                    cout << "[FALHA]: " << e.what() << endl;
+                }
                 break;
+
             case 2: {
                 cout << "--- Consulta por Livro ---" << endl;
                 cout << "Codigo do Livro: "; 
@@ -361,10 +431,21 @@ void SistemaBiblioteca::menuConsultas() {
                 cin >> codLivro;
                 Livro* livro = gerenciadorLivros.buscarLivroPorCodigo(codLivro);
                 if (!livro) { cout << "Erro: Livro nao encontrado." << endl; break; }
-                gerenciadorEmprestimos.listarEmprestimosDoLivro(*livro);
-                gerenciadorEmprestimos.listarReservasDoLivro(*livro);
+                
+                try {
+                    gerenciadorEmprestimos.listarEmprestimosDoLivro(*livro);
+                } catch (const Erros& e) {
+                    cout << "\n[AVISO]: " << e.what() << endl;
+                }
+
+                try {
+                    gerenciadorEmprestimos.listarReservasDoLivro(*livro);
+                } catch (const Erros& e) {
+                    cout << "\n[AVISO]: " << e.what() << endl;
+                }
                 break;
             }
+
             case 3: {
                 cout << "--- Consulta por Usuario ---" << endl;
                 cout << "Codigo do Usuario: "; 
@@ -372,13 +453,27 @@ void SistemaBiblioteca::menuConsultas() {
                 cin >> codUsuario;
                 Usuario* usuario = gerenciadorUsuarios.buscarUsuarioPorCodigo(codUsuario);
                 if (!usuario) { cout << "Erro: Usuario nao encontrado." << endl; break; }
-                gerenciadorEmprestimos.listarEmprestimosDoUsuario(usuario);
-                gerenciadorEmprestimos.listarTodasReservasUsuario(usuario);
+                
+                try {
+                    gerenciadorEmprestimos.listarEmprestimosDoUsuario(usuario);
+                } catch (const Erros& e) {
+                    cout << "\n[AVISO]: " << e.what() << endl;
+                }
+
+                try {
+                    gerenciadorEmprestimos.listarTodasReservasUsuario(usuario);
+                } catch (const Erros& e) {
+                    cout << "\n[AVISO]: " << e.what() << endl;
+                }
                 break;
             }
             case 4: 
+                try {
                 gerenciadorLivros.getAcervo().listarTodos(); 
                 break;
+                } catch (const Erros& e) {
+                    cout << "\n[AVISO]: " << e.what() << endl;
+                }
             case 0: break;
             default: cout << "Opcao invalida!" << endl; break;
         }
