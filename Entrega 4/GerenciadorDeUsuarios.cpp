@@ -1,6 +1,7 @@
 #include "GerenciadorDeUsuarios.h"
 #include "Aluno.h"
 #include "Professor.h"
+#include "Erros.h"
 #include <iostream>
 #include <limits>
 
@@ -24,7 +25,9 @@ void GerenciadorDeUsuarios::inicializarDados() {
     usuarios.push_back(new Aluno(3, "Ryan"));
     usuarios.push_back(new Professor(4, "Valter"));
     usuarios.push_back(new Professor(5, "Backes"));
-    proximoCodigoUsuario = 6;
+    usuarios.push_back(new Aluno(6, "Aluno Em Debito", StatusUsuario::EM_DEBITO));
+    usuarios.push_back(new Professor(7, "Professor Em Debito", StatusUsuario::EM_DEBITO));
+    proximoCodigoUsuario = 8;
 }
 
 void GerenciadorDeUsuarios::cadastrarUsuario() {
@@ -95,5 +98,5 @@ Usuario* GerenciadorDeUsuarios::buscarUsuarioPorCodigo(int buscaCodigo) {
     for (auto temp : usuarios) {
         if (temp->getCodigo() == buscaCodigo) return temp;
     }
-    return nullptr;
+    throw ErroUsuarioNaoExiste();
 }

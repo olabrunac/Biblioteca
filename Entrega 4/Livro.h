@@ -13,60 +13,48 @@ using std::vector;
 class Livro {
     private:
         int codigo;
-        string genero; /*ADICIONAR ISSO, VER SE VAI SER USADO PARA PESQUISA OU PARA OUTRA COISA*/
         string titulo;
-        int edicao;
-        float preco;
         Editora editora;
-        int anoPublicacao;
+        vector <Autor*> autores;
         int quantidadeDeExemplares;
         int nroDiasPermitidoEmprestimo;
-        vector<Autor*> autores;  //Arrumar o ponteiro
+        int anoPublicacao;
+        int nroPaginas;
         int statusAgora; /*VER COMO SE RELACIONA COM A RESERVA*/
         int statusFuturo;
-        int nroPaginas;
-
         vector <ExemplarLivro> exemplares;
+
     public:
         //****************** CRIAR CONSTRUTOR COM PARÂMETROS*********Livro()
         Livro();
         Livro(int novoCodigo, string novoTitulo, Editora& novaEditora, vector<Autor*> novoAutor, int quantidade);
-        Livro(int novoCodigo, string novoTitulo, int novaEdicao, float novoPreco, Editora& novaEditora, int novoAno, int quantidade, int novoNroDias, vector<Autor*> novoAutor, int novoNroPaginas);
+        Livro(int novoCodigo, string novoTitulo, Editora& novaEditora, vector<Autor*> novoAutor, int quantidade, int novoNroDias, int novoAno, int novoNroPaginas);
         //~Livro();                                       //o acervo já faz esse trampo
         void imprimirLivro();
-        
-        bool estaDisponivel() const;
         void criarExemplares(int quantidade);
+        bool estaDisponivel() const;
         bool possuiExemplaresEmprestados() const;       //Pode ser usado antes de excluir um livro, verificar se tem exemplares emprestados
-
-        ExemplarLivro* getExemplarDisponivel();
-
+        
         int getCodigo() const;
         string getTitulo() const;
-        int getEdicao() const;
-        float getPreco() const;
         const Editora& getEditora() const;
-        int getAnoPublicacao() const;
+        const vector<Autor*>& getAutor() const;             //garante que nao alterem o vetor
         int getQuantidadeDeExemplares() const;
         int getNroDiasPermitidoEmprestimo() const;
-        int getQuantidadeDisponivel() const;
-        const vector<Autor*>& getAutor() const;             //garante que nao alterem o vetor
-
-        string getStatusAgora() const;
-
-        int getStatusFuturo(Data& data) const;
-
+        int getAnoPublicacao() const;
         int getNroPaginas() const;
+        string getStatusAgora() const;
+        int getStatusFuturo(Data& data) const;
+        ExemplarLivro* getExemplarDisponivel();
+        int getQuantidadeDisponivel() const;
 
         void setCodigo(int novoCodigo);
         void setTitulo(string novoTitulo);
-        void setEdicao(int novaEdicao);
-        void setPreco(float novoPreco);
         void setEditora(Editora& novaEditora);
-        void setAnoPublicacao(int novoAno);
+        void setAutor(vector<Autor*> novoAutor);
         void setQuantidadeDeExemplares(int novaQuantidade);
         void setNroDiasPermitidoEmprestimo(int novoNroDias);
-        void setAutor(vector<Autor*> novoAutor);
+        void setAnoPublicacao(int novoAno);
         void setNroPaginas(int novoNroPaginas);
     
 

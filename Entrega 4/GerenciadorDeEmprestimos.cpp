@@ -33,55 +33,54 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, Exemp
         throw ErroUsuarioNaoHabilitado();
     }
 
-    Emprestimo* novoEmprestimo = new Emprestimo();
-    novoEmprestimo->setUsuario(&emprestimoUsuario);
-    novoEmprestimo->setStatus(1);
-    novoEmprestimo->setDataDeRetirada(dataAtual);
-
-    int itensAdicionados = 0;
-
-    // Verifica se o exemplar é válido e está disponível.
-    bool disponivelNoPeriodo = false;
-    if (exemplar != nullptr) {
-        Livro* livro = exemplar->getLivro();
-        disponivelNoPeriodo = estaDisponivelnaData(livro, dataAtual, dataAtual + livro->getNroDiasPermitidoEmprestimo());
-    }
-    
-    if (exemplar != nullptr && exemplar->getStatus() == StatusEmprestimo::DISPONIVEL && disponivelNoPeriodo) {
-        exemplar->setStatus(StatusEmprestimo::EMPRESTADO); // usuario pode fazer imprestimo
-
-        ItemEmprestimo* novoItem = new ItemEmprestimo();
-        novoItem->setExemplar(exemplar);
-        
-        int diasPermitidos = exemplar->getLivro()->getNroDiasPermitidoEmprestimo();
-        Data dataPrevista = dataAtual + diasPermitidos;
-
-        novoItem->setDataParaDevolucao(dataPrevista);
-        novoItem->setDataQueFoiDevolvido(0); // Inicializa como não devolvido
-
-        novoEmprestimo->adicionarItem(novoItem);
-        novoEmprestimo->setDataPrevistaDevolucao(dataPrevista);
-        novoEmprestimo->setDataDevolucao(0); // Inicializa como não devolvido
-
-        itensAdicionados++;
-    } else {
-        if (exemplar != nullptr && !disponivelNoPeriodo) {
-            throw ErroUsuarioJaReservouLivro();
-        } else {
-           throw ErroNaoLivro();
+   // ve se o usuario ja tem algum emprestimo
+    if (exemplar) {
+        Livro* livroRequisitado = exemplar->getLivro();
+        for (const auto& emprestimoExistente : emprestimos) {
+            if (emprestimoExistente->getUsuario() == &emprestimoUsuario && emprestimoExistente->getStatus() == 1) {
+                if (emprestimoExistente->possuiLivro(livroRequisitado)) {
+                    throw ErroUsuarioJaEmprestouLivro();
+                }
+            }
         }
     }
-    if (itensAdicionados > 0) {
-        emprestimos.push_back(novoEmprestimo);
-        cout << "+'" << exemplar->getLivro()->getTitulo();
-        cout << "' emprestado para: " << emprestimoUsuario.getNome() << " com sucesso!" << endl;
-        cout << "  Devolucao prevista para: ";
-        novoEmprestimo->getDataPrevistaDevolucao().imprimirData();
-        cout << endl;
+
+    Emprestimo* emprestimoDoUsuario = getEmprestimoPorUsuario(&emprestimoUsuario);
+
+    //cria o item de emprestimo
+    ItemEmprestimo* novoItem = new ItemEmprestimo();
+    novoItem->setExemplar(exemplar);
+    exemplar->setStatus(StatusEmprestimo::EMPRESTADO);
+
+    int diasPermitidos = exemplar->getLivro()->getNroDiasPermitidoEmprestimo();
+    Data dataPrevistaItem = dataAtual + diasPermitidos;
+    novoItem->setDataParaDevolucao(dataPrevistaItem);
+    novoItem->setDataQueFoiDevolvido(0);
+
+    if (emprestimoDoUsuario != nullptr) {
+        //se o usuario ja tem emprestimo ativo, adiciona o novo item
+        emprestimoDoUsuario->adicionarItem(novoItem);
+
+        if (dataPrevistaItem > emprestimoDoUsuario->getDataPrevistaDevolucao()) {
+            emprestimoDoUsuario->setDataPrevistaDevolucao(dataPrevistaItem);
+        }
+        cout << "+Livro '" << exemplar->getLivro()->getTitulo() << "' adicionado ao emprestimo de " << emprestimoUsuario.getNome() << " com sucesso!" << endl;
+
     } else {
-        // Se nenhum item foi adicionado, o empréstimo não é criado e a memória é liberada.
-        delete novoEmprestimo;
-        throw ErroEmprestimoVazio();
+        //senao cria o novo emprestimo do zero
+        Emprestimo* novoEmprestimo = new Emprestimo();
+        novoEmprestimo->setUsuario(&emprestimoUsuario);
+        novoEmprestimo->setStatus(1);
+        novoEmprestimo->setDataDeRetirada(dataAtual);
+        novoEmprestimo->setDataDevolucao(0);
+        novoEmprestimo->setDataPrevistaDevolucao(dataPrevistaItem);
+        novoEmprestimo->adicionarItem(novoItem);
+
+        emprestimos.push_back(novoEmprestimo);
+        cout << "+Emprestimo criado para " << emprestimoUsuario.getNome() << " com o livro '" << exemplar->getLivro()->getTitulo() << "'." << endl;
+        cout << "  Devolucao prevista para: ";
+        dataPrevistaItem.imprimirData();
+        cout << endl;
     }
 }
 
@@ -230,7 +229,7 @@ void GerenciadorDeEmprestimos::criarEmprestimoApartirDaReserva(Reserva* reservaE
     
     // REGRA DE NEGÓCIO: Verifica se o usuário da reserva está habilitado.
     if (reservaExistente->getUsuario()->getStatus() != StatusUsuario::HABILITADO) {
-       ErroUsuarioNaoHabilitado();
+       throw ErroUsuarioNaoHabilitado();
     }   
 
     // 1. Validação: Verifica a disponibilidade de todos os livros na reserva.
@@ -442,6 +441,15 @@ Reserva* GerenciadorDeEmprestimos::getReservaPorUsuario(Usuario* usuarioBuscado)
         }
     }
     return nullptr; // Retorna nulo se nenhuma reserva for encontrada para o usuário.
+}
+
+Emprestimo* GerenciadorDeEmprestimos::getEmprestimoPorUsuario(Usuario* usuarioBuscado) const {
+    for (auto temp : emprestimos) {
+        if (temp->getUsuario() == usuarioBuscado && temp->getStatus() == 1) {
+            return temp;
+        }
+    }
+    return nullptr;
 }
 
 bool GerenciadorDeEmprestimos::realizarDevolucao(Usuario* usuario, int codigoLivro, const Data& dataDevolucao) {

@@ -48,6 +48,7 @@ class GerenciadorDeEmprestimos {
 
         bool estaDisponivelnaData(Livro* testeLivro, const Data& dataInicial, const Data& dataFinal);
         Reserva* getReservaPorUsuario(Usuario* usuarioBuscado) const;
+        Emprestimo* getEmprestimoPorUsuario(Usuario* usuarioBuscado) const;
 
 };
 

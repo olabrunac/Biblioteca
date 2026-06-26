@@ -1,4 +1,5 @@
 #include "Livro.h"
+#include "Erros.h"
 #include <iostream>
 
 using std::cout;
@@ -13,8 +14,8 @@ Livro::Livro(int novoCodigo, string novoTitulo, Editora& novaEditora, vector<Aut
     }
 
     
-Livro::Livro(int novoCodigo, string novoTitulo, int novaEdicao, float novoPreco, Editora& novaEditora, int novoAno, int quantidade, int novoNroDias, vector<Autor*> novoAutor, int novoNroPaginas)
-    : codigo(novoCodigo), titulo(novoTitulo), edicao(novaEdicao), preco(novoPreco), editora(novaEditora), anoPublicacao(novoAno), nroDiasPermitidoEmprestimo(novoNroDias), autores(novoAutor), nroPaginas(novoNroPaginas) {
+Livro::Livro(int novoCodigo, string novoTitulo, Editora& novaEditora, vector<Autor*> novoAutor, int quantidade, int novoNroDias, int novoAno, int novoNroPaginas)
+    : codigo(novoCodigo), titulo(novoTitulo), editora(novaEditora), autores(novoAutor), nroDiasPermitidoEmprestimo(novoNroDias), anoPublicacao(novoAno), nroPaginas(novoNroPaginas) {
         criarExemplares(quantidade);
     }
 
@@ -84,8 +85,7 @@ ExemplarLivro* Livro::getExemplarDisponivel() {
             return &temp;
         }
     }
-    cout << "-Nenhum exemplar de '" << titulo << "' disponivel!" << endl;
-    return nullptr;
+    throw ErroLivroIndisponivel();
 }
 
 
@@ -94,11 +94,6 @@ int Livro::getCodigo() const { return codigo; }
 
 string Livro::getTitulo() const { return titulo; }
 
-
-int Livro::getEdicao() const {return edicao; }
-
-
-float Livro::getPreco() const { return preco; }
 
 
 const Editora& Livro::getEditora() const { return editora; }
@@ -150,12 +145,6 @@ void Livro::setCodigo(int novoCodigo) { this -> codigo = novoCodigo; }
 
 
 void Livro::setTitulo(string novoTitulo) { this -> titulo = novoTitulo; }
-
-
-void Livro::setEdicao(int novaEdicao) { this -> edicao = novaEdicao; }
-
-
-void Livro::setPreco(float novoPreco) { this -> preco = novoPreco; }
 
 
 void Livro::setEditora(Editora& novaEditora) { this -> editora = novaEditora; }

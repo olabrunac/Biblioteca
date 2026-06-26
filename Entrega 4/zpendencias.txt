@@ -30,3 +30,13 @@ pendencias????
     
     Teste a opção de devolver empréstimo no menu, e após devolver ele ainda aparece no Consultar todos os emprestimos, porém ele está com status 0
     o livro não ficou disponivel para emprestimo apos devolver ele
+
+    Possui livro no emprestimo causando loop de cout no terminal
+
+    Entrar na aba devolver emprestimo com um usuario sem um emprestimo fecha o executavel
+
+    Colocar uma letra ao inves do codigo do usuario causa algum erro de loop
+
+    Remover livro emprestado do acervo
+
+    FINAL:: entregar uma planilha com os codigos e nomes dos livros e usuarios cadastrados para que o professor fuce

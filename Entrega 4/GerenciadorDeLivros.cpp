@@ -1,5 +1,6 @@
 #include "GerenciadorDeLivros.h"
 #include "Endereco.h"
+#include "Erros.h"
 #include <iostream>
 #include <limits>
 #include <cctype>
@@ -39,22 +40,21 @@ void GerenciadorDeLivros::inicializarDados() {
     autores.push_back(new Autor(2, "Mauricio de Souza"));
     proximoCodigoAutor = 3;
 
-    // ---- LIVROS ----
+    // ---- LIVROS ---- (codigo, titulo, editora, autores, exemplares, dias permitidos, ano, paginas)
     Livro* l1 = new Livro(201, "Jogos Vorazes", *editoras[0], vector<Autor*> {autores[0]}, 2);
-    l1->setNroDiasPermitidoEmprestimo(2);
+    l1->setNroDiasPermitidoEmprestimo(7);
     acervo.acrescentarLivro(l1);
 
-    Livro* l2 = new Livro(202, "O Gambito da Rainha", *editoras[0], vector<Autor*> {autores[1], autores[2]}, 1);
-    l2->setNroDiasPermitidoEmprestimo(2);
+    Livro* l2 = new Livro(202, "O Gambito da Rainha", *editoras[0], vector<Autor*> {autores[1], autores[2]}, 2, 7, 2018, 323);
     acervo.acrescentarLivro(l2);
 
-    Livro* l3 = new Livro(203, "Turma da Monica", 3, 4.99f, *editoras[1], 2021, 4, 7, vector<Autor*> {autores[2]}, 132);
+    Livro* l3 = new Livro(203, "Turma da Monica", *editoras[1], vector<Autor*> {autores[2]}, 3, 7, 2002, 132);
     acervo.acrescentarLivro(l3);
 
-    Livro* l4 = new Livro(204, "Em Chamas", 1, 59.90f, *editoras[0], 2023, 3, 7, vector<Autor*> {autores[0]}, 400);
+    Livro* l4 = new Livro(204, "Em Chamas", *editoras[0], vector<Autor*> {autores[0]}, 1, 7, 2013, 400);
     acervo.acrescentarLivro(l4);
 
-    Livro* l5 = new Livro(205, "O Homem Que Caiu na Terra", 0, 49.90f, *editoras[1], 1963, 0, 7, vector<Autor*> { autores[1] }, 256);
+    Livro* l5 = new Livro(205, "Sem Exemplar", *editoras[1], vector<Autor*> { autores[1] }, 0, 7, 2026, 256);
     acervo.acrescentarLivro(l5);
 
     proximoCodigoLivro = 206;
@@ -76,12 +76,10 @@ void GerenciadorDeLivros::cadastrarLivro() {
     Autor* autor = buscarAutorPorNome(nomeAutor);
 
     if (!editora) {
-        cout << "Erro: Editora '" << nomeEditora << "' nao encontrada. Cadastre-a primeiro." << endl;
-        return;
+        throw ErroEditora();
     }
     if (!autor) {
-        cout << "Erro: Autor '" << nomeAutor << "' nao encontrado. Cadastre-o primeiro." << endl;
-        return;
+        throw ErroAutor();
     }
 
     int novoCodigo = proximoCodigoLivro++;
@@ -121,13 +119,11 @@ void GerenciadorDeLivros::removerLivro(const GerenciadorDeEmprestimos& gerenciad
     }
 
     if (!livro) {
-        cout << "Erro: Livro nao encontrado." << endl;
-        return;
+        throw ErroNaoLivro();
     }
 
     if (gerenciadorEmprestimos.contarEmprestimosAtivos(*livro) > 0 || gerenciadorEmprestimos.contarReservasAtivas(*livro) > 0) {
-        cout << "ERRO: Livro nao pode ser removido pois possui emprestimos ou reservas ativas." << endl;
-        return;
+        throw ErroLivroEmUso();
     }
 
     char confirmacao;
@@ -164,8 +160,7 @@ void GerenciadorDeLivros::removerAutor() {
     for (const auto& livro : acervo.getLivros()) {
         for (const auto& autorDoLivro : livro->getAutor()) {
             if (autorDoLivro->getCodigo() == codigo) {
-                cout << "ERRO: Autor nao pode ser removido pois esta associado ao livro '" << livro->getTitulo() << "'." << endl;
-                return;
+                throw ErroAutorAssociado() << livro->getTitulo() << "'." << endl;
             }
         }
     }
@@ -178,7 +173,7 @@ void GerenciadorDeLivros::removerAutor() {
             return;
         }
     }
-    cout << "Erro: Autor com codigo " << codigo << " nao encontrado." << endl;
+    throw ErroAutor();
 }
 
 void GerenciadorDeLivros::cadastrarEditora() {
@@ -212,8 +207,7 @@ void GerenciadorDeLivros::removerEditora() {
 
     for (const auto& livro : acervo.getLivros()) {
         if (livro->getEditora().getCodigo() == codigo) {
-            cout << "ERRO: Editora nao pode ser removida pois esta associada ao livro '" << livro->getTitulo() << "'." << endl;
-            return;
+            throw ErroEditoraAssociada() << livro->getTitulo() << "'." << endl;
         }
     }
 
@@ -225,7 +219,7 @@ void GerenciadorDeLivros::removerEditora() {
             return;
         }
     }
-    cout << "Erro: Editora com codigo " << codigo << " nao encontrada." << endl;
+    throw ErroEditora();
 }
 
 Livro* GerenciadorDeLivros::buscarLivroPorCodigo(int codigo) {

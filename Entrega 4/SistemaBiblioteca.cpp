@@ -12,6 +12,7 @@ using std::cout;
 using std::cin;
 using std::endl;
 using std::string;
+using std::cerr;
 
 // Construtor: Recebe os gerenciadores e solicita a data atual.
 SistemaBiblioteca::SistemaBiblioteca(GerenciadorDeLivros& gl, GerenciadorDeUsuarios& gu, GerenciadorDeEmprestimos& ge)
@@ -153,52 +154,58 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
         switch (opcao) {
             case 1: {
                 cout << "--- Criar Emprestimo ---" << endl;
-                cout << "Codigo do Usuario: ";
-                int codUsuario;
-                cin >> codUsuario;
-                cin.ignore();
-                Usuario* usuario = gerenciadorUsuarios.buscarUsuarioPorCodigo(codUsuario);
-                if (!usuario) { cout << "Erro: Usuario nao encontrado." << endl; break; }
+                try {
+                    cout << "Codigo do Usuario: ";
+                    int codUsuario;
+                    cin >> codUsuario;
+                    cin.ignore();
+                    Usuario* usuario = gerenciadorUsuarios.buscarUsuarioPorCodigo(codUsuario);
 
-                cout << "Codigo do Livro: ";
-                cout << "Como deseja buscar o livro?" << endl;
-                cout << "1. Pelo Codigo" << endl;
-                cout << "2. Pelo Titulo" << endl;
-                cout << "Escolha uma opcao: ";
-                int opcaoBusca;
-                cin >> opcaoBusca;
-                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    cout << "Como deseja buscar o livro?" << endl;
+                    cout << "1. Pelo Codigo" << endl;
+                    cout << "2. Pelo Titulo" << endl;
+                    cout << "Escolha uma opcao: ";
+                    int opcaoBusca;
+                    cin >> opcaoBusca;
 
-                Livro* livro = nullptr;
-                if (opcaoBusca == 1) {
-                    int codLivro;
-                    cout << "Digite o codigo do livro: ";
-                    cin >> codLivro;
+                    if (cin.fail()) {
+                        cout << "Entrada invalida. Por favor, insira um numero." << endl;
+                        cin.clear();
+                        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                        break;
+                    }
+
                     cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    livro = gerenciadorLivros.buscarLivroPorCodigo(codLivro);
-                } else if (opcaoBusca == 2) {
-                    string titulo;
-                    cout << "Digite o titulo do livro: ";
-                    getline(cin, titulo);
-                    livro = gerenciadorLivros.buscarLivroPorNome(titulo);
-                } else {
-                    cout << "Opcao invalida." << endl;
-                    break;
+
+                    Livro* livro = nullptr;
+                    if (opcaoBusca == 1) {
+                        int codLivro;
+                        cout << "Digite o codigo do livro: ";
+                        cin >> codLivro;
+                        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                        livro = gerenciadorLivros.buscarLivroPorCodigo(codLivro);
+                    } else if (opcaoBusca == 2) {
+                        string titulo;
+                        cout << "Digite o titulo do livro: ";
+                        getline(cin, titulo);
+                        livro = gerenciadorLivros.buscarLivroPorNome(titulo);
+                    } else {
+                        cout << "Opcao invalida." << endl;
+                        break;
+                    }
+
+                    if (!livro) { cout << "Erro: Livro nao encontrado." << endl; break; }
+
+                    ExemplarLivro* exemplar = livro->getExemplarDisponivel();
+                    gerenciadorEmprestimos.criarEmprestimo(*usuario, exemplar, dataAtual);
+
+                } catch (const ErroUsuarioNaoExiste& e) {
+                    cerr << e.what() << endl;
+                } catch (const ErroLivroIndisponivel& e) {
+                    cerr << e.what() << endl;
+                } catch (const Erros& e) { 
+                    cerr << e.what() << endl;
                 }
-
-                if (!livro) { cout << "Erro: Livro nao encontrado." << endl; break; }
-
-                ExemplarLivro* exemplar = livro->getExemplarDisponivel();
-                if (!exemplar) { 
-
-                cout << "Nao ha exemplares disponiveis." << endl; 
-
-                
-                //Aqui pra implementar apenas selecionar SIM para reservar o livro, se não esteja disponível para emprestimo
-                
-                break; }
-
-                gerenciadorEmprestimos.criarEmprestimo(*usuario, exemplar, dataAtual);
                 break;
             }
             case 2: {

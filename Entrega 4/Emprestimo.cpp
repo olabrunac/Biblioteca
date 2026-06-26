@@ -3,6 +3,7 @@
 #include "ItemEmprestimo.h"
 #include "ExemplarLivro.h"
 #include "StatusEmprestimo.h"  
+#include "Erros.h"
 #include <iostream>
 
 using std::cout;
@@ -43,7 +44,7 @@ void Emprestimo::adicionarItem(ItemEmprestimo* novoItem) {
     if (novoItem->getExemplar() != nullptr) {
         itens.push_back(novoItem);
     } else {
-        cout << "Erro: item invalido." << endl;
+        throw ErroEmprestimoInvalido();
     }
 }
 
@@ -89,7 +90,7 @@ void Emprestimo::setItens(Livro& novoLivro){
         Exemplar->setStatus(StatusEmprestimo::EMPRESTADO);
         itens.push_back(novoItem);
     } else {
-        cout << "Erro: Nenhum exemplar disponivel para o livro." << endl;
+        throw ErroExemplarNulo();
     }
 }
 
@@ -103,6 +104,5 @@ bool Emprestimo::possuiLivro(Livro* livroTeste) const {
             return true;
         }
     }
-    cout << "Não possui o livro no emprestimo" << endl;
     return false;
 }
