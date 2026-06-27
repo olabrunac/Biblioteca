@@ -10,7 +10,7 @@ pendencias????
 
     adicionar quantidade de dias certos por mes (ENUM dos meses);
 
-    opção "secreta" do menu inicial, que Simula a passagem do tempo no sistema e verifica se usuarios estão em débito; 
+    FEITO -- opção "secreta" do menu inicial, que Simula a passagem do tempo no sistema e verifica se usuarios estão em débito; 
     
     -* comparação da dataInicial do sistema com a segunda data, vendo a diferença de dias(int Data::operator-(const Data& outraData) const) e adiciona na data(formato int)
     e após isso
@@ -19,12 +19,10 @@ pendencias????
     em que o usuario não precisa cadastrar os dados novamente e permite o acesso em dias diferentes, permitindo ver uma evolução e permanencia de dados no sistema
     ideia tal -- ?Continuação pessoal do projeto?
 
-    adicionar opção de Sim|Não para escolher caso o livro que tentou fazer emprestimo não esteja disponível
+    FEITO -- adicionar opção de Sim|Não para escolher caso o livro que tentou fazer emprestimo não esteja disponível
 
     numero de espera na lista de reserva POR Livro
 
-    Sobre: void GerenciadorDeEmprestimos::atualizaPendenciasEmprestimos(Data& dataFutura)
-    a partir do status do emprestimo (1 ou 0) usei isso pra ver os emprestimos ativos
     
     -* ainda usar isso para imprimir a quantidade de dias atrasado
     
@@ -40,3 +38,5 @@ pendencias????
     Remover livro emprestado do acervo
 
     FINAL:: entregar uma planilha com os codigos e nomes dos livros e usuarios cadastrados para que o professor fuce
+    
+    adicionar classe Estagio - herdando atributos de aluno e professor, para usar a herança multipla

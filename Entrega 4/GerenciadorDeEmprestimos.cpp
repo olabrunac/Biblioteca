@@ -93,6 +93,9 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, initi
         throw ErroUsuarioNaoHabilitado();
     }
 
+    //adicionar a verificação de se o usuario já fez um emprestimo desse livro
+
+
     Emprestimo* novoEmprestimo = new Emprestimo();
     novoEmprestimo->setUsuario(&emprestimoUsuario);
     novoEmprestimo->setStatus(1);

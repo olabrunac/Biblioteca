@@ -14,7 +14,7 @@ class Livro {
     private:
         int codigo;
         string titulo;
-        Editora editora;
+        Editora editora; //sem preço e sem edição
         vector <Autor*> autores;
         int quantidadeDeExemplares;
         int nroDiasPermitidoEmprestimo;

@@ -107,11 +107,7 @@ int Livro::getQuantidadeDeExemplares() const { return exemplares.size(); }
 
 int Livro::getNroDiasPermitidoEmprestimo() const { 
     
-    if(this->nroDiasPermitidoEmprestimo < 7){ //minimo de 7 dias, menos que isso não faz sentido
 
-        return 7;
-    }
-    
     return nroDiasPermitidoEmprestimo; }
 
 
