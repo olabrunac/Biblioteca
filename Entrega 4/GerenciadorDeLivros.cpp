@@ -48,13 +48,13 @@ void GerenciadorDeLivros::inicializarDados() {
     l2->setNroDiasPermitidoEmprestimo(2);
     acervo.acrescentarLivro(l2);
 
-    Livro* l3 = new Livro(203, "Turma da Monica", 3, 4.99f, *editoras[1], 2021, 4, 7, vector<Autor*> {autores[2]}, 132);
+    Livro* l3 = new Livro(203, "Turma da Monica", 3, *editoras[1], 2021, 4, 7, vector<Autor*> {autores[2]}, 132);
     acervo.acrescentarLivro(l3);
 
-    Livro* l4 = new Livro(204, "Em Chamas", 1, 59.90f, *editoras[0], 2023, 3, 7, vector<Autor*> {autores[0]}, 400);
+    Livro* l4 = new Livro(204, "Em Chamas", 1, *editoras[0], 2023, 3, 7, vector<Autor*> {autores[0]}, 400);
     acervo.acrescentarLivro(l4);
 
-    Livro* l5 = new Livro(205, "O Homem Que Caiu na Terra", 0, 49.90f, *editoras[1], 1963, 0, 7, vector<Autor*> { autores[1] }, 256);
+    Livro* l5 = new Livro(205, "Livro sem exemplar", 0, *editoras[1], 2222, 0, 7, vector<Autor*> { autores[1] }, 256);
     acervo.acrescentarLivro(l5);
 
     proximoCodigoLivro = 206;

@@ -13,8 +13,8 @@ Livro::Livro(int novoCodigo, string novoTitulo, Editora& novaEditora, vector<Aut
     }
 
     
-Livro::Livro(int novoCodigo, string novoTitulo, int novaEdicao, float novoPreco, Editora& novaEditora, int novoAno, int quantidade, int novoNroDias, vector<Autor*> novoAutor, int novoNroPaginas)
-    : codigo(novoCodigo), titulo(novoTitulo), edicao(novaEdicao), preco(novoPreco), editora(novaEditora), anoPublicacao(novoAno), nroDiasPermitidoEmprestimo(novoNroDias), autores(novoAutor), nroPaginas(novoNroPaginas) {
+Livro::Livro(int novoCodigo, string novoTitulo, int novaEdicao, Editora& novaEditora, int novoAno, int quantidade, int novoNroDias, vector<Autor*> novoAutor, int novoNroPaginas)
+    : codigo(novoCodigo), titulo(novoTitulo), edicao(novaEdicao), editora(novaEditora), anoPublicacao(novoAno), nroDiasPermitidoEmprestimo(novoNroDias), autores(novoAutor), nroPaginas(novoNroPaginas) {
         criarExemplares(quantidade);
     }
 
@@ -98,8 +98,6 @@ string Livro::getTitulo() const { return titulo; }
 int Livro::getEdicao() const {return edicao; }
 
 
-float Livro::getPreco() const { return preco; }
-
 
 const Editora& Livro::getEditora() const { return editora; }
 
@@ -112,11 +110,7 @@ int Livro::getQuantidadeDeExemplares() const { return exemplares.size(); }
 
 int Livro::getNroDiasPermitidoEmprestimo() const { 
     
-    if(this->nroDiasPermitidoEmprestimo < 7){ //minimo de 7 dias, menos que isso não faz sentido
 
-        return 7;
-    }
-    
     return nroDiasPermitidoEmprestimo; }
 
 
@@ -153,9 +147,6 @@ void Livro::setTitulo(string novoTitulo) { this -> titulo = novoTitulo; }
 
 
 void Livro::setEdicao(int novaEdicao) { this -> edicao = novaEdicao; }
-
-
-void Livro::setPreco(float novoPreco) { this -> preco = novoPreco; }
 
 
 void Livro::setEditora(Editora& novaEditora) { this -> editora = novaEditora; }

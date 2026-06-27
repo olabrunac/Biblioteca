@@ -15,8 +15,7 @@ class Livro {
         int codigo;
         string genero; /*ADICIONAR ISSO, VER SE VAI SER USADO PARA PESQUISA OU PARA OUTRA COISA*/
         string titulo;
-        int edicao;
-        float preco;
+        int edicao; //Removi o preço
         Editora editora;
         int anoPublicacao;
         int quantidadeDeExemplares;
@@ -31,7 +30,7 @@ class Livro {
         //****************** CRIAR CONSTRUTOR COM PARÂMETROS*********Livro()
         Livro();
         Livro(int novoCodigo, string novoTitulo, Editora& novaEditora, vector<Autor*> novoAutor, int quantidade);
-        Livro(int novoCodigo, string novoTitulo, int novaEdicao, float novoPreco, Editora& novaEditora, int novoAno, int quantidade, int novoNroDias, vector<Autor*> novoAutor, int novoNroPaginas);
+        Livro(int novoCodigo, string novoTitulo, int novaEdicao, Editora& novaEditora, int novoAno, int quantidade, int novoNroDias, vector<Autor*> novoAutor, int novoNroPaginas);
         //~Livro();                                       //o acervo já faz esse trampo
         void imprimirLivro();
         
