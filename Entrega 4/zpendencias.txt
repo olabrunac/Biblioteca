@@ -1,7 +1,9 @@
 pendencias????
 
-    arrumar 2 pessoas fazendo a mesma reserva
-    fiz o emprestimo do mesmo livro 2x e passou?? aí ao fazer emprestimos de outros livros aparece um spam de mensagem de erro e depois confirma o novo emprestimo, algo em relacao ao Emprestimo::possuiLivro
+    FEITO -- arrumar 2 pessoas fazendo a mesma reserva
+
+    FEITO -- fiz o emprestimo do mesmo livro 2x e passou?? aí ao fazer emprestimos de outros livros aparece um spam de mensagem de erro e depois confirma o novo emprestimo, algo em relacao ao Emprestimo::possuiLivro
+    
     classe de erros try catch
     
 
@@ -29,11 +31,11 @@ pendencias????
     Teste a opção de devolver empréstimo no menu, e após devolver ele ainda aparece no Consultar todos os emprestimos, porém ele está com status 0
     o livro não ficou disponivel para emprestimo apos devolver ele
 
-    Possui livro no emprestimo causando loop de cout no terminal
+    FEITO -- Possui livro no emprestimo causando loop de cout no terminal
 
     Entrar na aba devolver emprestimo com um usuario sem um emprestimo fecha o executavel
 
-    Colocar uma letra ao inves do codigo do usuario causa algum erro de loop
+    FEITO -- Colocar uma letra ao inves do codigo do usuario causa algum erro de loop
 
     Remover livro emprestado do acervo
 

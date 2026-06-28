@@ -128,7 +128,7 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, initi
             itensAdicionados++;
         } else if (exemplar != nullptr && !disponivelNoPeriodo) {
             delete novoEmprestimo;
-            throw ErroNaoLivro();
+            throw ErroLivroIndisponivel(); // Erro mais apropriado, pois o livro existe mas não está disponível no período.
         }
     }
 

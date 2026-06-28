@@ -57,10 +57,15 @@ void GerenciadorDeLivros::inicializarDados() {
     Livro* l4 = new Livro(204, "Em Chamas", *editoras[0], vector<Autor*> {autores[0]}, 1, 7, 2013, 400);
     acervo.acrescentarLivro(l4);
 
-    Livro* l5 = new Livro(205, "Sem Exemplar", *editoras[1], vector<Autor*> { autores[1] }, 0, 7, 2026, 256);
+    Livro* l5 = new Livro(205, "Sem Exemplar", *editoras[1], vector<Autor*> { autores[1] }, 0, 7, 2026, 123); //para testar emprestimo sem exemplar disponivel
     acervo.acrescentarLivro(l5);
 
-    proximoCodigoLivro = 206;
+    Livro* l6 = new Livro(206, "Sem Dias", *editoras[0], vector<Autor*> {autores[2]}, 1, 0, 2026, 123); //para testar livro que o limite de dias é 0
+    acervo.acrescentarLivro(l6);
+
+    proximoCodigoLivro = 207;
+
+
 }
 
 
@@ -83,10 +88,10 @@ void GerenciadorDeLivros::cadastrarLivro() {
     Autor* autor = buscarAutorPorNome(nomeAutor);
 
     if (!editora) {
-        throw ErroEditora();
+        throw ErroEditoraNaoExiste();
     }
     if (!autor) {
-        throw ErroAutor();
+        throw ErroAutorNaoExiste();
     }
 
     int novoCodigo = proximoCodigoLivro++;
@@ -163,7 +168,7 @@ void GerenciadorDeLivros::removerLivro(const GerenciadorDeEmprestimos& gerenciad
     }
 
     if (!livro) {
-        throw ErroNaoLivro();
+        throw ErroLivroNaoExisteAcervo();
     }
 
     if (gerenciadorEmprestimos.contarEmprestimosAtivos(*livro) > 0 || gerenciadorEmprestimos.contarReservasAtivas(*livro) > 0) {
@@ -193,7 +198,7 @@ void GerenciadorDeLivros::removerAutor() {
     for (const auto& livro : acervo.getLivros()) {
         for (const auto& autorDoLivro : livro->getAutor()) {
             if (autorDoLivro->getCodigo() == codigo) {
-                throw ErroAutorAssociado() << livro->getTitulo() << "'." << endl;
+                throw ErroAutorAssociado();
             }
         }
     }
@@ -206,7 +211,7 @@ void GerenciadorDeLivros::removerAutor() {
             return;
         }
     }
-    throw ErroAutor();
+    throw ErroAutorNaoExiste();
 }
 
 
@@ -219,7 +224,7 @@ void GerenciadorDeLivros::removerEditora() {
 
     for (const auto& livro : acervo.getLivros()) {
         if (livro->getEditora().getCodigo() == codigo) {
-            throw ErroEditoraAssociada() << livro->getTitulo() << "'." << endl;
+            throw ErroEditoraAssociada();
         }
     }
 
@@ -231,7 +236,7 @@ void GerenciadorDeLivros::removerEditora() {
             return;
         }
     }
-    throw ErroEditora();
+    throw ErroEditoraNaoExiste();
 }
 
 

@@ -51,9 +51,8 @@ void GerenciadorDeUsuarios::cadastrarUsuario() {
     } else if (tipo == 2) {
         novoUsuario = new Professor(novoCodigo, nome);
     } else {
-        cout << "Erro: Tipo de usuario invalido." << endl;
         proximoCodigoUsuario--; // Reverte o incremento do código se a operação falhar
-        return;
+        throw ErroTipoUsuarioInvalido();
     }
 
     usuarios.push_back(novoUsuario);
@@ -70,14 +69,12 @@ void GerenciadorDeUsuarios::removerUsuario(const GerenciadorDeEmprestimos& geren
 
     Usuario* usuario = buscarUsuarioPorCodigo(codigo);
     if (!usuario) {
-        cout << "Erro: Usuario com codigo " << codigo << " nao encontrado." << endl;
-        return;
+        throw ErroUsuarioNaoExiste();
     }
 
     // REGRA DE NEGÓCIO: Não remover usuário com pendências.
     if (gerenciadorEmprestimos.usuarioTemPendencias(usuario)) {
-        cout << "ERRO: Usuario '" << usuario->getNome() << "' nao pode ser removido pois possui emprestimos ou reservas ativas." << endl;
-        return;
+        throw ErroUsuarioComPendencias();
     }
 
     char confirmacao;
