@@ -15,7 +15,7 @@ ItemReserva::~ItemReserva() {}
 
 
 void ItemReserva::imprimirItemReserva() const{
-    cout << "  Livro: " << livro->getTitulo() << " | Item #" << nroDoItem << endl;
+    cout << "  Livro: " << livro->getTitulo() << " | cod: " << livro->getCodigo() << " | Item #" << nroDoItem << endl;
     cout << "  Data de Retirada: ";
     dataDeRetirada.imprimirData();
     cout << endl;

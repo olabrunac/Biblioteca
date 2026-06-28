@@ -28,7 +28,6 @@ void Reserva::imprimirReserva() const {
     cout << "Reserva ID: " << ID << endl;
     cout << "Data da Reserva: "; dataRealizacao.imprimirData(); cout << endl;
     if (usuario != nullptr) {
-        cout << "Usuario: ";
         usuario->imprimirUsuario(); // polimorfismo aqui
     }
     for (auto temp : itens) {

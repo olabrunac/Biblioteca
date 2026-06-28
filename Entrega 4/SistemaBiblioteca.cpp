@@ -225,6 +225,7 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                     cout << "\nDigite o codigo do livro a ser devolvido: ";
                     int codLivro;
                     cin >> codLivro;
+                    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                     gerenciadorEmprestimos.realizarDevolucao(usuario, codLivro, dataAtual);
                 } catch (const Erros& e) {
                     cerr << e.what() << endl;
@@ -297,6 +298,7 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                             cerr << "[ErroOpcaoInvalida]: Opcao nao existe. Tente novamente." << endl;
                         } else if (opcaoReserva == 1) {
                             gerenciadorEmprestimos.criarReserva(usuario, livro, dataAtual);
+                            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                         } else if (opcaoReserva == 2) {
                             int dia, mes, ano;
                             cout << "\nInsira a data da reserva (DD MM AAAA): ";
@@ -332,6 +334,7 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                     cout << "\nDigite o codigo do livro para cancelar a reserva: ";
                     int codLivro;
                     cin >> codLivro;
+                    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
                     gerenciadorEmprestimos.cancelarReservaItem(usuario, codLivro);
                 } catch (const Erros& e) {

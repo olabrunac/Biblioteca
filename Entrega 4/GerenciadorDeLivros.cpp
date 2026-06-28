@@ -158,6 +158,7 @@ void GerenciadorDeLivros::removerLivro(const GerenciadorDeEmprestimos& gerenciad
         int codigo;
         cout << "Digite o codigo do livro: ";
         cin >> codigo;
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         livro = buscarLivroPorCodigo(codigo);
     } else if (opcao == 2) {
         string titulo;
