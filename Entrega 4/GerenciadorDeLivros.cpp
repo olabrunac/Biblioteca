@@ -67,11 +67,17 @@ void GerenciadorDeLivros::cadastrarLivro() {
     
     cout << "--- Cadastro de Novo Livro ---" << endl;
     cout << "Titulo: "; getline(cin, titulo);
+
+    // Verifica se o livro já existe
+    if (buscarLivroPorNome(titulo) != nullptr) {
+        throw ErroLivroJaExiste(titulo);
+    }
+
     cout << "Nome da Editora: "; getline(cin, nomeEditora);
     cout << "Nome do Autor: "; getline(cin, nomeAutor);
     cout << "Quantidade de exemplares: "; cin >> qtd;
     cout << "Dias para emprestimo: "; cin >> dias;
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    limparBufferEntrada();
 
     Editora* editora = buscarEditoraPorNome(nomeEditora);
     Autor* autor = buscarAutorPorNome(nomeAutor);
@@ -97,6 +103,11 @@ void GerenciadorDeLivros::cadastrarAutor() {
     cout << "--- Cadastro de Novo Autor ---" << endl;
     cout << "Nome: "; getline(cin, nome);
 
+    // Verifica se o autor já existe
+    if (buscarAutorPorNome(nome) != nullptr) {
+        throw ErroAutorJaExiste(nome);
+    }
+
     int novoCodigo = proximoCodigoAutor++;
     Autor* novoAutor = new Autor(novoCodigo, nome);
     autores.push_back(novoAutor);
@@ -111,6 +122,12 @@ void GerenciadorDeLivros::cadastrarEditora() {
 
     cout << "--- Cadastro de Nova Editora ---" << endl;
     cout << "Nome: "; getline(cin, nome);
+
+    // Verifica se a editora já existe
+    if (buscarEditoraPorNome(nome) != nullptr) {
+        throw ErroEditoraJaExiste(nome);
+    }
+
     cout << "--- Endereco ---" << endl;
     cout << "Rua: "; getline(cin, rua);
     cout << "Numero: "; cin >> numero; cin.ignore();
@@ -141,7 +158,7 @@ void GerenciadorDeLivros::removerLivro(const GerenciadorDeEmprestimos& gerenciad
 
         if (cin.fail()) {
             cin.clear();
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            limparBufferEntrada();
             cerr << "[ErroOpcaoInvalida]: A opcao digitada eh invalida. Por favor, insira um numero." << endl;
             opcao = -1; // Força a repetição do loop
         } else if (opcao < 0 || opcao > 2) {
@@ -149,7 +166,7 @@ void GerenciadorDeLivros::removerLivro(const GerenciadorDeEmprestimos& gerenciad
         }
     } while (opcao < 0 || opcao > 2);
 
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    limparBufferEntrada();
 
     if (opcao == 0) return;
     Livro* livro = nullptr;
@@ -158,7 +175,7 @@ void GerenciadorDeLivros::removerLivro(const GerenciadorDeEmprestimos& gerenciad
         int codigo;
         cout << "Digite o codigo do livro: ";
         cin >> codigo;
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        limparBufferEntrada();
         livro = buscarLivroPorCodigo(codigo);
     } else if (opcao == 2) {
         string titulo;
@@ -178,7 +195,7 @@ void GerenciadorDeLivros::removerLivro(const GerenciadorDeEmprestimos& gerenciad
     char confirmacao;
     cout << "Tem certeza que deseja remover o livro '" << livro->getTitulo() << "' (Codigo: " << livro->getCodigo() << ")? (S/N): ";
     cin >> confirmacao;
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    limparBufferEntrada();
 
     if (toupper(confirmacao) == 'S') {
         acervo.removerDoAcervo(livro);
@@ -193,7 +210,7 @@ void GerenciadorDeLivros::removerAutor() {
     cout << "Digite o codigo do autor a ser removido: ";
     int codigo;
     cin >> codigo;
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    limparBufferEntrada();
 
     for (const auto& livro : acervo.getLivros()) {
         for (const auto& autorDoLivro : livro->getAutor()) {
@@ -220,7 +237,7 @@ void GerenciadorDeLivros::removerEditora() {
     cout << "Digite o codigo da editora a ser removida: ";
     int codigo;
     cin >> codigo;
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    limparBufferEntrada();
 
     for (const auto& livro : acervo.getLivros()) {
         if (livro->getEditora().getCodigo() == codigo) {

@@ -36,8 +36,16 @@ void GerenciadorDeUsuarios::cadastrarUsuario() {
 
     cout << "--- Cadastro de Novo Usuario ---" << endl;
     cout << "Nome: "; getline(cin, nome);
+
+    // Verifica se o usuário já existe
+    for (const auto& usuario : usuarios) {
+        if (usuario->getNome() == nome) {
+            throw ErroUsuarioJaExiste(nome);
+        }
+    }
+
     cout << "Tipo (1-Aluno, 2-Professor): "; cin >> tipo;
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    limparBufferEntrada();
 
     int novoCodigo = proximoCodigoUsuario++;
     Usuario* novoUsuario = nullptr;
@@ -61,7 +69,7 @@ void GerenciadorDeUsuarios::removerUsuario(const GerenciadorDeEmprestimos& geren
     cout << "Digite o codigo do usuario a ser removido: ";
     int codigo;
     cin >> codigo;
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    limparBufferEntrada();
 
     Usuario* usuario = buscarUsuarioPorCodigo(codigo);
     if (!usuario) {
@@ -76,7 +84,7 @@ void GerenciadorDeUsuarios::removerUsuario(const GerenciadorDeEmprestimos& geren
     char confirmacao;
     cout << "Tem certeza que deseja remover o usuario '" << usuario->getNome() << "' (Codigo: " << codigo << ")? (S/N): ";
     cin >> confirmacao;
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    limparBufferEntrada();
 
     if (toupper(confirmacao) == 'S') {
         for (auto it = usuarios.begin(); it != usuarios.end(); ++it) {

@@ -14,7 +14,6 @@ using std::endl;
 using std::string;
 using std::cerr;
 
-
 SistemaBiblioteca::SistemaBiblioteca(GerenciadorDeLivros& gl, GerenciadorDeUsuarios& gu, GerenciadorDeEmprestimos& ge)
     : gerenciadorLivros(gl), gerenciadorUsuarios(gu), gerenciadorEmprestimos(ge) {
     
@@ -32,12 +31,12 @@ SistemaBiblioteca::SistemaBiblioteca(GerenciadorDeLivros& gl, GerenciadorDeUsuar
         if (cin.fail()) {
             cout << "Entrada invalida. Por favor, insira apenas numeros." << endl;
             cin.clear();
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            limparBufferEntrada();
             continue; // Pula para a próxima iteração do loop
         }
 
-        // Limpa o restante da linha do buffer de entrada
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        // Limpa o buffer de entrada após ler os números
+        limparBufferEntrada();
 
         // Usa o método estático da classe Data para validar os valores.
         try {
@@ -77,10 +76,10 @@ void SistemaBiblioteca::executar() {
         if (cin.fail()) {
             cout << "Entrada invalida. Por favor, insira um numero." << endl;
             cin.clear();
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            limparBufferEntrada();
             opcao = -1; // Força o loop a continuar
         } else {
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            limparBufferEntrada();
         }
 
         switch (opcao) {
@@ -119,7 +118,7 @@ void SistemaBiblioteca::menuCadastros() {
         cout << "0. Voltar ao Menu Principal" << endl;
         cout << "Escolha uma opcao: ";
         cin >> opcao;
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        limparBufferEntrada();
 
         switch (opcao) {
             case 1: try { gerenciadorLivros.cadastrarLivro(); } catch (const Erros& e) { cerr << e.what() << endl; } break;
@@ -154,17 +153,20 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
         cout << "0. Voltar ao Menu Principal" << endl;
         cout << "Escolha uma opcao: ";
         cin >> opcao;
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        limparBufferEntrada();
 
         switch (opcao) {
             case 1: {
+                Usuario* usuario = nullptr;
+                Livro* livro = nullptr;
                 try {
                     cout << "--- Criar Emprestimo ---" << endl;
                     cout << "Codigo do Usuario: ";
                     int codUsuario;
                     cin >> codUsuario;
                     cin.ignore();
-                    Usuario* usuario = gerenciadorUsuarios.buscarUsuarioPorCodigo(codUsuario);
+                    // Atribui ao ponteiro declarado fora do try
+                    usuario = gerenciadorUsuarios.buscarUsuarioPorCodigo(codUsuario);
 
                     int opcaoBusca;
                     do {
@@ -177,7 +179,7 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
 
                         if (cin.fail()) {
                             cin.clear();
-                            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                            limparBufferEntrada();
                             cerr << "[ErroOpcaoInvalida]: A opcao digitada eh invalida. Por favor, insira um numero." << endl;
                             opcaoBusca = -1; // Força a repetição do loop
                         } else if (opcaoBusca < 0 || opcaoBusca > 2) {
@@ -185,16 +187,15 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                         }
                     } while (opcaoBusca < 0 || opcaoBusca > 2);
 
-                    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    limparBufferEntrada();
 
                     if (opcaoBusca == 0) break; // Volta para o menu de empréstimos
 
-                    Livro* livro = nullptr;
                     if (opcaoBusca == 1) {
                         int codLivro;
                         cout << "Digite o codigo do livro: ";
                         cin >> codLivro;
-                        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                        limparBufferEntrada();
                         livro = gerenciadorLivros.buscarLivroPorCodigo(codLivro);
                     } else if (opcaoBusca == 2) {
                         string titulo;
@@ -207,6 +208,21 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
 
                     ExemplarLivro* exemplar = livro->getExemplarDisponivel();
                     gerenciadorEmprestimos.criarEmprestimo(*usuario, exemplar, dataAtual);
+                } catch (const ErroLivroIndisponivelE& e) {
+                    cerr << e.what() << endl;
+                    if (usuario && livro) { // Garante que usuario e livro foram encontrados antes de oferecer a reserva
+                        cout << "Deseja fazer uma reserva para este livro? (S/N): ";
+                        char resposta;
+                        cin >> resposta;
+                        limparBufferEntrada();
+                        if (toupper(resposta) == 'S') {
+                            try {
+                                gerenciadorEmprestimos.criarReserva(usuario, livro, dataAtual);
+                            } catch (const Erros& e_reserva) {
+                                cerr << e_reserva.what() << endl;
+                            }
+                        }
+                    }
                 } catch (const Erros& e) {
                     cerr << e.what() << endl;
                 }
@@ -218,14 +234,14 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                     cout << "Codigo do Usuario: ";
                     int codUsuario;
                     cin >> codUsuario;
-                    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    limparBufferEntrada();
                     Usuario* usuario = gerenciadorUsuarios.buscarUsuarioPorCodigo(codUsuario);
 
                     gerenciadorEmprestimos.listarEmprestimosDoUsuario(usuario);
                     cout << "\nDigite o codigo do livro a ser devolvido: ";
                     int codLivro;
                     cin >> codLivro;
-                    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    limparBufferEntrada();
                     gerenciadorEmprestimos.realizarDevolucao(usuario, codLivro, dataAtual);
                 } catch (const Erros& e) {
                     cerr << e.what() << endl;
@@ -252,7 +268,7 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
 
                         if (cin.fail()) {
                             cin.clear();
-                            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                            limparBufferEntrada();
                             cerr << "[ErroOpcaoInvalida]: A opcao digitada eh invalida. Por favor, insira um numero." << endl;
                             opcaoBusca = -1;
                         } else if (opcaoBusca < 0 || opcaoBusca > 2) {
@@ -260,7 +276,7 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                         }
                     } while (opcaoBusca < 0 || opcaoBusca > 2);
 
-                    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    limparBufferEntrada();
 
                     if (opcaoBusca == 0) break;
 
@@ -269,7 +285,7 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                         int codLivro;
                         cout << "Digite o codigo do livro: ";
                         cin >> codLivro;
-                        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                        limparBufferEntrada();
                         livro = gerenciadorLivros.buscarLivroPorCodigo(codLivro);
                     } else if (opcaoBusca == 2) {
                         string titulo;
@@ -291,14 +307,14 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
 
                         if (cin.fail()) {
                             cin.clear();
-                            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                            limparBufferEntrada();
                             cerr << "[ErroOpcaoInvalida]: A opcao digitada eh invalida. Por favor, insira um numero." << endl;
                             opcaoReserva = -1;
                         } else if (opcaoReserva < 0 || opcaoReserva > 2) {
                             cerr << "[ErroOpcaoInvalida]: Opcao nao existe. Tente novamente." << endl;
                         } else if (opcaoReserva == 1) {
                             gerenciadorEmprestimos.criarReserva(usuario, livro, dataAtual);
-                            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                            limparBufferEntrada();
                         } else if (opcaoReserva == 2) {
                             int dia, mes, ano;
                             cout << "\nInsira a data da reserva (DD MM AAAA): ";
@@ -306,7 +322,7 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                             if (cin.fail() || !Data::testeDataValida(dia, mes, ano)) {
                                 cerr << "[ErroData]: Data invalida. Tente novamente." << endl;
                                 if(cin.fail()) cin.clear();
-                                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                limparBufferEntrada();
                                 opcaoReserva = -1; // Força repetição
                             } else {
                                 Data dataReserva(dia, mes, ano);
@@ -326,7 +342,7 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                     cout << "Codigo do Usuario: ";
                     int codUsuario;
                     cin >> codUsuario;
-                    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    limparBufferEntrada();
                     Usuario* usuario = gerenciadorUsuarios.buscarUsuarioPorCodigo(codUsuario);
 
                     gerenciadorEmprestimos.listarTodasReservasUsuario(usuario);
@@ -334,7 +350,7 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                     cout << "\nDigite o codigo do livro para cancelar a reserva: ";
                     int codLivro;
                     cin >> codLivro;
-                    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    limparBufferEntrada();
 
                     gerenciadorEmprestimos.cancelarReservaItem(usuario, codLivro);
                 } catch (const Erros& e) {
@@ -348,7 +364,7 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                     cout << "Codigo do Usuario: ";
                     int codUsuario;
                     cin >> codUsuario;
-                    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    limparBufferEntrada();
                     Usuario* usuario = gerenciadorUsuarios.buscarUsuarioPorCodigo(codUsuario);
 
                     Reserva* reserva = gerenciadorEmprestimos.getReservaPorUsuario(usuario);
@@ -383,7 +399,7 @@ void SistemaBiblioteca::menuConsultas() {
         cout << "0. Voltar ao Menu Principal" << endl;
         cout << "Escolha uma opcao: ";
         cin >> opcao;
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        limparBufferEntrada();
 
         switch (opcao) {
             case 1: 
@@ -401,7 +417,7 @@ void SistemaBiblioteca::menuConsultas() {
                     cout << "Codigo do Livro: "; 
                     int codLivro;
                     cin >> codLivro;
-                    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    limparBufferEntrada();
                     Livro* livro = gerenciadorLivros.buscarLivroPorCodigo(codLivro);
                     if (!livro) { throw ErroLivroNaoExisteAcervo(); }
                     
@@ -419,7 +435,7 @@ void SistemaBiblioteca::menuConsultas() {
                     cout << "Codigo do Usuario: "; 
                     int codUsuario;
                     cin >> codUsuario;
-                    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    limparBufferEntrada();
                     Usuario* usuario = gerenciadorUsuarios.buscarUsuarioPorCodigo(codUsuario);
                     
                     gerenciadorEmprestimos.listarEmprestimosDoUsuario(usuario);
@@ -458,11 +474,11 @@ void SistemaBiblioteca::menuNovaData() { //o menu ainda nao atualiza os status
         if (cin.fail()) {
             cout << "Entrada invalida. Por favor, insira apenas numeros." << endl;
             cin.clear();
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            limparBufferEntrada();
             continue; // Pula para a próxima iteração do loop
         }
 
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        limparBufferEntrada();
 
         try {
             Data::testeDataValida(dia, mes, ano);

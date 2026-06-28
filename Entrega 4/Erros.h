@@ -44,6 +44,13 @@ class ErroUsuarioComPendencias : public Erros {
         //GerenciadorDeUsuarios.cpp
 };
 
+class ErroUsuarioJaExiste : public Erros {
+    public:
+    ErroUsuarioJaExiste(const string& nome)
+        : Erros("[ErroUsuarioJaExiste]: Um usuario com o nome '" + nome + "' ja existe.") {}
+};
+
+
 /*---------------------------- ERROS DE RESERVA / EMPRESTIMO ----------------------------*/
 
 class ErroNenhumaReserva : public Erros {
@@ -94,6 +101,12 @@ class ErroLivroEmUso : public Erros {
         //gerenciadorDeLivros.cpp || linha 129
 };
 
+class ErroLivroJaExiste : public Erros {
+    public:
+    ErroLivroJaExiste(const string& titulo)
+        : Erros("[ErroLivroJaExiste]: Um livro com o titulo '" + titulo + "' ja existe no acervo.") {}
+};
+
 class ErroExemplarGuardado : public Erros {
     public:
     ErroExemplarGuardado()
@@ -103,7 +116,13 @@ class ErroExemplarGuardado : public Erros {
 class ErroLivroIndisponivel : public Erros {
     public:
     ErroLivroIndisponivel()
-        : Erros("[ErroLivroIndisponivel]: O livro informado esta indisponivel para emprestimo ou reserva."){}
+        : Erros("[ErroLivroIndisponivel]: O livro informado esta indisponivel."){}
+};
+
+class ErroLivroIndisponivelE : public Erros {
+    public:
+    ErroLivroIndisponivelE()
+        : Erros("[ErroLivroIndisponivelE]: O livro informado esta indisponivel para emprestimo."){}
 };
 
 class ErroAutorNaoExiste : public Erros {
@@ -111,6 +130,18 @@ class ErroAutorNaoExiste : public Erros {
     ErroAutorNaoExiste()
         : Erros("[ErroAutorNaoExiste]: O autor informado nao foi encontrado.") {}
         //GerenciadorDeLivros.cpp   ||  linha 94; 214;
+};
+
+class ErroAutorJaExiste : public Erros {
+    public:
+    ErroAutorJaExiste(const string& nome)
+        : Erros("[ErroAutorJaExiste]: Um autor com o nome '" + nome + "' ja existe.") {}
+};
+
+class ErroEditoraJaExiste : public Erros {
+    public:
+    ErroEditoraJaExiste(const string& nome)
+        : Erros("[ErroEditoraJaExiste]: Uma editora com o nome '" + nome + "' ja existe.") {}
 };
 
 class ErroEditoraNaoExiste : public Erros {
@@ -155,6 +186,12 @@ class ErroOpcaoInvalida : public Erros {
         : Erros("[ErroOpcaoInvalida]: A opcao digitada eh invalida. Por favor, insira um numero.") {}
         //SistemaBiblioteca.cpp
 };
+
+// função para limpar o buffer de entrada
+inline void limparBufferEntrada() {
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
 
 
 
