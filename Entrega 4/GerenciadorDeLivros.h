@@ -22,7 +22,11 @@ public:
     GerenciadorDeLivros();
     ~GerenciadorDeLivros();
 
-    void inicializarDados();
+    // Métodos para permitir que o sistema popule os dados
+    void setAutores(const std::vector<Autor*>& novosAutores);
+    void setEditoras(const std::vector<Editora*>& novasEditoras);
+    void setLivros(const std::vector<Livro*>& novosLivros);
+
 
     void cadastrarLivro();
     void cadastrarAutor();

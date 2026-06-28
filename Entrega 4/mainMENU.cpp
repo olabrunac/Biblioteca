@@ -1,24 +1,35 @@
 #include <iostream>
 #include "SistemaBiblioteca.h"
+#include "Inicializador.h"
 #include "GerenciadorDeLivros.h"
 #include "GerenciadorDeUsuarios.h"
 #include "GerenciadorDeEmprestimos.h"
 
 using std::cout;
 using std::endl;
+using std::vector;
 
 int main() {
-    // 1. Cria as instâncias dos gerenciadores
+
     GerenciadorDeLivros gerenciadorLivros;
     GerenciadorDeUsuarios gerenciadorUsuarios;
     GerenciadorDeEmprestimos gerenciadorEmprestimos;
 
-    // 2. Inicializa com os dados de exemplo
-    gerenciadorLivros.inicializarDados();
-    gerenciadorUsuarios.inicializarDados();
 
-    // 3. Cria a camada de UI, passando os gerenciadores para ela
     SistemaBiblioteca sistema(gerenciadorLivros, gerenciadorUsuarios, gerenciadorEmprestimos);
+
+
+    vector<Usuario*> usuariosIniciais = Inicializador<Usuario>::carregar();
+    vector<Autor*> autoresIniciais = Inicializador<Autor>::carregar();
+    vector<Editora*> editorasIniciais = Inicializador<Editora>::carregar();
+    vector<Livro*> livrosIniciais = Inicializador<Livro>::carregar(autoresIniciais, editorasIniciais);
+
+
+    gerenciadorUsuarios.setUsuarios(usuariosIniciais);
+    gerenciadorLivros.setAutores(autoresIniciais);
+    gerenciadorLivros.setEditoras(editorasIniciais);
+    gerenciadorLivros.setLivros(livrosIniciais);
+
     sistema.executar();
 
     return 0; 

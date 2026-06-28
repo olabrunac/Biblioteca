@@ -22,15 +22,11 @@ GerenciadorDeUsuarios::~GerenciadorDeUsuarios() {
 }
 
 
-void GerenciadorDeUsuarios::inicializarDados() {
-    usuarios.push_back(new Aluno(1, "Matheus"));
-    usuarios.push_back(new Aluno(2, "Bruna"));
-    usuarios.push_back(new Aluno(3, "Ryan"));
-    usuarios.push_back(new Professor(4, "Valter"));
-    usuarios.push_back(new Professor(5, "Backes"));
-    usuarios.push_back(new Aluno(6, "Aluno Em Debito", StatusUsuario::EM_DEBITO));
-    usuarios.push_back(new Professor(7, "Professor Em Debito", StatusUsuario::EM_DEBITO));
-    proximoCodigoUsuario = 8;
+void GerenciadorDeUsuarios::setUsuarios(const std::vector<Usuario*>& novosUsuarios) {
+    this->usuarios = novosUsuarios;
+    if (!novosUsuarios.empty()) {
+        proximoCodigoUsuario = novosUsuarios.back()->getCodigo() + 1;
+    }
 }
 
 

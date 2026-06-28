@@ -28,7 +28,6 @@ Emprestimo::~Emprestimo() {
 void Emprestimo::imprimirEmprestimo() {                                  
     cout << endl << "+++ Detalhes Emprestimo +++" << endl;                       
     if (usuario != nullptr) {
-        cout << "Tipo do usuario: "; 
         usuario->imprimirUsuario();         //polimorfismo
     } else {
         cout << "Tipo do usuario: (Nao especificado)" << endl;
@@ -44,7 +43,7 @@ void Emprestimo::adicionarItem(ItemEmprestimo* novoItem) {
     if (novoItem->getExemplar() != nullptr) {
         itens.push_back(novoItem);
     } else {
-        throw ErroEmprestimoInvalido();
+        throw ErroEmprestimoVazio();
     }
 }
 
@@ -93,7 +92,7 @@ void Emprestimo::setItens(Livro& novoLivro){
         Exemplar->setStatus(StatusEmprestimo::EMPRESTADO);
         itens.push_back(novoItem);
     } else {
-        throw ErroExemplarNulo();
+        throw ErroLivroIndisponivel();
     }
 }
 

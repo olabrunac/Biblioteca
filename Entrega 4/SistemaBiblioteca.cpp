@@ -70,7 +70,7 @@ void SistemaBiblioteca::mostrarMenuPrincipal() {
 void SistemaBiblioteca::executar() {
     int opcao;
     do {
-        system("clear || cls"); // Limpa a tela
+        //system("clear || cls"); // Limpa a tela
         mostrarMenuPrincipal();
         cin >> opcao;
 
@@ -122,22 +122,14 @@ void SistemaBiblioteca::menuCadastros() {
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
         switch (opcao) {
-            case 1: try {
-                gerenciadorLivros.cadastrarLivro(); } catch (const Erros& e) { cerr << e.what() << endl; } break;
-            case 2: try {
-                gerenciadorUsuarios.cadastrarUsuario(); } catch (const Erros& e) { cerr << e.what() << endl; } break;
-            case 3: try {
-                gerenciadorLivros.cadastrarAutor(); } catch (const Erros& e) { cerr << e.what() << endl; } break;
-            case 4: try {
-                gerenciadorLivros.cadastrarEditora(); } catch (const Erros& e) { cerr << e.what() << endl; } break;
-            case 5: try {
-                gerenciadorLivros.removerLivro(gerenciadorEmprestimos); } catch (const Erros& e) { cerr << e.what() << endl; } break;
-            case 6: try {
-                gerenciadorUsuarios.removerUsuario(gerenciadorEmprestimos); } catch (const Erros& e) { cerr << e.what() << endl; } break;
-            case 7: try {
-                gerenciadorLivros.removerAutor(); } catch (const Erros& e) { cerr << e.what() << endl; } break;
-            case 8: try {
-                gerenciadorLivros.removerEditora(); } catch (const Erros& e) { cerr << e.what() << endl; } break;
+            case 1: try { gerenciadorLivros.cadastrarLivro(); } catch (const Erros& e) { cerr << e.what() << endl; } break;
+            case 2: try { gerenciadorUsuarios.cadastrarUsuario(); } catch (const Erros& e) { cerr << e.what() << endl; } break;
+            case 3: try { gerenciadorLivros.cadastrarAutor(); } catch (const Erros& e) { cerr << e.what() << endl; } break;
+            case 4: try { gerenciadorLivros.cadastrarEditora(); } catch (const Erros& e) { cerr << e.what() << endl; } break;
+            case 5: try { gerenciadorLivros.removerLivro(gerenciadorEmprestimos); } catch (const Erros& e) { cerr << e.what() << endl; } break;
+            case 6: try { gerenciadorUsuarios.removerUsuario(gerenciadorEmprestimos); } catch (const Erros& e) { cerr << e.what() << endl; } break;
+            case 7: try { gerenciadorLivros.removerAutor(); } catch (const Erros& e) { cerr << e.what() << endl; } break;
+            case 8: try { gerenciadorLivros.removerEditora(); } catch (const Erros& e) { cerr << e.what() << endl; } break;
             case 0: break;
             default: cout << "Opcao invalida!" << endl; break;
         }
@@ -202,6 +194,7 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                         int codLivro;
                         cout << "Digite o codigo do livro: ";
                         cin >> codLivro;
+                        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                         livro = gerenciadorLivros.buscarLivroPorCodigo(codLivro);
                     } else if (opcaoBusca == 2) {
                         string titulo;
@@ -275,6 +268,7 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                         int codLivro;
                         cout << "Digite o codigo do livro: ";
                         cin >> codLivro;
+                        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                         livro = gerenciadorLivros.buscarLivroPorCodigo(codLivro);
                     } else if (opcaoBusca == 2) {
                         string titulo;
@@ -322,6 +316,7 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                     cerr << e.what() << endl;
                 }
 
+                break;
             }
             case 4: {
                 try {

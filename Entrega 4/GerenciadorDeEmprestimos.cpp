@@ -253,6 +253,7 @@ void GerenciadorDeEmprestimos::criarReserva(Usuario* reservaUsuario, Livro* rese
         reservas.push_back(novaReserva);
         cout << "+Sucesso: Reserva ID " << novaReserva->getID() << " criada e '" << reservaLivro->getTitulo() << "' registrado para " << reservaUsuario->getNome() << "." << endl;
     }
+
 }
 
 
@@ -340,7 +341,6 @@ void GerenciadorDeEmprestimos::listarTodasReservasUsuario(Usuario* usuarioBuscad
 
 void GerenciadorDeEmprestimos::listarEmprestimosDoUsuario(Usuario* usuario) { //9
     // CONSULTA: Visualização de todos os empréstimos de um determinado usuário.
-    cout << "\n----- Emprestimos do usuario: " << usuario->getNome() << " -----" << endl;
     bool encontrou = false;
     for (const auto& temp : emprestimos) {
         if (temp->getUsuario() == usuario) {
