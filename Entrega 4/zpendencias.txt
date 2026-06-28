@@ -4,7 +4,7 @@ pendencias????
 
     FEITO -- fiz o emprestimo do mesmo livro 2x e passou?? aí ao fazer emprestimos de outros livros aparece um spam de mensagem de erro e depois confirma o novo emprestimo, algo em relacao ao Emprestimo::possuiLivro
     
-    classe de erros try catch
+    FEITO -- classe de erros try catch
     
 
     Adicionar a lógico de Usuario em débito, para isso, Adicionar a opção de trocar a data
@@ -33,7 +33,7 @@ pendencias????
 
     FEITO -- Possui livro no emprestimo causando loop de cout no terminal
 
-    Entrar na aba devolver emprestimo com um usuario sem um emprestimo fecha o executavel
+    FEITO -- Entrar na aba devolver emprestimo com um usuario sem um emprestimo fecha o executavel
 
     FEITO -- Colocar uma letra ao inves do codigo do usuario causa algum erro de loop
 
@@ -42,3 +42,9 @@ pendencias????
     FINAL:: entregar uma planilha com os codigos e nomes dos livros e usuarios cadastrados para que o professor fuce
     
     adicionar classe Estagio - herdando atributos de aluno e professor, para usar a herança multipla
+
+
+
+https://docs.google.com/spreadsheets/d/1MlzKFv07vmvE7z_deBQD7X10JH_4Ces-OliQAH0jmk4/edit?usp=sharing  //editavel da tabela
+
+https://docs.google.com/spreadsheets/d/e/2PACX-1vSPL6P46-GgutUZDF2t3kon_SIr0xOYO2Kf4SJz4oCtQm06wjtniDFAXQ1xnsLkvAzNsAiaxoDCroIv/pubhtml //só visualizar a tabela

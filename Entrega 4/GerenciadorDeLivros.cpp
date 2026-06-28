@@ -1,5 +1,6 @@
 #include "GerenciadorDeLivros.h"
 #include "Endereco.h"
+#include "GerenciadorDeEmprestimos.h"
 #include "Erros.h"
 #include <iostream>
 #include <limits>
@@ -31,36 +32,39 @@ GerenciadorDeLivros::~GerenciadorDeLivros() {
 
 void GerenciadorDeLivros::inicializarDados() {
     // ---- EDITORAS ----
+    Endereco endEditora("Rua nao sei oq", 123, "Bairro tal", "Cidade etc", "Estado solido", "cep-123");
     Endereco endRocco("Rua Julio Diniz", 56, "Vila Olimpia", "São Paulo", "SP", "04547-090");
     Endereco endPanini("Alameda Caiapos", 425, "Barueri", "Sao Paulo", "SP", "06460-110");
-    editoras.push_back(new Editora(0, "Rocco", endRocco));
-    editoras.push_back(new Editora(1, "Panini", endPanini));
-    proximoCodigoEditora = 2;
+    editoras.push_back(new Editora(1, "Editora", endEditora));
+    editoras.push_back(new Editora(2, "Rocco", endRocco));
+    editoras.push_back(new Editora(3, "Panini", endPanini));
+    proximoCodigoEditora = 4;
 
     // ---- AUTORES ----
-    autores.push_back(new Autor(0, "Suzanne Collins"));
-    autores.push_back(new Autor(1, "Walter Tevis"));
-    autores.push_back(new Autor(2, "Mauricio de Souza"));
-    proximoCodigoAutor = 3;
+    autores.push_back(new Autor(1, "Autor"));
+    autores.push_back(new Autor(2, "Suzanne Collins"));
+    autores.push_back(new Autor(3, "Walter Tevis"));
+    autores.push_back(new Autor(4, "Mauricio de Souza"));
+    proximoCodigoAutor = 5;
 
     // ---- LIVROS ---- (codigo, titulo, editora, autores, exemplares, dias permitidos, ano, paginas)
-    Livro* l1 = new Livro(201, "Jogos Vorazes", *editoras[0], vector<Autor*> {autores[0]}, 2);
+    Livro* l1 = new Livro(201, "Livro", *editoras[0], vector<Autor*> {autores[1]}, 2);
     l1->setNroDiasPermitidoEmprestimo(7);
     acervo.acrescentarLivro(l1);
 
-    Livro* l2 = new Livro(202, "O Gambito da Rainha", *editoras[0], vector<Autor*> {autores[1], autores[2]}, 2, 7, 2018, 323);
+    Livro* l2 = new Livro(202, "Jogos Vorazes", *editoras[0], vector<Autor*> {autores[2], autores[4]}, 2, 7, 2018, 323);
     acervo.acrescentarLivro(l2);
 
-    Livro* l3 = new Livro(203, "Turma da Monica", *editoras[1], vector<Autor*> {autores[2]}, 3, 7, 2002, 132);
+    Livro* l3 = new Livro(203, "Turma da Monica", *editoras[1], vector<Autor*> {autores[4]}, 3, 7, 2002, 132);
     acervo.acrescentarLivro(l3);
 
-    Livro* l4 = new Livro(204, "Em Chamas", *editoras[0], vector<Autor*> {autores[0]}, 1, 7, 2013, 400);
+    Livro* l4 = new Livro(204, "Em Chamas", *editoras[0], vector<Autor*> {autores[3]}, 1, 7, 2013, 400);
     acervo.acrescentarLivro(l4);
 
     Livro* l5 = new Livro(205, "Sem Exemplar", *editoras[1], vector<Autor*> { autores[1] }, 0, 7, 2026, 123); //para testar emprestimo sem exemplar disponivel
     acervo.acrescentarLivro(l5);
 
-    Livro* l6 = new Livro(206, "Sem Dias", *editoras[0], vector<Autor*> {autores[2]}, 1, 0, 2026, 123); //para testar livro que o limite de dias é 0
+    Livro* l6 = new Livro(206, "Sem Dias", *editoras[0], vector<Autor*> {autores[1]}, 1, 0, 2026, 123); //para testar livro que o limite de dias é 0
     acervo.acrescentarLivro(l6);
 
     proximoCodigoLivro = 207;
@@ -141,30 +145,40 @@ void GerenciadorDeLivros::cadastrarEditora() {
 
 void GerenciadorDeLivros::removerLivro(const GerenciadorDeEmprestimos& gerenciadorEmprestimos) {
     cout << "--- Remocao de Livro ---" << endl;
-    cout << "Como deseja buscar o livro a ser removido?" << endl;
-    cout << "1. Pelo Codigo" << endl;
-    cout << "2. Pelo Titulo" << endl;
-    cout << "Escolha uma opcao: ";
     int opcao;
-    cin >> opcao;
+    do {
+        cout << "\nComo deseja buscar o livro a ser removido?" << endl;
+        cout << "1. Pelo Codigo" << endl;
+        cout << "2. Pelo Titulo" << endl;
+        cout << "0. Voltar" << endl;
+        cout << "Escolha uma opcao: ";
+        cin >> opcao;
+
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            cerr << "[ErroOpcaoInvalida]: A opcao digitada eh invalida. Por favor, insira um numero." << endl;
+            opcao = -1; // Força a repetição do loop
+        } else if (opcao < 0 || opcao > 2) {
+            cerr << "[ErroOpcaoInvalida]: Opcao nao existe. Tente novamente." << endl;
+        }
+    } while (opcao < 0 || opcao > 2);
+
     cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
+    if (opcao == 0) return;
     Livro* livro = nullptr;
 
     if (opcao == 1) {
         int codigo;
         cout << "Digite o codigo do livro: ";
         cin >> codigo;
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         livro = buscarLivroPorCodigo(codigo);
     } else if (opcao == 2) {
         string titulo;
         cout << "Digite o titulo do livro: ";
         getline(cin, titulo);
         livro = buscarLivroPorNome(titulo);
-    } else {
-        cout << "Opcao invalida." << endl;
-        return;
     }
 
     if (!livro) {

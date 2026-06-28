@@ -161,6 +161,13 @@ class ErroSistemaVazio : public Erros {
         : Erros("[ErroSistemaVazio]: Nao ha itens para listar.") {}
 };
 
+class ErroOpcaoInvalida : public Erros {
+    public:
+    ErroOpcaoInvalida()
+        : Erros("[ErroOpcaoInvalida]: A opcao digitada eh invalida. Por favor, insira um numero.") {}
+        //SistemaBiblioteca.cpp
+};
+
 
 
 
