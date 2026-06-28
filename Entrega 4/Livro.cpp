@@ -108,6 +108,7 @@ int Livro::getQuantidadeDeExemplares() const { return exemplares.size(); }
 int Livro::getNroDiasPermitidoEmprestimo() const { 
     
 
+
     return nroDiasPermitidoEmprestimo; }
 
 

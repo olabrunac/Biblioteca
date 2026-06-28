@@ -25,7 +25,7 @@ class Livro {
         vector <ExemplarLivro> exemplares;
 
     public:
-        //****************** CRIAR CONSTRUTOR COM PARÂMETROS*********Livro()
+        //reorganizei aqui, falta deixar o cpp na mesma ordem
         Livro();
         Livro(int novoCodigo, string novoTitulo, Editora& novaEditora, vector<Autor*> novoAutor, int quantidade);
         Livro(int novoCodigo, string novoTitulo, Editora& novaEditora, vector<Autor*> novoAutor, int quantidade, int novoNroDias, int novoAno, int novoNroPaginas);
