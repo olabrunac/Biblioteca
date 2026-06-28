@@ -49,6 +49,9 @@ void Emprestimo::adicionarItem(ItemEmprestimo* novoItem) {
 }
 
 
+//-------------------- sets e gets --------------------
+
+
 Data Emprestimo::getDataDeRetirada() const { return dataDeRetirada; }
 
 

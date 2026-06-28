@@ -4,16 +4,17 @@
 using std::cout;
 using std::endl;
 
+
 Usuario::Usuario(): codigo(0), nome(""), status(StatusUsuario::HABILITADO){}
+
+
+Usuario::Usuario(int novoCodigo, string novoNome, StatusUsuario status)
+    : codigo(novoCodigo), nome(novoNome), status(status) {}
 
 
 Usuario::~Usuario() {
     //cout << "Destruindo Usuario: " << nome << endl; // Para verificar a destruição dos objetos
 }
-
-
-Usuario::Usuario(int novoCodigo, string novoNome, StatusUsuario status)
-    : codigo(novoCodigo), nome(novoNome), status(status) {}
 
 
 void Usuario::imprimirUsuario() const {
@@ -24,6 +25,9 @@ void Usuario::imprimirUsuario() const {
         cout << "Em debito" << endl;
     }
 }
+
+
+//-------------------- sets e gets --------------------
 
 
 int Usuario::getCodigo() const { return codigo; } 

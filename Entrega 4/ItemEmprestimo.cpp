@@ -5,7 +5,9 @@
 using std::cout;
 using std::endl;
 
-ItemEmprestimo::ItemEmprestimo(){}
+
+ItemEmprestimo::ItemEmprestimo() : exemplar(nullptr), dataQueFoiDevolvido(0) {}
+
 
 void ItemEmprestimo::imprimirItemEmprestimo()const {
     if (exemplar != nullptr) {
@@ -13,21 +15,26 @@ void ItemEmprestimo::imprimirItemEmprestimo()const {
     }
 }
 
-Livro* ItemEmprestimo::getLivro() const{
-    
 
-    return exemplar->getLivro();
+//-------------------- sets e gets --------------------
 
-
-}
 
 ExemplarLivro* ItemEmprestimo::getExemplar() const { return exemplar; }
 
 
-Data ItemEmprestimo::getDataParaDevolucao() { return dataParaDevolucao; }
+Data ItemEmprestimo::getDataParaDevolucao() const { return dataParaDevolucao; }
 
 
-int ItemEmprestimo::getDataQueFoiDevolvido() { return dataQueFoiDevolvido; }
+int ItemEmprestimo::getDataQueFoiDevolvido() const { return dataQueFoiDevolvido; }
+
+
+Livro* ItemEmprestimo::getLivro() const{
+    if (exemplar != nullptr) {
+        return exemplar->getLivro();
+    }
+    return nullptr;
+}
+
 
 void ItemEmprestimo::setExemplar(ExemplarLivro* novoExemplar) { this->exemplar = novoExemplar;}
 

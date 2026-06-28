@@ -6,7 +6,9 @@
 using std::cout;
 using std::endl;
 
+
 Acervo::Acervo() {}
+
 
 Acervo::Acervo(initializer_list<Livro*> listaLivros) {
     for (auto temp : listaLivros) {

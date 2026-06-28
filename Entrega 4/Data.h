@@ -20,11 +20,10 @@ class Data {
         Data(int dia, int mes, int ano);
         Data(int dataInteira);
         Data(int d, int m, int a, bool pularValidacao); //Construtor pula validacao
-        static bool testeDataValida(int d, int m, int a);
-
         Data(const Data& outra); //Construtor de copia
         ~Data();
 
+        static bool testeDataValida(int d, int m, int a);
         void imprimirData() const;
 
         int getDia() const;
@@ -35,11 +34,8 @@ class Data {
         void setData(int novaData);
 
         Data operator+(int dias) const; //Utilizado no calculo da DataPrevistaDevolução.
-
-
         bool operator<(const Data& outraData) const;
         bool operator>(const Data& outraData) const;
-
         bool operator==(const Data& outraData) const;
         int operator-(const Data& outraData) const; //Talvez use
 

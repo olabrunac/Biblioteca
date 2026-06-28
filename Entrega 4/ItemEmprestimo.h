@@ -16,8 +16,8 @@ class ItemEmprestimo {
         void imprimirItemEmprestimo() const;
         ExemplarLivro* getExemplar() const;
 
-        Data getDataParaDevolucao();
-        int getDataQueFoiDevolvido();
+        Data getDataParaDevolucao() const;
+        int getDataQueFoiDevolvido() const;
         Livro* getLivro() const;
 
         void setExemplar(ExemplarLivro* novoExemplar);

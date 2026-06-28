@@ -23,6 +23,9 @@ void ItemReserva::imprimirItemReserva() const{
 }
 
 
+//-------------------- sets e gets --------------------
+
+
 int ItemReserva::getNroDoItem() const { return nroDoItem; }
 
 

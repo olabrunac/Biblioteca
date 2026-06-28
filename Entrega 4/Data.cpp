@@ -3,7 +3,8 @@
 #include "Data.h"
 #include "Erros.h"
 
-Data::Data(): dia(7), mes(6), ano(2026) {}
+
+Data::Data(): dia(7), mes(6), ano(2026) {} //conferir se nao vale a pena deixar um numero zerado
 
 
 Data::Data(int dia, int mes, int ano) {
@@ -57,6 +58,9 @@ void Data::imprimirData() const {
 }
 
 
+//-------------------- sets e gets --------------------
+
+
 int Data::getDia() const {
     return dia;
 }
@@ -90,6 +94,9 @@ void Data::setData(int novaData) {
         throw ErroData();
     }
 }
+
+
+//-------------------- operadores --------------------
 
 
 Data Data::operator+(int dias) const {

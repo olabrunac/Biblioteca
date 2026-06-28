@@ -10,7 +10,9 @@ using std::cin;
 using std::endl;
 using std::string;
 
+
 GerenciadorDeUsuarios::GerenciadorDeUsuarios() : proximoCodigoUsuario(0) {}
+
 
 GerenciadorDeUsuarios::~GerenciadorDeUsuarios() {
     for (auto temp : usuarios) {
@@ -18,6 +20,7 @@ GerenciadorDeUsuarios::~GerenciadorDeUsuarios() {
     }
     usuarios.clear();
 }
+
 
 void GerenciadorDeUsuarios::inicializarDados() {
     usuarios.push_back(new Aluno(1, "Matheus"));
@@ -29,6 +32,7 @@ void GerenciadorDeUsuarios::inicializarDados() {
     usuarios.push_back(new Professor(7, "Professor Em Debito", StatusUsuario::EM_DEBITO));
     proximoCodigoUsuario = 8;
 }
+
 
 void GerenciadorDeUsuarios::cadastrarUsuario() {
     string nome;
@@ -55,6 +59,7 @@ void GerenciadorDeUsuarios::cadastrarUsuario() {
     usuarios.push_back(novoUsuario);
     cout << "Usuario '" << nome << "' cadastrado com sucesso! (Codigo: " << novoCodigo << ")" << endl;
 }
+
 
 void GerenciadorDeUsuarios::removerUsuario(const GerenciadorDeEmprestimos& gerenciadorEmprestimos) {
     cout << "--- Remocao de Usuario ---" << endl;
@@ -93,6 +98,7 @@ void GerenciadorDeUsuarios::removerUsuario(const GerenciadorDeEmprestimos& geren
         cout << "Remocao cancelada." << endl;
     }
 }
+
 
 Usuario* GerenciadorDeUsuarios::buscarUsuarioPorCodigo(int buscaCodigo) {
     for (auto temp : usuarios) {

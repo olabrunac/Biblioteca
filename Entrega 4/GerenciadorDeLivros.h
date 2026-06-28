@@ -25,10 +25,11 @@ public:
     void inicializarDados();
 
     void cadastrarLivro();
-    void removerLivro(const GerenciadorDeEmprestimos& gerenciadorEmprestimos);
     void cadastrarAutor();
-    void removerAutor();
     void cadastrarEditora();
+
+    void removerLivro(const GerenciadorDeEmprestimos& gerenciadorEmprestimos);
+    void removerAutor();
     void removerEditora();
 
     Livro* buscarLivroPorCodigo(int codigo);

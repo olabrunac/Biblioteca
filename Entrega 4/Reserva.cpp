@@ -4,6 +4,7 @@
 using std::cout;
 using std::endl;
 
+
 Reserva::Reserva() : ID(0), usuario(nullptr) {}
 
 
@@ -22,6 +23,7 @@ Reserva::~Reserva() {
     itens.clear();
 }
 
+
 void Reserva::imprimirReserva() const {
     cout << "Reserva ID: " << ID << endl;
     cout << "Data da Reserva: "; dataRealizacao.imprimirData(); cout << endl;
@@ -34,9 +36,13 @@ void Reserva::imprimirReserva() const {
     }
 }
 
+
 void Reserva::adicionarItem(ItemReserva* novoItem) {
     itens.push_back(novoItem);
 }
+
+
+//-------------------- sets e gets --------------------
 
 
 int Reserva::getID() const { return ID; }
@@ -52,6 +58,25 @@ const vector<ItemReserva*>& Reserva::getItens() const {
     return itens; 
 }
 
+
+ItemReserva* Reserva::getItemPorLivro(Livro* livro) const {
+    for (ItemReserva* item : itens)
+        if (item->getLivro() == livro){
+        return item;
+        }
+    return nullptr;
+}
+
+
+void Reserva::setID(int novoID) { this -> ID = novoID; }
+
+
+void Reserva::setDataRealizacao(Data& novaDataReserva) { this -> dataRealizacao = novaDataReserva; }
+
+
+void Reserva::setUsuario(Usuario* novoUsuario) { this->usuario = novoUsuario; }
+
+
 bool Reserva::possuiLivro(const Livro* livroBuscado) const {
     for (auto temp : itens) {
         if (temp->getLivro() == livroBuscado) {
@@ -60,6 +85,7 @@ bool Reserva::possuiLivro(const Livro* livroBuscado) const {
     }
     return false;
 }
+
 
 bool Reserva::removerItemPorLivro(int codigoLivro) {
     for (auto temp = itens.begin(); temp != itens.end(); ++temp) {
@@ -72,19 +98,3 @@ bool Reserva::removerItemPorLivro(int codigoLivro) {
     }
     return false;
 }
-
-ItemReserva* Reserva::getItemPorLivro(Livro* livro) const {
-    for (ItemReserva* item : itens)
-        if (item->getLivro() == livro){
-        return item;
-        }
-    return nullptr;
-}
-
-void Reserva::setID(int novoID) { this -> ID = novoID; }
-
-
-void Reserva::setDataRealizacao(Data& novaDataReserva) { this -> dataRealizacao = novaDataReserva; }
-
-
-void Reserva::setUsuario(Usuario* novoUsuario) { this->usuario = novoUsuario; }

@@ -5,7 +5,8 @@
 using std::cout;
 using std::endl;
 
-Livro::Livro() : codigo(0), statusAgora(0), nroDiasPermitidoEmprestimo(7) {}
+
+Livro::Livro() : codigo(0), quantidadeDeExemplares(0), nroDiasPermitidoEmprestimo(0), anoPublicacao(0), nroPaginas(0), statusAgora(0), statusFuturo(0) {}
 
 
 Livro::Livro(int novoCodigo, string novoTitulo, Editora& novaEditora, vector<Autor*> novoAutor, int quantidade)
@@ -20,8 +21,8 @@ Livro::Livro(int novoCodigo, string novoTitulo, Editora& novaEditora, vector<Aut
     }
 
 
-void Livro::imprimirLivro() { 
-    cout << "Titulo: " << titulo << " | Edicao: " << edicao << endl;
+void Livro::imprimirLivro() {
+    cout << "Titulo: " << titulo << endl;
     cout << "Codigo: " << codigo << " | Editora: " << editora.getNome() << endl;
     cout << "Autores: ";
         if (autores.empty()) {
@@ -34,6 +35,26 @@ void Livro::imprimirLivro() {
     cout << "Quantidade de exemplares em estoque: " << getQuantidadeDeExemplares() << endl;
     cout << "Quantidade de disponíveis: " << getQuantidadeDisponivel() << endl;
     cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+}
+
+
+void Livro::criarExemplares(int quantidade) { 
+    // Conta quantos exemplares já existem fisicamente no vetor
+    int tamanhoAtual = exemplares.size(); 
+    
+    for (int i = 0; i < quantidade; i++) {
+        ExemplarLivro novoExemplar;
+        novoExemplar.setStatus(StatusEmprestimo::DISPONIVEL);
+        novoExemplar.setLivro(this);
+        
+        // Agora o cálculo será: 0 + 0 + 1 = 1 (Para o primeiro livro)
+        novoExemplar.setNroExemplar(tamanhoAtual + i + 1); 
+        
+        this->exemplares.push_back(novoExemplar);
+    }
+    
+    // Atualiza a variável de controle apenas no final
+    this->quantidadeDeExemplares = exemplares.size(); 
 }
 
 
@@ -58,24 +79,42 @@ bool Livro::possuiExemplaresEmprestados() const {
 }
 
 
-void Livro::criarExemplares(int quantidade) { 
-    // Conta quantos exemplares já existem fisicamente no vetor
-    int tamanhoAtual = exemplares.size(); 
-    
-    for (int i = 0; i < quantidade; i++) {
-        ExemplarLivro novoExemplar;
-        novoExemplar.setStatus(StatusEmprestimo::DISPONIVEL);
-        novoExemplar.setLivro(this);
-        
-        // Agora o cálculo será: 0 + 0 + 1 = 1 (Para o primeiro livro)
-        novoExemplar.setNroExemplar(tamanhoAtual + i + 1); 
-        
-        this->exemplares.push_back(novoExemplar);
+//-------------------- gets --------------------
+
+
+int Livro::getCodigo() const { return codigo; } 
+
+
+string Livro::getTitulo() const { return titulo; }
+
+
+const Editora& Livro::getEditora() const { return editora; }
+
+
+const vector<Autor*>& Livro::getAutor() const { return autores; }
+
+
+int Livro::getQuantidadeDeExemplares() const { return exemplares.size(); }
+
+
+int Livro::getNroDiasPermitidoEmprestimo() const { return nroDiasPermitidoEmprestimo; }
+
+
+int Livro::getAnoPublicacao() const { return anoPublicacao; }
+
+
+int Livro::getNroPaginas() const { return nroPaginas; }
+
+
+string Livro::getStatusAgora() const {
+    if (estaDisponivel()) {
+        return "Disponivel (" + std::to_string(getQuantidadeDisponivel()) + " exemplares)";
     }
-    
-    // Atualiza a variável de controle apenas no final
-    this->quantidadeDeExemplares = exemplares.size(); 
+    return "Indisponivel (0 exemplares)";
 }
+
+
+//int Livro::getStatusFuturo(Data& data) const {} //Nao tenho a menor ideia de como fazer isso por enquanto, precisa acessar o vetor de Reservas e Emprestimos.
 
 
 ExemplarLivro* Livro::getExemplarDisponivel() {
@@ -89,29 +128,6 @@ ExemplarLivro* Livro::getExemplarDisponivel() {
 }
 
 
-int Livro::getCodigo() const { return codigo; } 
-
-
-string Livro::getTitulo() const { return titulo; }
-
-
-
-const Editora& Livro::getEditora() const { return editora; }
-
-
-int Livro::getAnoPublicacao() const { return anoPublicacao; }
-
-
-int Livro::getQuantidadeDeExemplares() const { return exemplares.size(); }
-
-
-int Livro::getNroDiasPermitidoEmprestimo() const { 
-    
-
-
-    return nroDiasPermitidoEmprestimo; }
-
-
 int Livro::getQuantidadeDisponivel() const {
     int contador = 0;
     for (const ExemplarLivro& temp : exemplares) {
@@ -122,20 +138,8 @@ int Livro::getQuantidadeDisponivel() const {
     return contador;
 }
 
-const vector<Autor*>& Livro::getAutor() const { return autores; }
 
-
-string Livro::getStatusAgora() const {
-    if (estaDisponivel()) {
-        return "Disponivel (" + std::to_string(getQuantidadeDisponivel()) + " exemplares)";
-    }
-    return "Indisponivel (0 exemplares)";
-}
-
-
-//int Livro::getStatusFuturo(Data& data) const {} //Nao tenho a menor ideia de como fazer isso por enquanto, precisa acessar o vetor de Reservas e Emprestimos.
-
-int Livro::getNroPaginas() const { return nroPaginas; }
+//-------------------- sets --------------------
 
 
 void Livro::setCodigo(int novoCodigo) { this -> codigo = novoCodigo; }
@@ -147,6 +151,9 @@ void Livro::setTitulo(string novoTitulo) { this -> titulo = novoTitulo; }
 void Livro::setEditora(Editora& novaEditora) { this -> editora = novaEditora; }
 
 
+void Livro::setAutor(vector<Autor*> novoAutor) { this -> autores = novoAutor; }
+
+
 void Livro::setAnoPublicacao(int novoAno) { this -> anoPublicacao = novoAno; }
 
 
@@ -154,9 +161,6 @@ void Livro::setQuantidadeDeExemplares(int novaQuantidade) { this -> quantidadeDe
 
 
 void Livro::setNroDiasPermitidoEmprestimo(int novoNroDias) { this -> nroDiasPermitidoEmprestimo = novoNroDias; }
-
-
-void Livro::setAutor(vector<Autor*> novoAutor) { this -> autores = novoAutor; }
 
 
 void Livro::setNroPaginas(int novoNroPaginas) { this -> nroPaginas = novoNroPaginas; }

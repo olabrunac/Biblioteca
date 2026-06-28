@@ -42,7 +42,7 @@ class Livro {
         int getQuantidadeDeExemplares() const;
         int getNroDiasPermitidoEmprestimo() const;
         int getAnoPublicacao() const;
-        int getNroPaginas() const;
+        int getNroPaginas() const; // Adicionado const para consistência
         string getStatusAgora() const;
         int getStatusFuturo(Data& data) const;
         ExemplarLivro* getExemplarDisponivel();

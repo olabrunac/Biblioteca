@@ -5,6 +5,7 @@
 using std::cout;
 using std::endl;
 
+
 Editora::Editora() {}
 
 
@@ -25,6 +26,9 @@ void Editora::imprimirEditora() {
     cout << "--- Endereco da Editora ---" << endl;
     endereco.imprimirEndereco(); 
 }
+
+
+//-------------------- sets e gets --------------------
 
 
 int Editora::getCodigo() const { return codigo; }

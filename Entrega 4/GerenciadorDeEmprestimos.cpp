@@ -8,6 +8,7 @@
 using std::cout;
 using std::endl;
 
+
 GerenciadorDeEmprestimos::GerenciadorDeEmprestimos() {} 
 
 
@@ -26,7 +27,7 @@ GerenciadorDeEmprestimos::~GerenciadorDeEmprestimos() {
 }
 
 
-void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, ExemplarLivro* exemplar, const Data& dataAtual) {
+void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, ExemplarLivro* exemplar, const Data& dataAtual) { //1
     // REGRA DE NEGÓCIO: Verifica se o usuário está habilitado para empréstimos.
     if (emprestimoUsuario.getStatus() != StatusUsuario::HABILITADO) {
         
@@ -85,7 +86,7 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, Exemp
 }
 
 
-void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, initializer_list<ExemplarLivro*> listaExemplares, const Data& dataAtual) {
+void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, initializer_list<ExemplarLivro*> listaExemplares, const Data& dataAtual) { //2
     
     // REGRA DE NEGÓCIO: Verifica se o usuário está habilitado para empréstimos.
     if (emprestimoUsuario.getStatus() != StatusUsuario::HABILITADO) {
@@ -143,35 +144,62 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, initi
     }
 }
 
-// Função de apoio para a regra de negócio que impede a exclusão de livros em uso.
-int GerenciadorDeEmprestimos::contarEmprestimosAtivos(Livro& livro) const {  
-    int contador = 0;
-    for (auto tempEmprestimo : emprestimos) {
-        for (auto temp : tempEmprestimo->getItens()) {
-            if (temp->getExemplar()->getStatus() == StatusEmprestimo::EMPRESTADO) {
-                if (temp->getExemplar()->getLivro()->getCodigo() == livro.getCodigo()) {
-                    contador++;
-                }
+
+void GerenciadorDeEmprestimos::criarEmprestimoApartirDaReserva(Reserva* reservaExistente, const Data& dataAtual) { //3
+    
+    // REGRA DE NEGÓCIO: Verifica se o usuário da reserva está habilitado.
+    if (reservaExistente->getUsuario()->getStatus() != StatusUsuario::HABILITADO) {
+       throw ErroUsuarioNaoHabilitado();
+    }   
+
+    // 1. Validação: Verifica a disponibilidade de todos os livros na reserva.
+    for(auto temp : reservaExistente->getItens()) { 
+        if(temp->getLivro()->getExemplarDisponivel() == nullptr) {
+            throw ErroLivroIndisponivel();
+            return;
+        }
+    }
+    
+    // 2. Criação: Inicia um único objeto de Empréstimo para todos os itens.
+    Emprestimo* novoEmprestimo = new Emprestimo();
+    novoEmprestimo->setUsuario(reservaExistente->getUsuario());
+    novoEmprestimo->setStatus(1);
+    novoEmprestimo->setDataDeRetirada(dataAtual);
+    novoEmprestimo->setDataDevolucao(0);
+    int maiorPrazoDias = 0;
+
+    // 3. Processamento: Itera sobre os itens da reserva e os adiciona ao novo empréstimo.
+    for(auto tempItem : reservaExistente->getItens()){
+        ExemplarLivro* exemplar = tempItem->getLivro()->getExemplarDisponivel();
+        exemplar->setStatus(StatusEmprestimo::EMPRESTADO);
+        
+        ItemEmprestimo* novoItemEmprestimo = new ItemEmprestimo();
+        novoItemEmprestimo->setExemplar(exemplar);
+
+        // Calcula a data de devolução para cada item e atualiza o prazo geral do empréstimo.
+        int dias = exemplar->getLivro()->getNroDiasPermitidoEmprestimo();
+        if (dias > maiorPrazoDias) maiorPrazoDias = dias;
+        novoItemEmprestimo->setDataParaDevolucao(dataAtual + dias);
+        novoItemEmprestimo->setDataQueFoiDevolvido(0);
+
+        novoEmprestimo->adicionarItem(novoItemEmprestimo);
+    }
+    novoEmprestimo->setDataPrevistaDevolucao(dataAtual + maiorPrazoDias);
+    emprestimos.push_back(novoEmprestimo);
+
+    // 4. Limpeza: Remove a reserva original do sistema após a conversão.
+        for(auto temp = reservas.begin(); temp != reservas.end(); ++temp) {
+            if ((*temp)->getID() == reservaExistente->getID()) {
+                delete *temp;       // Libera a memória do objeto Reserva.
+                reservas.erase(temp);       // Remove o ponteiro do vetor.
+                break;
             }
         }
-    }
-    return contador; 
-}
-
-// Função de apoio para a regra de negócio que impede a exclusão de livros em uso.
-int GerenciadorDeEmprestimos::contarReservasAtivas(Livro& livro) const {
-    int contador = 0;
-    for (const auto& temp : reservas) {
-        if (temp->possuiLivro(&livro)) {
-            // Conta a reserva se ela contém o livro especificado.
-            contador++;
-        }
-    }
-    return contador;
+        cout << "+Sucesso: Reserva convertida em emprestimo" << endl;
 }
 
 
-void GerenciadorDeEmprestimos::criarReserva(Usuario* reservaUsuario, Livro* reservaLivro, Data& dataRealizacao) {
+void GerenciadorDeEmprestimos::criarReserva(Usuario* reservaUsuario, Livro* reservaLivro, Data& dataRealizacao) { //4
 
     // 1. Validação do Usuario
     if (reservaUsuario->getStatus() != StatusUsuario::HABILITADO) {
@@ -228,67 +256,42 @@ void GerenciadorDeEmprestimos::criarReserva(Usuario* reservaUsuario, Livro* rese
 }
 
 
-void GerenciadorDeEmprestimos::criarEmprestimoApartirDaReserva(Reserva* reservaExistente, const Data& dataAtual) {
-    
-    // REGRA DE NEGÓCIO: Verifica se o usuário da reserva está habilitado.
-    if (reservaExistente->getUsuario()->getStatus() != StatusUsuario::HABILITADO) {
-       throw ErroUsuarioNaoHabilitado();
-    }   
+//-------------------- listagem --------------------
 
-    // 1. Validação: Verifica a disponibilidade de todos os livros na reserva.
-    for(auto temp : reservaExistente->getItens()) { 
-        if(temp->getLivro()->getExemplarDisponivel() == nullptr) {
-            throw ErroLivroIndisponivel();
-            return;
-        }
-    }
-    
-    // 2. Criação: Inicia um único objeto de Empréstimo para todos os itens.
-    Emprestimo* novoEmprestimo = new Emprestimo();
-    novoEmprestimo->setUsuario(reservaExistente->getUsuario());
-    novoEmprestimo->setStatus(1);
-    novoEmprestimo->setDataDeRetirada(dataAtual);
-    novoEmprestimo->setDataDevolucao(0);
-    int maiorPrazoDias = 0;
 
-    // 3. Processamento: Itera sobre os itens da reserva e os adiciona ao novo empréstimo.
-    for(auto tempItem : reservaExistente->getItens()){
-        ExemplarLivro* exemplar = tempItem->getLivro()->getExemplarDisponivel();
-        exemplar->setStatus(StatusEmprestimo::EMPRESTADO);
-        
-        ItemEmprestimo* novoItemEmprestimo = new ItemEmprestimo();
-        novoItemEmprestimo->setExemplar(exemplar);
-
-        // Calcula a data de devolução para cada item e atualiza o prazo geral do empréstimo.
-        int dias = exemplar->getLivro()->getNroDiasPermitidoEmprestimo();
-        if (dias > maiorPrazoDias) maiorPrazoDias = dias;
-        novoItemEmprestimo->setDataParaDevolucao(dataAtual + dias);
-        novoItemEmprestimo->setDataQueFoiDevolvido(0);
-
-        novoEmprestimo->adicionarItem(novoItemEmprestimo);
-    }
-    novoEmprestimo->setDataPrevistaDevolucao(dataAtual + maiorPrazoDias);
-    emprestimos.push_back(novoEmprestimo);
-
-    // 4. Limpeza: Remove a reserva original do sistema após a conversão.
-        for(auto temp = reservas.begin(); temp != reservas.end(); ++temp) {
-            if ((*temp)->getID() == reservaExistente->getID()) {
-                delete *temp;       // Libera a memória do objeto Reserva.
-                reservas.erase(temp);       // Remove o ponteiro do vetor.
-                break;
-            }
-        }
-        cout << "+Sucesso: Reserva convertida em emprestimo" << endl;
-}
-
-void GerenciadorDeEmprestimos::listarTodosEmprestimosAtuais() { 
+void GerenciadorDeEmprestimos::listarTodosEmprestimosAtuais() { //5
     for (auto temp : emprestimos) {
         temp->imprimirEmprestimo();
     }
 }
 
 
-void GerenciadorDeEmprestimos::listarTodasReservas() {
+void GerenciadorDeEmprestimos::listarReservasDoLivro(Livro& listaLivro) { //6
+    // CONSULTA: Visualização de todas as reservas de um determinado livro.
+    cout << "----- Reservas para o livro: '" << listaLivro.getTitulo() << "' -----" << endl;
+    bool encontrou = false; 
+
+    for (auto temp : reservas) {
+        if (temp->possuiLivro(&listaLivro)) {
+            for (auto tempItem : temp->getItens()) {
+                if (tempItem->getLivro() == &listaLivro) {
+                    encontrou = true;
+                    cout << "- Reservado por: " << temp->getUsuario()->getNome();
+                    cout << " (Cod: " << temp->getUsuario()->getCodigo() << ") | Retirada prevista para: ";
+                    tempItem->getDataDeRetirada().imprimirData();
+                    cout << endl;
+                }
+            }
+        }
+    }
+
+    if (!encontrou) {
+        ErroExemplarGuardado();
+    } 
+}
+
+
+void GerenciadorDeEmprestimos::listarTodasReservas() { //7
     cout << endl << "----- Lista de Reservas Ativas -----" << endl;
     
     if (reservas.empty()) {
@@ -301,7 +304,8 @@ void GerenciadorDeEmprestimos::listarTodasReservas() {
     }
 }
 
-void GerenciadorDeEmprestimos::listarTodasReservasUsuario(Usuario* usuarioBuscado) const {
+
+void GerenciadorDeEmprestimos::listarTodasReservasUsuario(Usuario* usuarioBuscado) const { //8
     if (usuarioBuscado == nullptr) {
 
       throw ErroUsuarioNaoExiste();
@@ -333,7 +337,192 @@ void GerenciadorDeEmprestimos::listarTodasReservasUsuario(Usuario* usuarioBuscad
     }
 }
 
-bool GerenciadorDeEmprestimos::estaDisponivelnaData(Livro* testeLivro, const Data& dataInicial, const Data& dataFinal){
+
+void GerenciadorDeEmprestimos::listarEmprestimosDoUsuario(Usuario* usuario) { //9
+    // CONSULTA: Visualização de todos os empréstimos de um determinado usuário.
+    cout << "\n----- Emprestimos do usuario: " << usuario->getNome() << " -----" << endl;
+    bool encontrou = false;
+    for (const auto& temp : emprestimos) {
+        if (temp->getUsuario() == usuario) {
+            temp->imprimirEmprestimo();
+            encontrou = true;
+        }
+    }
+    if (!encontrou) {
+       throw ErroNenhumEmprestimo();
+    } 
+}
+
+
+void GerenciadorDeEmprestimos::listarEmprestimosDoLivro(Livro& livro) { //10
+    // CONSULTA: Visualização de todos os empréstimos de um determinado livro.
+    cout << "\n----- Emprestimos para o livro: '" << livro.getTitulo() << "' -----" << endl;
+    bool encontrou = false;
+    for (const auto& temp : emprestimos) {
+        for (const auto& tempItem : temp->getItens()) {
+            if (tempItem->getExemplar()->getLivro()->getCodigo() == livro.getCodigo()) {
+                cout << "- Emprestado para: " << temp->getUsuario()->getNome();
+                cout << " (Cod: " << temp->getUsuario()->getCodigo() << ") | Exemplar ID: " << tempItem->getExemplar()->getNroExemplar();
+                cout << " | Devolucao: ";
+                tempItem->getDataParaDevolucao().imprimirData();
+                cout << endl;
+                encontrou = true;
+            }
+        }
+    }
+    if (!encontrou) {
+       throw ErroExemplarGuardado();
+    } 
+}
+
+
+//-------------------- contas --------------------
+
+
+int GerenciadorDeEmprestimos::contarEmprestimosAtivos(Livro& livro) const {  //11
+    int contador = 0;
+    for (auto tempEmprestimo : emprestimos) {
+        for (auto temp : tempEmprestimo->getItens()) {
+            if (temp->getExemplar()->getStatus() == StatusEmprestimo::EMPRESTADO) {
+                if (temp->getExemplar()->getLivro()->getCodigo() == livro.getCodigo()) {
+                    contador++;
+                }
+            }
+        }
+    }
+    return contador; 
+}
+
+
+int GerenciadorDeEmprestimos::contarReservasAtivas(Livro& livro) const { //12
+    int contador = 0;
+    for (const auto& temp : reservas) {
+        if (temp->possuiLivro(&livro)) {
+            // Conta a reserva se ela contém o livro especificado.
+            contador++;
+        }
+    }
+    return contador;
+}
+
+
+//-------------------- ações --------------------
+
+
+bool GerenciadorDeEmprestimos::realizarDevolucao(Usuario* usuario, int codigoLivro, const Data& dataDevolucao) { //13
+    for (auto temp : emprestimos) {
+        // Procura um empréstimo ativo do usuário
+        if (temp->getUsuario() == usuario && temp->getStatus() == 1) {
+            for (auto tempItem : temp->getItens()) {
+                // Procura o livro específico que ainda não foi devolvido
+                if (tempItem->getExemplar()->getLivro()->getCodigo() == codigoLivro && tempItem->getExemplar()->getStatus() == StatusEmprestimo::EMPRESTADO) {
+                    
+                    // Realiza a devolução
+                    tempItem->getExemplar()->setStatus(StatusEmprestimo::DISPONIVEL);
+                    tempItem->setDataQueFoiDevolvido(dataDevolucao.getDataInteira());
+                    
+                    cout << "Devolucao do livro '" << tempItem->getExemplar()->getLivro()->getTitulo() << "' realizada com sucesso." << endl;
+                    
+                    // Opcional: verificar se todos os itens do empréstimo foram devolvidos para finalizar o empréstimo
+                    bool todosDevolvidos = true;
+                    for (auto tempCheck : temp->getItens()) {
+                        if (tempCheck->getExemplar()->getStatus() == StatusEmprestimo::EMPRESTADO) {
+                            todosDevolvidos = false;
+                            break;
+                        }
+                    }
+                    if (todosDevolvidos) {
+
+                        
+                        temp->setStatus(0); // Marca o empréstimo como finalizado
+                        cout << "Todos os itens deste emprestimo foram devolvidos." << endl;
+                    }
+                    
+                    //remover do vetor emprestimos
+                    return true;
+                }
+            }
+        }
+    }
+    throw ErroNenhumEmprestimo();
+    return false; 
+}
+
+
+bool GerenciadorDeEmprestimos::cancelarReservaItem(Usuario* usuario, int codigoLivro) { //14
+    Reserva* reserva = getReservaPorUsuario(usuario);
+    
+    if (!reserva) {
+        throw ErroNenhumaReserva();
+        return false; // Retorno de segurança
+    }
+
+    if (reserva->removerItemPorLivro(codigoLivro)) {
+        cout << "Item da reserva cancelado com sucesso." << endl;
+        
+        // Se a reserva ficou vazia, remove ela completamente
+        if (reserva->getItens().empty()) {
+            cout << "A reserva ficou vazia e foi removida do sistema." << endl;
+            for (auto temp = reservas.begin(); temp != reservas.end(); ++temp) {
+                if (*temp == reserva) {
+                    delete *temp;
+                    reservas.erase(temp);
+                    break;
+                }
+            }
+        }
+        
+        return true; // CORRETO: Retorna sucesso para quem chamou a função
+    }
+    
+    throw ErroLivroNaoExisteAcervo();
+    return false; // CORRETO: Retorno de segurança caso o compilador reclame do throw
+}
+
+
+bool GerenciadorDeEmprestimos::usuarioTemPendencias(Usuario* usuario) const { //15
+    // Verifica se tem empréstimos ativos
+    for (auto& temp : emprestimos) {
+        if (temp->getUsuario() == usuario && temp->getStatus() == 1) {
+            return true;
+        }
+    }
+    // Verifica se tem reservas
+    if (getReservaPorUsuario(usuario) != nullptr) {
+        return true;
+    }
+    return false;
+}
+
+
+void GerenciadorDeEmprestimos::atualizaPendenciasEmprestimos(Data& dataFutura){ //16
+
+    cout << "---------- VERIFICANDO EMPRESTIMOS ATRASADOS" << endl;
+
+    for(auto& temp: emprestimos)
+
+        if(temp->getStatus() == 1) //se o emprestimo está ativo
+            //tendo o emprestimo ativo, agora verificamos se a dataFutura(quando utilizamos a função secreta novaData)
+            //verifica se era para o emprestimo ser devolvido antes dessa data que foi passada
+            if (Data(temp->getDataPrevistaDevolucao()) < dataFutura ){
+                //usei o construtor de data, pois getDataPrevistaDevolucao é int
+
+                temp->getUsuario()->setStatus(StatusUsuario::EM_DEBITO);
+                //pega o usuario do emprestimo que atrasou e muda o status dele
+                cout << "Empréstimo de:" << temp->getUsuario()->getNome() << " está atrasado" << endl;
+                throw ErroUsuarioNaoHabilitado();
+                
+
+
+                //testar essa logica basica, depois adicionar qtd de dias atrasado
+
+              
+            }
+
+}
+
+
+bool GerenciadorDeEmprestimos::estaDisponivelnaData(Livro* testeLivro, const Data& dataInicial, const Data& dataFinal){ //17
 
     int ContadorConflito = 0;
 
@@ -377,67 +566,8 @@ bool GerenciadorDeEmprestimos::estaDisponivelnaData(Livro* testeLivro, const Dat
 
 }
 
-void GerenciadorDeEmprestimos::listarEmprestimosDoUsuario(Usuario* usuario) {
-    // CONSULTA: Visualização de todos os empréstimos de um determinado usuário.
-    cout << "\n----- Emprestimos do usuario: " << usuario->getNome() << " -----" << endl;
-    bool encontrou = false;
-    for (const auto& temp : emprestimos) {
-        if (temp->getUsuario() == usuario) {
-            temp->imprimirEmprestimo();
-            encontrou = true;
-        }
-    }
-    if (!encontrou) {
-       throw ErroNenhumEmprestimo();
-    } 
-}
 
-void GerenciadorDeEmprestimos::listarEmprestimosDoLivro(Livro& livro) {
-    // CONSULTA: Visualização de todos os empréstimos de um determinado livro.
-    cout << "\n----- Emprestimos para o livro: '" << livro.getTitulo() << "' -----" << endl;
-    bool encontrou = false;
-    for (const auto& temp : emprestimos) {
-        for (const auto& tempItem : temp->getItens()) {
-            if (tempItem->getExemplar()->getLivro()->getCodigo() == livro.getCodigo()) {
-                cout << "- Emprestado para: " << temp->getUsuario()->getNome();
-                cout << " (Cod: " << temp->getUsuario()->getCodigo() << ") | Exemplar ID: " << tempItem->getExemplar()->getNroExemplar();
-                cout << " | Devolucao: ";
-                tempItem->getDataParaDevolucao().imprimirData();
-                cout << endl;
-                encontrou = true;
-            }
-        }
-    }
-    if (!encontrou) {
-       throw ErroExemplarGuardado();
-    } 
-}
-
-void GerenciadorDeEmprestimos::listarReservasDoLivro(Livro& listaLivro) {
-    // CONSULTA: Visualização de todas as reservas de um determinado livro.
-    cout << "----- Reservas para o livro: '" << listaLivro.getTitulo() << "' -----" << endl;
-    bool encontrou = false; 
-
-    for (auto temp : reservas) {
-        if (temp->possuiLivro(&listaLivro)) {
-            for (auto tempItem : temp->getItens()) {
-                if (tempItem->getLivro() == &listaLivro) {
-                    encontrou = true;
-                    cout << "- Reservado por: " << temp->getUsuario()->getNome();
-                    cout << " (Cod: " << temp->getUsuario()->getCodigo() << ") | Retirada prevista para: ";
-                    tempItem->getDataDeRetirada().imprimirData();
-                    cout << endl;
-                }
-            }
-        }
-    }
-
-    if (!encontrou) {
-        ErroExemplarGuardado();
-    } 
-}
-
-Reserva* GerenciadorDeEmprestimos::getReservaPorUsuario(Usuario* usuarioBuscado) const {
+Reserva* GerenciadorDeEmprestimos::getReservaPorUsuario(Usuario* usuarioBuscado) const { //18
     for (auto temp : reservas) {
         if (temp->getUsuario() == usuarioBuscado) {
             return temp; // Retorna o ponteiro para a reserva encontrada.
@@ -446,120 +576,12 @@ Reserva* GerenciadorDeEmprestimos::getReservaPorUsuario(Usuario* usuarioBuscado)
     return nullptr; // Retorna nulo se nenhuma reserva for encontrada para o usuário.
 }
 
-Emprestimo* GerenciadorDeEmprestimos::getEmprestimoPorUsuario(Usuario* usuarioBuscado) const {
+
+Emprestimo* GerenciadorDeEmprestimos::getEmprestimoPorUsuario(Usuario* usuarioBuscado) const { //19
     for (auto temp : emprestimos) {
         if (temp->getUsuario() == usuarioBuscado && temp->getStatus() == 1) {
             return temp;
         }
     }
     return nullptr;
-}
-
-bool GerenciadorDeEmprestimos::realizarDevolucao(Usuario* usuario, int codigoLivro, const Data& dataDevolucao) {
-    for (auto temp : emprestimos) {
-        // Procura um empréstimo ativo do usuário
-        if (temp->getUsuario() == usuario && temp->getStatus() == 1) {
-            for (auto tempItem : temp->getItens()) {
-                // Procura o livro específico que ainda não foi devolvido
-                if (tempItem->getExemplar()->getLivro()->getCodigo() == codigoLivro && tempItem->getExemplar()->getStatus() == StatusEmprestimo::EMPRESTADO) {
-                    
-                    // Realiza a devolução
-                    tempItem->getExemplar()->setStatus(StatusEmprestimo::DISPONIVEL);
-                    tempItem->setDataQueFoiDevolvido(dataDevolucao.getDataInteira());
-                    
-                    cout << "Devolucao do livro '" << tempItem->getExemplar()->getLivro()->getTitulo() << "' realizada com sucesso." << endl;
-                    
-                    // Opcional: verificar se todos os itens do empréstimo foram devolvidos para finalizar o empréstimo
-                    bool todosDevolvidos = true;
-                    for (auto tempCheck : temp->getItens()) {
-                        if (tempCheck->getExemplar()->getStatus() == StatusEmprestimo::EMPRESTADO) {
-                            todosDevolvidos = false;
-                            break;
-                        }
-                    }
-                    if (todosDevolvidos) {
-
-                        
-                        temp->setStatus(0); // Marca o empréstimo como finalizado
-                        cout << "Todos os itens deste emprestimo foram devolvidos." << endl;
-                    }
-                    
-                    //remover do vetor emprestimos
-                    return true;
-                }
-            }
-        }
-    }
-    throw ErroNenhumEmprestimo();
-    return false; 
-}
-
-bool GerenciadorDeEmprestimos::cancelarReservaItem(Usuario* usuario, int codigoLivro) {
-    Reserva* reserva = getReservaPorUsuario(usuario);
-    
-    if (!reserva) {
-        throw ErroNenhumaReserva();
-        return false; // Retorno de segurança
-    }
-
-    if (reserva->removerItemPorLivro(codigoLivro)) {
-        cout << "Item da reserva cancelado com sucesso." << endl;
-        
-        // Se a reserva ficou vazia, remove ela completamente
-        if (reserva->getItens().empty()) {
-            cout << "A reserva ficou vazia e foi removida do sistema." << endl;
-            for (auto temp = reservas.begin(); temp != reservas.end(); ++temp) {
-                if (*temp == reserva) {
-                    delete *temp;
-                    reservas.erase(temp);
-                    break;
-                }
-            }
-        }
-        
-        return true; // CORRETO: Retorna sucesso para quem chamou a função
-    }
-    
-    throw ErroLivroNaoExisteAcervo();
-    return false; // CORRETO: Retorno de segurança caso o compilador reclame do throw
-}
-bool GerenciadorDeEmprestimos::usuarioTemPendencias(Usuario* usuario) const {
-    // Verifica se tem empréstimos ativos
-    for (auto& temp : emprestimos) {
-        if (temp->getUsuario() == usuario && temp->getStatus() == 1) {
-            return true;
-        }
-    }
-    // Verifica se tem reservas
-    if (getReservaPorUsuario(usuario) != nullptr) {
-        return true;
-    }
-    return false;
-}
-
-
-void GerenciadorDeEmprestimos::atualizaPendenciasEmprestimos(Data& dataFutura){
-
-    cout << "---------- VERIFICANDO EMPRESTIMOS ATRASADOS" << endl;
-
-    for(auto& temp: emprestimos)
-
-        if(temp->getStatus() == 1) //se o emprestimo está ativo
-            //tendo o emprestimo ativo, agora verificamos se a dataFutura(quando utilizamos a função secreta novaData)
-            //verifica se era para o emprestimo ser devolvido antes dessa data que foi passada
-            if (Data(temp->getDataPrevistaDevolucao()) < dataFutura ){
-                //usei o construtor de data, pois getDataPrevistaDevolucao é int
-
-                temp->getUsuario()->setStatus(StatusUsuario::EM_DEBITO);
-                //pega o usuario do emprestimo que atrasou e muda o status dele
-                cout << "Empréstimo de:" << temp->getUsuario()->getNome() << " está atrasado" << endl;
-                throw ErroUsuarioNaoHabilitado();
-                
-
-
-                //testar essa logica basica, depois adicionar qtd de dias atrasado
-
-              
-            }
-
 }

@@ -14,7 +14,7 @@ using std::endl;
 using std::string;
 using std::cerr;
 
-// Construtor: Recebe os gerenciadores e solicita a data atual.
+
 SistemaBiblioteca::SistemaBiblioteca(GerenciadorDeLivros& gl, GerenciadorDeUsuarios& gu, GerenciadorDeEmprestimos& ge)
     : gerenciadorLivros(gl), gerenciadorUsuarios(gu), gerenciadorEmprestimos(ge) {
     
@@ -50,7 +50,9 @@ SistemaBiblioteca::SistemaBiblioteca(GerenciadorDeLivros& gl, GerenciadorDeUsuar
     } while (!dataValida);
 }
 
+
 SistemaBiblioteca::~SistemaBiblioteca() {}
+
 
 void SistemaBiblioteca::mostrarMenuPrincipal() {
     cout << "\n===== MENU PRINCIPAL =====" << endl;
@@ -63,7 +65,7 @@ void SistemaBiblioteca::mostrarMenuPrincipal() {
     cout << "Escolha uma opcao: ";
 }
 
-// Método principal que executa o loop do menu.
+// loop do menu
 void SistemaBiblioteca::executar() {
     int opcao;
     do {
@@ -97,6 +99,7 @@ void SistemaBiblioteca::executar() {
 
     } while (opcao != 0);
 }
+
 
 void SistemaBiblioteca::menuCadastros() {
     int opcao;
@@ -135,6 +138,7 @@ void SistemaBiblioteca::menuCadastros() {
         }
     } while (opcao != 0);
 }
+
 
 void SistemaBiblioteca::menuEmprestimosEReservas() {
     int opcao;
@@ -397,6 +401,7 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
     } while (opcao != 0);
 }
 
+
 void SistemaBiblioteca::menuConsultas() {
     int opcao;
     do {
@@ -490,6 +495,7 @@ void SistemaBiblioteca::menuConsultas() {
         }
     } while (opcao != 0);
 }
+
 
 void SistemaBiblioteca::menuNovaData() { //o menu ainda nao atualiza os status
     cout << "\nMenu Secreto shhhhhh" << endl;

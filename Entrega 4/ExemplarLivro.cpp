@@ -7,6 +7,7 @@
 using std::cout;
 using std::endl;
 
+
 ExemplarLivro::ExemplarLivro() {}
 
 
@@ -25,6 +26,9 @@ void ExemplarLivro::imprimirExemplarLivro(int dataDevolucao) {          //retorn
         cout << livro->getTitulo() << ", " << nroExemplar << ", " << toString(status) << endl;
     }
 }
+
+
+//-------------------- sets e gets --------------------
 
 
 int ExemplarLivro::getNroExemplar() const { return nroExemplar; }

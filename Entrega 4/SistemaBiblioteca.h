@@ -25,7 +25,7 @@ private:
     void menuNovaData();
 
 public:
-    // O construtor agora recebe referências para os gerenciadores
+    //construtor recebe os gerenciadores por referencia
     SistemaBiblioteca(GerenciadorDeLivros& gl, GerenciadorDeUsuarios& gu, GerenciadorDeEmprestimos& ge);
     ~SistemaBiblioteca();
     void executar();

@@ -5,6 +5,7 @@
 using std::cout;
 using std::endl;
 
+
 Autor::Autor():codigo(0), nome("Sem Nome") {}
 
 
@@ -25,6 +26,9 @@ void Autor::imprimirTodos(const vector<Autor*>& listaAutores) {
         cout << "Codigo: " << temp->getCodigo() << " | Nome: " << temp->getNome() << endl;
     }
 }
+
+
+//-------------------- sets e gets --------------------
 
 
 int Autor::getCodigo() const { return codigo; }

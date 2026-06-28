@@ -15,10 +15,8 @@ class Usuario {
 
     public:
         Usuario();
-        // Destrutor virtual para garantir que o destrutor da classe derivada (Aluno/Professor) seja chamado corretamente.
-        virtual ~Usuario();
         Usuario(int novoCodigo, string novoNome, StatusUsuario novoStatus = StatusUsuario::HABILITADO);
-        // Método virtual puro (abstrato) para polimorfismo. Força as classes filhas a implementarem sua própria versão.
+        virtual ~Usuario();
         virtual void imprimirUsuario() const = 0;
 
         int getCodigo() const;

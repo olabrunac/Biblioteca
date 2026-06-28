@@ -11,7 +11,9 @@ using std::endl;
 using std::string;
 using std::vector;
 
+
 GerenciadorDeLivros::GerenciadorDeLivros() : proximoCodigoLivro(0), proximoCodigoAutor(0), proximoCodigoEditora(0) {}
+
 
 GerenciadorDeLivros::~GerenciadorDeLivros() {
     // O acervo já cuida de deletar os livros
@@ -25,6 +27,7 @@ GerenciadorDeLivros::~GerenciadorDeLivros() {
     }
     editoras.clear();
 }
+
 
 void GerenciadorDeLivros::inicializarDados() {
     // ---- EDITORAS ----
@@ -60,6 +63,10 @@ void GerenciadorDeLivros::inicializarDados() {
     proximoCodigoLivro = 206;
 }
 
+
+//-------------------- cadastra e remove --------------------
+
+
 void GerenciadorDeLivros::cadastrarLivro() {
     int qtd, dias;
     string titulo, nomeEditora, nomeAutor;
@@ -89,6 +96,43 @@ void GerenciadorDeLivros::cadastrarLivro() {
 
     cout << "Livro '" << titulo << "' cadastrado com sucesso! (Codigo: " << novoCodigo << ")" << endl;
 }
+
+
+void GerenciadorDeLivros::cadastrarAutor() {
+    string nome;
+    cout << "--- Cadastro de Novo Autor ---" << endl;
+    cout << "Nome: "; getline(cin, nome);
+
+    int novoCodigo = proximoCodigoAutor++;
+    Autor* novoAutor = new Autor(novoCodigo, nome);
+    autores.push_back(novoAutor);
+
+    cout << "Autor '" << nome << "' cadastrado com sucesso! (Codigo: " << novoCodigo << ")" << endl;
+}
+
+
+void GerenciadorDeLivros::cadastrarEditora() {
+    string nome, rua, bairro, cidade, estado, cep;
+    int numero;
+
+    cout << "--- Cadastro de Nova Editora ---" << endl;
+    cout << "Nome: "; getline(cin, nome);
+    cout << "--- Endereco ---" << endl;
+    cout << "Rua: "; getline(cin, rua);
+    cout << "Numero: "; cin >> numero; cin.ignore();
+    cout << "Bairro: "; getline(cin, bairro);
+    cout << "Cidade: "; getline(cin, cidade);
+    cout << "Estado (sigla): "; getline(cin, estado);
+    cout << "CEP: "; getline(cin, cep);
+
+    int novoCodigo = proximoCodigoEditora++;
+    Endereco novoEndereco(rua, numero, bairro, cidade, estado, cep);
+    Editora* novaEditora = new Editora(novoCodigo, nome, novoEndereco);
+    editoras.push_back(novaEditora);
+
+    cout << "Editora '" << nome << "' cadastrada com sucesso! (Codigo: " << novoCodigo << ")" << endl;
+}
+
 
 void GerenciadorDeLivros::removerLivro(const GerenciadorDeEmprestimos& gerenciadorEmprestimos) {
     cout << "--- Remocao de Livro ---" << endl;
@@ -138,17 +182,6 @@ void GerenciadorDeLivros::removerLivro(const GerenciadorDeEmprestimos& gerenciad
     }
 }
 
-void GerenciadorDeLivros::cadastrarAutor() {
-    string nome;
-    cout << "--- Cadastro de Novo Autor ---" << endl;
-    cout << "Nome: "; getline(cin, nome);
-
-    int novoCodigo = proximoCodigoAutor++;
-    Autor* novoAutor = new Autor(novoCodigo, nome);
-    autores.push_back(novoAutor);
-
-    cout << "Autor '" << nome << "' cadastrado com sucesso! (Codigo: " << novoCodigo << ")" << endl;
-}
 
 void GerenciadorDeLivros::removerAutor() {
     cout << "--- Remocao de Autor ---" << endl;
@@ -176,27 +209,6 @@ void GerenciadorDeLivros::removerAutor() {
     throw ErroAutor();
 }
 
-void GerenciadorDeLivros::cadastrarEditora() {
-    string nome, rua, bairro, cidade, estado, cep;
-    int numero;
-
-    cout << "--- Cadastro de Nova Editora ---" << endl;
-    cout << "Nome: "; getline(cin, nome);
-    cout << "--- Endereco ---" << endl;
-    cout << "Rua: "; getline(cin, rua);
-    cout << "Numero: "; cin >> numero; cin.ignore();
-    cout << "Bairro: "; getline(cin, bairro);
-    cout << "Cidade: "; getline(cin, cidade);
-    cout << "Estado (sigla): "; getline(cin, estado);
-    cout << "CEP: "; getline(cin, cep);
-
-    int novoCodigo = proximoCodigoEditora++;
-    Endereco novoEndereco(rua, numero, bairro, cidade, estado, cep);
-    Editora* novaEditora = new Editora(novoCodigo, nome, novoEndereco);
-    editoras.push_back(novaEditora);
-
-    cout << "Editora '" << nome << "' cadastrada com sucesso! (Codigo: " << novoCodigo << ")" << endl;
-}
 
 void GerenciadorDeLivros::removerEditora() {
     cout << "--- Remocao de Editora ---" << endl;
@@ -222,12 +234,17 @@ void GerenciadorDeLivros::removerEditora() {
     throw ErroEditora();
 }
 
+
+//-------------------- buscas --------------------
+
+
 Livro* GerenciadorDeLivros::buscarLivroPorCodigo(int codigo) {
     for (auto temp : acervo.getLivros()) {
         if (temp->getCodigo() == codigo) return temp;
     }
     return nullptr;
 }
+
 
 Livro* GerenciadorDeLivros::buscarLivroPorNome(const std::string& nome) {
     for (auto temp : acervo.getLivros()) {
@@ -236,6 +253,7 @@ Livro* GerenciadorDeLivros::buscarLivroPorNome(const std::string& nome) {
     return nullptr;
 }
 
+
 Autor* GerenciadorDeLivros::buscarAutorPorNome(const std::string& nome) {
     for (auto temp : autores) {
         if (temp->getNome() == nome) return temp;
@@ -243,11 +261,13 @@ Autor* GerenciadorDeLivros::buscarAutorPorNome(const std::string& nome) {
     return nullptr;
 }
 
+
 Editora* GerenciadorDeLivros::buscarEditoraPorNome(const std::string& nome) {
     for (auto temp : editoras) {
         if (temp->getNome() == nome) return temp;
     }
     return nullptr;
 }
+
 
 Acervo& GerenciadorDeLivros::getAcervo() { return acervo; }

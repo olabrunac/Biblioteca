@@ -27,13 +27,14 @@ class Reserva {
         Data getDataRealizacao() const;
         Usuario* getUsuario() const;
         const vector<ItemReserva*>& getItens() const;
-        bool possuiLivro(const Livro* livroBuscado) const;
-        bool removerItemPorLivro(int codigoLivro);
         ItemReserva* getItemPorLivro(Livro* livro) const; //Usado no gerenciador
 
         void setID(int novoID);
         void setDataRealizacao(Data& novaDataReserva);
         void setUsuario(Usuario* novoUsuario);
+
+        bool possuiLivro(const Livro* livroBuscado) const;
+        bool removerItemPorLivro(int codigoLivro);
 };
 
 #endif

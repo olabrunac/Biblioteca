@@ -5,6 +5,7 @@
 using std::cout;
 using std::endl;
 
+
 Endereco::Endereco() {}
 
 
@@ -23,6 +24,9 @@ void Endereco::imprimirEndereco() {
     cout << "Estado: " << estado << endl;
     cout << "CEP: " << cep << endl;
 }
+
+
+//-------------------- sets e gets --------------------
 
 
 string Endereco::getRua() { return rua; }
