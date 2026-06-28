@@ -64,12 +64,6 @@ class ErroEmprestimoVazio : public Erros {
         : Erros("[ErroEmprestimoVazio]: O emprestimo esta vazio, nenhum item valido foi adicionado.") {}
 };
 
-class ErroEmprestimoInvalido : public Erros {
-    public:
-    ErroEmprestimoInvalido()
-        : Erros("[ErroEmprestimoInvalido]: Item de emprestimo invalido.") {}
-};
-
 class ErroUsuarioJaReservouLivro: public Erros {
     public:
     ErroUsuarioJaReservouLivro()
@@ -104,12 +98,6 @@ class ErroExemplarGuardado : public Erros {
     public:
     ErroExemplarGuardado()
         : Erros("[ErroExemplarGuardado]: Nenhum exemplar do livro esta emprestado ou reservado no momento."){}    
-};
-
-class ErroExemplarNulo : public Erros {
-    public:
-    ErroExemplarNulo ()
-        : Erros("[ErroExemplarNulo]: O exemplar informado nao existe ou nao foi encontrado."){}
 };
 
 class ErroLivroIndisponivel : public Erros {

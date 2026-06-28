@@ -40,11 +40,12 @@ SistemaBiblioteca::SistemaBiblioteca(GerenciadorDeLivros& gl, GerenciadorDeUsuar
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
         // Usa o método estático da classe Data para validar os valores.
-        if (Data::testeDataValida(dia, mes, ano)) {
+        try {
+            Data::testeDataValida(dia, mes, ano);
             dataAtual = Data(dia, mes, ano);
             dataValida = true;
-        } else {
-            cout << "Data invalida! Por favor, tente novamente." << endl;
+        } catch (const Erros& e) {
+            cerr << e.what() << " Por favor, tente novamente." << endl;
         }
 
     } while (!dataValida);
@@ -228,6 +229,7 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                     Usuario* usuario = gerenciadorUsuarios.buscarUsuarioPorCodigo(codUsuario);
 
                     gerenciadorEmprestimos.listarEmprestimosDoUsuario(usuario);
+                    cout << "\nDigite o codigo do livro a ser devolvido: ";
                     int codLivro;
                     cin >> codLivro;
                     gerenciadorEmprestimos.realizarDevolucao(usuario, codLivro, dataAtual);
@@ -464,21 +466,18 @@ void SistemaBiblioteca::menuNovaData() { //o menu ainda nao atualiza os status
 
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-        if (Data::testeDataValida(dia, mes, ano)) {
+        try {
+            Data::testeDataValida(dia, mes, ano);
             Data novaData(dia, mes, ano);
             if (novaData.getDataInteira() < dataAtual.getDataInteira()) {
                 cout << "Erro: a nova data nao pode ser no passado" << endl;
             } else {
                 dataAtual = novaData;
                 dataValida = true;
-                try {
-                    gerenciadorEmprestimos.atualizaPendenciasEmprestimos(dataAtual);
-                } catch (const Erros& e) {
-                    cerr << e.what() << endl;
-                }
+                gerenciadorEmprestimos.atualizaPendenciasEmprestimos(dataAtual);
             }
-        } else {
-            cout << "Data invalida! Por favor, tente novamente." << endl;
+        } catch (const Erros& e) {
+            cerr << e.what() << " Por favor, tente novamente." << endl;
         }
     } while (!dataValida);
 }
