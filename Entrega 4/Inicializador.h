@@ -53,7 +53,7 @@ inline std::vector<Autor*> Inicializador<Autor>::carregar() {
 template <>
 inline std::vector<Editora*> Inicializador<Editora>::carregar() {
     std::vector<Editora*> editoras;
-    Endereco endEditora("Rua nao sei oq", 123, "Bairro tal", "Cidade etc", "Estado solido", "cep-123");
+    Endereco endEditora("Rua nao sei oq", 123, "Bairro tal", "Cidade etc", "Estado gasoso", "cep-123");
     Endereco endRocco("Rua Julio Diniz", 56, "Vila Olimpia", "São Paulo", "SP", "04547-090");
     Endereco endPanini("Alameda Caiapos", 425, "Barueri", "Sao Paulo", "SP", "06460-110");
     editoras.push_back(new Editora(1, "Editora", endEditora));
@@ -81,7 +81,7 @@ inline std::vector<Livro*> Inicializador<Livro>::carregar(const std::vector<Auto
     livros.push_back(l4);
 
     livros.push_back(new Livro(205, "Sem Exemplar", *editoras[2], {autores[0]}, 0, 7, 2026, 123));
-    livros.push_back(new Livro(206, "Sem Dias", *editoras[0], {autores[1]}, 1, 0, 2026, 123));
+    livros.push_back(new Livro(206, "2", *editoras[0], {autores[1]}, 2, 2, 2026, 123));
 
     return livros;
 }

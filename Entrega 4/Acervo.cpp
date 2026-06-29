@@ -56,7 +56,7 @@ void Acervo::removerDoAcervo(Livro* removerLivro) {
 void Acervo::listarTodos() const {
     cout << "===== TODOS OS LIVROS =====" << endl;
     for (auto temp : acervo) {
-        cout << "Titulo: " << temp->getTitulo() << " (Cod: " << temp->getCodigo() << "), "
+        cout << temp->getTitulo() << " (Cod: " << temp->getCodigo() << ") | "
         << temp->getStatusAgora() << endl;
     }
 }

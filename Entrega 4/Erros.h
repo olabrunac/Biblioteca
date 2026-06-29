@@ -29,7 +29,7 @@ class ErroUsuarioNaoExiste: public Erros {
 class ErroUsuarioNaoHabilitado : public Erros {
     public:
     ErroUsuarioNaoHabilitado()
-        : Erros("[ErroUsuarioNaoHabilitado]: O usuario esta em debito e nao pode realizar esta acao.") {}
+        : Erros("[ErroUsuarioNaoHabilitado]: O usuario esta em debito.") {}
         //gerenciadorDeEmprestimo.cpp   | linha 30; 86; 137; 189; 477; | acontece se o usúario não estiver com status "Habilitado"
 };
 

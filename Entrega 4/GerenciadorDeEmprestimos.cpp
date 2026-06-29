@@ -26,10 +26,6 @@ GerenciadorDeEmprestimos::~GerenciadorDeEmprestimos() {
 
 
 void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, ExemplarLivro* exemplar, const Data& dataAtual) { 
-    if (emprestimoUsuario.getStatus() != StatusUsuario::HABILITADO) {  
-        throw ErroUsuarioNaoHabilitado();
-    }
-
     if (exemplar) {
         Livro* livroRequisitado = exemplar->getLivro();
         for (const auto& emprestimoExistente : emprestimos) {
@@ -82,10 +78,6 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, Exemp
 
 
 void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, initializer_list<ExemplarLivro*> listaExemplares, const Data& dataAtual) {
-    if (emprestimoUsuario.getStatus() != StatusUsuario::HABILITADO) {
-        throw ErroUsuarioNaoHabilitado();
-    }
-
     Emprestimo* novoEmprestimo = new Emprestimo();
     novoEmprestimo->setUsuario(&emprestimoUsuario);
     novoEmprestimo->setStatus(1);
@@ -133,10 +125,6 @@ void GerenciadorDeEmprestimos::criarEmprestimo(Usuario& emprestimoUsuario, initi
 
 
 void GerenciadorDeEmprestimos::criarEmprestimoApartirDaReserva(Reserva* reservaExistente, const Data& dataAtual) { 
-    if (reservaExistente->getUsuario()->getStatus() != StatusUsuario::HABILITADO) {
-       throw ErroUsuarioNaoHabilitado();
-    }   
-
     for(auto temp : reservaExistente->getItens()) { 
         if(temp->getLivro()->getExemplarDisponivel() == nullptr) {
             throw ErroLivroIndisponivel();
@@ -184,11 +172,6 @@ void GerenciadorDeEmprestimos::criarEmprestimoApartirDaReserva(Reserva* reservaE
 
 
 void GerenciadorDeEmprestimos::criarReserva(Usuario* reservaUsuario, Livro* reservaLivro, Data& dataRealizacao) { 
-
-    if (reservaUsuario->getStatus() != StatusUsuario::HABILITADO) {
-        throw ErroUsuarioNaoHabilitado();
-    }
-
     // ve se o usuario já tem reservas
     Reserva* reservaDoUsuario = getReservaPorUsuario(reservaUsuario);
 
@@ -473,15 +456,8 @@ void GerenciadorDeEmprestimos::atualizaPendenciasEmprestimos(Data& dataFutura){
 
                 temp->getUsuario()->setStatus(StatusUsuario::EM_DEBITO);
                 //pega o usuario do emprestimo que atrasou e muda o status dele
-                cout << "Emprestimo de:" << temp->getUsuario()->getNome() << " esta atrasado" << endl;
-                throw ErroUsuarioNaoHabilitado();
-                
-
-
-                //testar essa logica basica, depois adicionar qtd de dias atrasado
-
-              
-            }
+                cout << "Emprestimo de: " << temp->getUsuario()->getNome() << " esta atrasado" << endl;
+            }   //o throw fazia o sistema sair do loop ao imprimir o primeiro débito, impedindo de listar todos
 
 }
 
@@ -551,4 +527,17 @@ Emprestimo* GerenciadorDeEmprestimos::getEmprestimoPorUsuario(Usuario* usuarioBu
 
 void GerenciadorDeEmprestimos::setEmprestimos(const std::vector<Emprestimo*>& novosEmprestimos) {
     this->emprestimos = novosEmprestimos;
+    if (!novosEmprestimos.empty()) {
+        for (const auto& emprestimo : novosEmprestimos) {
+            if (emprestimo && emprestimo->getUsuario() && emprestimo->getStatus() == 1) { // Apenas empréstimos ativos
+                Usuario* usuario = emprestimo->getUsuario();
+                Data dataRetirada = emprestimo->getDataDeRetirada();
+                for (const auto& item : emprestimo->getItens()) {
+                    cout << "Livro '" << item->getLivro()->getTitulo() << "' foi emprestado para '" << usuario->getNome() << "' na data ";
+                    dataRetirada.imprimirData();
+                    cout << "." << endl;
+                }
+            }
+        }
+    }
 }

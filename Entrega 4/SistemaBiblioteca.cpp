@@ -51,7 +51,11 @@ SistemaBiblioteca::SistemaBiblioteca(GerenciadorDeLivros& gl, GerenciadorDeUsuar
 }
 
 
+
+
 SistemaBiblioteca::~SistemaBiblioteca() {}
+
+
 
 
 void SistemaBiblioteca::mostrarMenuPrincipal() {
@@ -65,11 +69,14 @@ void SistemaBiblioteca::mostrarMenuPrincipal() {
     cout << "Escolha uma opcao: ";
 }
 
+
+
 // loop do menu
 void SistemaBiblioteca::executar() {
     int opcao;
     do {
-        //system("clear || cls"); // Limpa a tela
+        system("clear || cls"); // Limpa a tela
+        gerenciadorLivros.getAcervo().listarTodos();    //pra listra os livros carregados
         mostrarMenuPrincipal();
         cin >> opcao;
 
@@ -99,6 +106,8 @@ void SistemaBiblioteca::executar() {
 
     } while (opcao != 0);
 }
+
+
 
 
 void SistemaBiblioteca::menuCadastros() {
@@ -140,6 +149,8 @@ void SistemaBiblioteca::menuCadastros() {
 }
 
 
+
+
 void SistemaBiblioteca::menuEmprestimosEReservas() {
     int opcao;
     do {
@@ -165,8 +176,10 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                     int codUsuario;
                     cin >> codUsuario;
                     limparBufferEntrada();
-                    // Atribui ao ponteiro declarado fora do try
                     usuario = gerenciadorUsuarios.buscarUsuarioPorCodigo(codUsuario);
+                    if (usuario->getStatus() != StatusUsuario::HABILITADO) {        //tirei do gerenciadordeemprestimos para dar flag no usuario antes de tentar o emprestimo
+                        throw ErroUsuarioNaoHabilitado();
+                    }
 
                     int opcaoBusca;
                     do {
@@ -202,9 +215,7 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                         cout << "Digite o titulo do livro: ";
                         getline(cin, titulo);
                         livro = gerenciadorLivros.buscarLivroPorNome(titulo);
-                    }
-
-                    if (!livro) { throw ErroLivroNaoExisteAcervo(); }
+                    }    
 
                     ExemplarLivro* exemplar = livro->getExemplarDisponivel();
                     gerenciadorEmprestimos.criarEmprestimo(*usuario, exemplar, dataAtual);
@@ -249,6 +260,8 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                 break;
             }
             case 3: {
+                Usuario* usuario = nullptr;
+                Livro* livro = nullptr;
                 try {
                     cout << "--- Criar Reserva ---" << endl;
                     cout << "Codigo do Usuario: ";
@@ -256,6 +269,9 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                     cin >> codUsuario;
                     limparBufferEntrada();
                     Usuario* usuario = gerenciadorUsuarios.buscarUsuarioPorCodigo(codUsuario);
+                    if (usuario->getStatus() != StatusUsuario::HABILITADO) {        //tirei do gerenciadordeemprestimos para dar flag no usuario antes de tentar o emprestimo       
+                        throw ErroUsuarioNaoHabilitado();
+                    }
 
                     int opcaoBusca;
                     do {
@@ -280,7 +296,6 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
 
                     if (opcaoBusca == 0) break;
 
-                    Livro* livro = nullptr;
                     if (opcaoBusca == 1) {
                         int codLivro;
                         cout << "Digite o codigo do livro: ";
@@ -293,8 +308,6 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                         getline(cin, titulo);
                         livro = gerenciadorLivros.buscarLivroPorNome(titulo);
                     }
-
-                    if (!livro) { throw ErroLivroNaoExisteAcervo(); }
 
                     int opcaoReserva;
                     do {
@@ -387,6 +400,8 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
 }
 
 
+
+
 void SistemaBiblioteca::menuConsultas() {
     int opcao;
     do {
@@ -419,7 +434,6 @@ void SistemaBiblioteca::menuConsultas() {
                     cin >> codLivro;
                     limparBufferEntrada();
                     Livro* livro = gerenciadorLivros.buscarLivroPorCodigo(codLivro);
-                    if (!livro) { throw ErroLivroNaoExisteAcervo(); }
                     
                     gerenciadorEmprestimos.listarEmprestimosDoLivro(*livro);
                     gerenciadorEmprestimos.listarReservasDoLivro(*livro);
@@ -458,6 +472,8 @@ void SistemaBiblioteca::menuConsultas() {
         }
     } while (opcao != 0);
 }
+
+
 
 
 void SistemaBiblioteca::menuNovaData() { //o menu ainda nao atualiza os status
