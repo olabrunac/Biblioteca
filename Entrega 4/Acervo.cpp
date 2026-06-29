@@ -18,7 +18,6 @@ Acervo::Acervo(initializer_list<Livro*> listaLivros) {
 
 
 Acervo::~Acervo() {
-    // O destrutor é responsável por liberar a memória de todos os objetos Livro* no acervo.
     for (auto temp : acervo) {
         delete temp;
     }
@@ -43,9 +42,8 @@ void Acervo::acrescentarLivro(initializer_list<Livro*> listaLivros) { // Sobreca
 void Acervo::removerDoAcervo(Livro* removerLivro) {
     cout << " <<<<< REMOVENDO O LIVRO >>>>> " << endl;
     for (auto temp = acervo.begin(); temp != acervo.end(); ++temp){
-        // Compara o endereço de memória para garantir que o objeto exato seja removido.
         if(*temp == removerLivro){
-            delete *temp; // Libera a memória do objeto Livro antes de remover o ponteiro do vetor.
+            delete *temp;
             acervo.erase(temp);
             cout << "Livro removido do acervo com sucesso" << endl;
             return;

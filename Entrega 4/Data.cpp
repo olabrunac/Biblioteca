@@ -4,7 +4,7 @@
 #include "Erros.h"
 
 
-Data::Data(): dia(7), mes(6), ano(2026) {} //conferir se nao vale a pena deixar um numero zerado
+Data::Data(): dia(1), mes(1), ano(2026) {}  //data padrao 1/1/26 para ver débito e etc
 
 
 Data::Data(int dia, int mes, int ano) {
@@ -13,9 +13,9 @@ Data::Data(int dia, int mes, int ano) {
         this->mes = mes;
         this->ano = ano;
     } else {
-        cout << "Aplicando data padrao (07/06/2026)." << endl;
-        this->dia = 7;
-        this->mes = 6;
+        cout << "Aplicando data padrao (01/01/2026)." << endl;
+        this->dia = 1;
+        this->mes = 1;
         this->ano = 2026;
     }
 }
@@ -114,7 +114,6 @@ Data Data::operator+(int dias) const {
         }
     }
 
-    // Retorna chamando o construtor que pula a validação
     return Data(novoDia, novoMes, novoAno, true);
 }
 
@@ -129,7 +128,7 @@ bool Data::operator==(const Data& outraData) const { return this->getDataInteira
 
 
 int Data::operator-(const Data& outraData) const {
-    // Converte ambas as datas para dias absolutos (assumindo meses de 30 dias como no seu operator+)
+    // converte as datas pra dias absolutos (meses de 30 dias igual o operator+)
     int diasDestaData = ano * 360 + mes * 30 + dia;
     int diasDaOutraData = outraData.ano * 360 + outraData.mes * 30 + outraData.dia;
     return diasDestaData - diasDaOutraData;
