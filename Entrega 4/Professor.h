@@ -7,7 +7,7 @@
 using std::cout;
 using std::endl;
 
-class Professor : public Usuario {
+class Professor : virtual public Usuario {
     public:
         Professor():Usuario() {}
 
@@ -15,7 +15,7 @@ class Professor : public Usuario {
 
         ~Professor() override {cout << "Destruindo objeto tipo Professor: " << this->nome << endl; }
 
-        void imprimirUsuario() const override {     //implementado aqui para sobrescrever a herança
+        virtual void imprimirUsuario() const override {     //implementado aqui para sobrescrever a herança
             cout << "Professor - Cod: " << codigo << " | Nome: " << nome << " | Status: ";
             cout << (status == StatusUsuario::HABILITADO ? "Habilitado" : "Em debito");
             cout << endl;

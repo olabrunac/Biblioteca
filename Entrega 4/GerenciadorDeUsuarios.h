@@ -15,8 +15,9 @@ public:
     GerenciadorDeUsuarios();
     ~GerenciadorDeUsuarios();
 
-    void setUsuarios(const std::vector<Usuario*>& novosUsuarios);
+    void inicializarDados();
     void cadastrarUsuario();
+    int ProximoCodigo();
     void removerUsuario(const GerenciadorDeEmprestimos& gerenciadorEmprestimos);
     Usuario* buscarUsuarioPorCodigo(int buscaCodigo);
 };

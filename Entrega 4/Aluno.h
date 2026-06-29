@@ -7,7 +7,7 @@
 using std::cout;
 using std::endl;
 
-class Aluno : public Usuario {
+class Aluno : virtual public Usuario {
     public:
         Aluno():Usuario() {}
         //herdando os atributos do construtor
@@ -15,7 +15,7 @@ class Aluno : public Usuario {
         
         ~Aluno() override { cout << "Destruindo objeto tipo Aluno: " << this->nome << endl; } 
 
-        void imprimirUsuario() const override {
+        virtual void imprimirUsuario() const override {
             cout << "Aluno - Cod: " << codigo << " | Nome: " << nome << " | Status: ";
             cout << (status == StatusUsuario::HABILITADO ? "Habilitado" : "Em debito");
             cout << endl;
