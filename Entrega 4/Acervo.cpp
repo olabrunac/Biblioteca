@@ -28,7 +28,7 @@ Acervo::~Acervo() {
 
 void Acervo::acrescentarLivro(Livro* novoLivro) {
     acervo.push_back(novoLivro);
-    cout << "1 livro foi adicionado ao acervo!" << endl;
+    cout << "O livro '" << novoLivro->getTitulo() << "' foi adicionado ao acervo!" << endl;
 }
 
 
@@ -58,7 +58,7 @@ void Acervo::removerDoAcervo(Livro* removerLivro) {
 void Acervo::listarTodos() const {
     cout << "===== TODOS OS LIVROS =====" << endl;
     for (auto temp : acervo) {
-        cout << "Codigo: " << temp->getCodigo() << " | Titulo: " << temp->getTitulo() << ", "
+        cout << "Titulo: " << temp->getTitulo() << " (Cod: " << temp->getCodigo() << "), "
         << temp->getStatusAgora() << endl;
     }
 }

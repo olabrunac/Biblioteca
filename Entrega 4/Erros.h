@@ -2,6 +2,8 @@
 #define ERROS_H
 
 #include <stdexcept>
+#include <iostream>
+#include <limits>
 #include <string>
 
 using std::string;

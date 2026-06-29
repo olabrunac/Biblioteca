@@ -16,7 +16,7 @@ class Aluno : virtual public Usuario {
         ~Aluno() override { cout << "Destruindo objeto tipo Aluno: " << this->nome << endl; } 
 
         virtual void imprimirUsuario() const override {
-            cout << "Aluno - Cod: " << codigo << " | Nome: " << nome << " | Status: ";
+            cout << "Aluno: " << nome << " (Cod: " << codigo << ") | Status: ";
             cout << (status == StatusUsuario::HABILITADO ? "Habilitado" : "Em debito");
             cout << endl;
         }

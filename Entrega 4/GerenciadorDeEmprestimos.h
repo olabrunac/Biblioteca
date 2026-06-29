@@ -49,6 +49,7 @@ class GerenciadorDeEmprestimos {
         Reserva* getReservaPorUsuario(Usuario* usuarioBuscado) const;
         Emprestimo* getEmprestimoPorUsuario(Usuario* usuarioBuscado) const;
 
+        void setEmprestimos(const vector<Emprestimo*>& novosEmprestimos);
 };
 
 #endif

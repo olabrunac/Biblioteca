@@ -23,12 +23,14 @@ int main() {
     vector<Autor*> autoresIniciais = Inicializador<Autor>::carregar();
     vector<Editora*> editorasIniciais = Inicializador<Editora>::carregar();
     vector<Livro*> livrosIniciais = Inicializador<Livro>::carregar(autoresIniciais, editorasIniciais);
+    vector<Emprestimo*> emprestimosIniciais = Inicializador<Emprestimo>::carregar(usuariosIniciais, livrosIniciais);
 
 
     gerenciadorUsuarios.setUsuarios(usuariosIniciais);
     gerenciadorLivros.setAutores(autoresIniciais);
     gerenciadorLivros.setEditoras(editorasIniciais);
     gerenciadorLivros.setLivros(livrosIniciais);
+    gerenciadorEmprestimos.setEmprestimos(emprestimosIniciais);
 
     sistema.executar();
 

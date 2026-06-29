@@ -17,13 +17,13 @@ Autor::~Autor() {}      //nao precisa de delete pois nao faz alocacao dinamica (
 
 
 void Autor::imprimirAutor() {  
-        cout << "Codigo: " << codigo << " | Nome: " << nome << endl;
+        cout << "Nome: " << nome << " (Cod: " << codigo << ")" << endl;
 }
 
 
 void Autor::imprimirTodos(const vector<Autor*>& listaAutores) {
     for (auto temp : listaAutores) {
-        cout << "Codigo: " << temp->getCodigo() << " | Nome: " << temp->getNome() << endl;
+        cout << "Nome: " << temp->getNome() << " (Cod: " << temp->getCodigo() << ")" << endl;
     }
 }
 

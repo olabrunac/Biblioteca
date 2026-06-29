@@ -23,7 +23,7 @@ Livro::Livro(int novoCodigo, string novoTitulo, Editora& novaEditora, vector<Aut
 
 void Livro::imprimirLivro() {
     cout << "Titulo: " << titulo << endl;
-    cout << "Codigo: " << codigo << " | Editora: " << editora.getNome() << endl;
+    cout << "Editora: " << editora.getNome() << " (Cod: " << codigo << ")" << endl;
     cout << "Autores: ";
         if (autores.empty()) {
             cout << "Nenhum autor" << endl;

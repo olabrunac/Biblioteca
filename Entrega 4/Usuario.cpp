@@ -18,7 +18,7 @@ Usuario::~Usuario() {
 
 
 void Usuario::imprimirUsuario() const {
-    cout << "Codigo: " << codigo << " | Nome: " << nome << " | Status: ";
+    cout << "Nome: " << nome << " (Cod: " << codigo << ") | Status: ";
     if (status == StatusUsuario::HABILITADO) {
         cout << "Habilitado" << endl;
     } else {

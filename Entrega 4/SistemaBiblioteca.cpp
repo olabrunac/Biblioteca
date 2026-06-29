@@ -25,7 +25,7 @@ SistemaBiblioteca::SistemaBiblioteca(GerenciadorDeLivros& gl, GerenciadorDeUsuar
         cout << "\nPor favor, insira a data atual para iniciar o sistema." << endl;
         cout << "Dia: "; cin >> dia;
         cout << "Mes: "; cin >> mes;
-        cout << "Ano: "; cin >> ano;
+        cout << "Ano: "; cin >> ano; cout << endl;
 
         // verifica se a entrada é um número
         if (cin.fail()) {
@@ -164,7 +164,7 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                     cout << "Codigo do Usuario: ";
                     int codUsuario;
                     cin >> codUsuario;
-                    cin.ignore();
+                    limparBufferEntrada();
                     // Atribui ao ponteiro declarado fora do try
                     usuario = gerenciadorUsuarios.buscarUsuarioPorCodigo(codUsuario);
 
@@ -254,7 +254,7 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                     cout << "Codigo do Usuario: ";
                     int codUsuario;
                     cin >> codUsuario;
-                    cin.ignore();
+                    limparBufferEntrada();
                     Usuario* usuario = gerenciadorUsuarios.buscarUsuarioPorCodigo(codUsuario);
 
                     int opcaoBusca;

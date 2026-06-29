@@ -9,9 +9,9 @@
 #include "Editora.h"
 #include "Endereco.h"
 #include "Livro.h"
+#include "Emprestimo.h"
 
-// --- Declaração do Template Genérico ---
-// A versão genérica não tem implementação, pois só queremos usar as especializações.
+
 template <typename T>
 class Inicializador {
 public:
@@ -19,9 +19,12 @@ public:
 
     // Sobrecarga para tipos que dependem de Autores e Editoras
     static std::vector<T*> carregar(const std::vector<Autor*>& autores, const std::vector<Editora*>& editoras);
+
+    // Sobrecarga para Emprestimo, que depende de Usuarios e Livros
+    static std::vector<T*> carregar(const std::vector<Usuario*>& usuarios, const std::vector<Livro*>& livros);
 };
 
-// --- Especialização para Usuario ---
+// --- Inicialização de usuario ---
 template <>
 inline std::vector<Usuario*> Inicializador<Usuario>::carregar() {
     std::vector<Usuario*> usuarios;
@@ -30,12 +33,12 @@ inline std::vector<Usuario*> Inicializador<Usuario>::carregar() {
     usuarios.push_back(new Aluno(3, "Ryan"));
     usuarios.push_back(new Professor(4, "Valter"));
     usuarios.push_back(new Professor(5, "Backes"));
-    usuarios.push_back(new Aluno(6, "Aluno Em Debito", StatusUsuario::EM_DEBITO));
-    usuarios.push_back(new Professor(7, "Professor Em Debito", StatusUsuario::EM_DEBITO));
+    usuarios.push_back(new Aluno(6, "Aluno em debito", StatusUsuario::EM_DEBITO));
+    usuarios.push_back(new Professor(7, "Professor em debito", StatusUsuario::EM_DEBITO));
     return usuarios;
 }
 
-// --- Especialização para Autor ---
+// --- Inicialização de autor ---
 template <>
 inline std::vector<Autor*> Inicializador<Autor>::carregar() {
     std::vector<Autor*> autores;
@@ -46,7 +49,7 @@ inline std::vector<Autor*> Inicializador<Autor>::carregar() {
     return autores;
 }
 
-// --- Especialização para Editora ---
+// --- Inicialização de editora ---
 template <>
 inline std::vector<Editora*> Inicializador<Editora>::carregar() {
     std::vector<Editora*> editoras;
@@ -59,7 +62,7 @@ inline std::vector<Editora*> Inicializador<Editora>::carregar() {
     return editoras;
 }
 
-// --- Especialização para Livro ---
+// --- Inicialização de livro ---
 template <>
 inline std::vector<Livro*> Inicializador<Livro>::carregar(const std::vector<Autor*>& autores, const std::vector<Editora*>& editoras) {
     std::vector<Livro*> livros;
@@ -81,6 +84,31 @@ inline std::vector<Livro*> Inicializador<Livro>::carregar(const std::vector<Auto
     livros.push_back(new Livro(206, "Sem Dias", *editoras[0], {autores[1]}, 1, 0, 2026, 123));
 
     return livros;
+}
+
+// --- Inicialização de emprestimo ---
+template <>
+inline std::vector<Emprestimo*> Inicializador<Emprestimo>::carregar(const std::vector<Usuario*>& usuarios, const std::vector<Livro*>& livros) {
+    std::vector<Emprestimo*> emprestimos;
+
+    Data dataEmprestimo(1, 1, 2026); //data do emprestimo
+
+    Usuario* usuario = usuarios[2];
+    Livro* livro = livros[1];
+
+    if (usuario && livro && livro->estaDisponivel()) {
+        ExemplarLivro* exemplar = livro->getExemplarDisponivel();
+        exemplar->setStatus(StatusEmprestimo::EMPRESTADO);
+
+        ItemEmprestimo* item = new ItemEmprestimo();
+        item->setExemplar(exemplar);
+        item->setDataParaDevolucao(dataEmprestimo + livro->getNroDiasPermitidoEmprestimo());
+
+        Emprestimo* emprestimo = new Emprestimo(usuario, dataEmprestimo, item->getDataParaDevolucao(), 0, 1);
+        emprestimo->adicionarItem(item);
+        emprestimos.push_back(emprestimo);
+    }
+    return emprestimos;
 }
 
 #endif // INICIALIZADOR_H

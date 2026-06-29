@@ -256,8 +256,8 @@ void GerenciadorDeEmprestimos::listarReservasDoLivro(Livro& listaLivro) {
             for (auto tempItem : temp->getItens()) {
                 if (tempItem->getLivro() == &listaLivro) {
                     encontrou = true;
-                    cout << "- Reservado por: " << temp->getUsuario()->getNome();
-                    cout << " (Cod: " << temp->getUsuario()->getCodigo() << ") | Retirada prevista para: ";
+                    cout << "- Reservado por: " << temp->getUsuario()->getNome()
+                         << " (Cod: " << temp->getUsuario()->getCodigo() << ") | Retirada prevista para: ";
                     tempItem->getDataDeRetirada().imprimirData();
                     cout << endl;
                 }
@@ -332,8 +332,8 @@ void GerenciadorDeEmprestimos::listarEmprestimosDoLivro(Livro& livro) {
     for (const auto& temp : emprestimos) {
         for (const auto& tempItem : temp->getItens()) {
             if (tempItem->getExemplar()->getLivro()->getCodigo() == livro.getCodigo()) {
-                cout << "- Emprestado para: " << temp->getUsuario()->getNome();
-                cout << " (Cod: " << temp->getUsuario()->getCodigo() << ") | Exemplar ID: " << tempItem->getExemplar()->getNroExemplar();
+                cout << "- Emprestado para: " << temp->getUsuario()->getNome()
+                     << " (Cod: " << temp->getUsuario()->getCodigo() << ") | Exemplar ID: " << tempItem->getExemplar()->getNroExemplar();
                 cout << " | Devolucao: ";
                 tempItem->getDataParaDevolucao().imprimirData();
                 cout << endl;
@@ -473,7 +473,7 @@ void GerenciadorDeEmprestimos::atualizaPendenciasEmprestimos(Data& dataFutura){
 
                 temp->getUsuario()->setStatus(StatusUsuario::EM_DEBITO);
                 //pega o usuario do emprestimo que atrasou e muda o status dele
-                cout << "Empréstimo de:" << temp->getUsuario()->getNome() << " está atrasado" << endl;
+                cout << "Emprestimo de:" << temp->getUsuario()->getNome() << " esta atrasado" << endl;
                 throw ErroUsuarioNaoHabilitado();
                 
 
@@ -546,4 +546,9 @@ Emprestimo* GerenciadorDeEmprestimos::getEmprestimoPorUsuario(Usuario* usuarioBu
         }
     }
     return nullptr;
+}
+
+
+void GerenciadorDeEmprestimos::setEmprestimos(const std::vector<Emprestimo*>& novosEmprestimos) {
+    this->emprestimos = novosEmprestimos;
 }

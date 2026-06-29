@@ -38,15 +38,9 @@ public:
 
     void imprimirUsuario() const override {
 
-        cout << "Pesquisador" << endl;
-        cout << "Nome: " << nome << endl;
-
-        cout << "Status do usuario: ";
-
-        if(status == StatusUsuario::HABILITADO)
-            cout << "Habilitado" << endl;
-        else
-            cout << "Em debito" << endl;
+        cout << "Pesquisador: " << nome << " (Cod: " << codigo << ") | Status: ";
+            cout << (status == StatusUsuario::HABILITADO ? "Habilitado" : "Em debito");
+            cout << endl;
     }
 
 };

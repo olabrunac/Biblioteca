@@ -22,20 +22,8 @@ GerenciadorDeUsuarios::~GerenciadorDeUsuarios() {
     usuarios.clear();
 }
 
-
-void GerenciadorDeUsuarios::inicializarDados() {
-    usuarios.push_back(new Aluno(1, "Matheus"));
-    usuarios.push_back(new Aluno(2, "Bruna"));
-    usuarios.push_back(new Aluno(3, "Ryan"));
-    usuarios.push_back(new Professor(4, "Valter"));
-    usuarios.push_back(new Professor(5, "Backes"));
-    usuarios.push_back(new Aluno(6, "Aluno Em Debito", StatusUsuario::EM_DEBITO));
-    usuarios.push_back(new Professor(7, "Professor Em Debito", StatusUsuario::EM_DEBITO));
-    usuarios.push_back(new Pesquisador(8, "Pedro"));
-}
-
 int GerenciadorDeUsuarios::ProximoCodigo() {
-
+    
     int maiorCodigo = 0;
 
     for (auto usuario : usuarios) {
@@ -48,14 +36,20 @@ int GerenciadorDeUsuarios::ProximoCodigo() {
     return maiorCodigo + 1;
 }
 
+
 void GerenciadorDeUsuarios::cadastrarUsuario() {
     string nome;
     int tipo;
 
-    cout << "--- Cadastro de Novo Usuario ---" << endl;
+    cout << "\n--- Cadastro de Novo Usuario ---" << endl;
     cout << "Nome: "; getline(cin, nome);
     cout << "Tipo (1-Aluno, 2-Professor, 3-Pesquisador): "; cin >> tipo;
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    limparBufferEntrada();
+
+    // Verifica se o usuário já existe
+    if (buscarUsuarioPorNome(nome) != nullptr) {
+        throw ErroUsuarioJaExiste(nome);
+    }
 
     int novoCodigo = ProximoCodigo();
     Usuario* novoUsuario = nullptr;
@@ -72,7 +66,7 @@ void GerenciadorDeUsuarios::cadastrarUsuario() {
     }
 
     usuarios.push_back(novoUsuario);
-    cout << "Usuario '" << nome << "' cadastrado com sucesso! (Codigo: " << novoCodigo << ")" << endl;
+    cout << "Usuario '" << nome << "' cadastrado com sucesso! (Cod: " << novoCodigo << ")" << endl;
 }
 
 
@@ -80,8 +74,8 @@ void GerenciadorDeUsuarios::removerUsuario(const GerenciadorDeEmprestimos& geren
     cout << "--- Remocao de Usuario ---" << endl;
     cout << "Digite o codigo do usuario a ser removido: ";
     int codigo;
-    cin >> codigo;
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    cin >> codigo; 
+    limparBufferEntrada();
 
     Usuario* usuario = buscarUsuarioPorCodigo(codigo);
     if (!usuario) {
@@ -94,9 +88,9 @@ void GerenciadorDeUsuarios::removerUsuario(const GerenciadorDeEmprestimos& geren
     }
 
     char confirmacao;
-    cout << "Tem certeza que deseja remover o usuario '" << usuario->getNome() << "' (Codigo: " << codigo << ")? (S/N): ";
+    cout << "Tem certeza que deseja remover o usuario '" << usuario->getNome() << "' (Cod: " << codigo << ")? (S/N): ";
     cin >> confirmacao;
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    limparBufferEntrada();
 
     if (toupper(confirmacao) == 'S') {
         for (auto it = usuarios.begin(); it != usuarios.end(); ++it) {
@@ -113,9 +107,29 @@ void GerenciadorDeUsuarios::removerUsuario(const GerenciadorDeEmprestimos& geren
 }
 
 
+void GerenciadorDeUsuarios::setUsuarios(const std::vector<Usuario*>& novosUsuarios) {
+    // Limpa a lista atual antes de adicionar os novos, para evitar duplicação
+    for (auto u : usuarios) {
+        delete u;
+    }
+    usuarios.clear();
+
+    this->usuarios = novosUsuarios;
+    this->proximoCodigoUsuario = ProximoCodigo();
+}
+
+
 Usuario* GerenciadorDeUsuarios::buscarUsuarioPorCodigo(int buscaCodigo) {
     for (auto temp : usuarios) {
         if (temp->getCodigo() == buscaCodigo) return temp;
     }
     throw ErroUsuarioNaoExiste();
+}
+
+
+Usuario* GerenciadorDeUsuarios::buscarUsuarioPorNome(const std::string& nome) {
+    for (auto temp : usuarios) {
+        if (temp->getNome() == nome) return temp;
+    }
+    return nullptr;
 }

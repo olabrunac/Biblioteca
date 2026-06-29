@@ -15,11 +15,12 @@ public:
     GerenciadorDeUsuarios();
     ~GerenciadorDeUsuarios();
 
-    void inicializarDados();
     void cadastrarUsuario();
     int ProximoCodigo();
     void removerUsuario(const GerenciadorDeEmprestimos& gerenciadorEmprestimos);
+    void setUsuarios(const std::vector<Usuario*>& novosUsuarios);
     Usuario* buscarUsuarioPorCodigo(int buscaCodigo);
+    Usuario* buscarUsuarioPorNome(const std::string& nome);
 };
 
 #endif

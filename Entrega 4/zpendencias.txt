@@ -4,13 +4,9 @@ pendencias????
 
     FEITO -- fiz o emprestimo do mesmo livro 2x e passou?? aí ao fazer emprestimos de outros livros aparece um spam de mensagem de erro e depois confirma o novo emprestimo, algo em relacao ao Emprestimo::possuiLivro
     
-    FEITO -- classe de erros try catch
-    
+    FEITO -- classe de erros try catch 
 
     FEITO -- Adicionar a lógico de Usuario em débito, para isso, Adicionar a opção de trocar a data
-
-
-    adicionar quantidade de dias certos por mes (ENUM dos meses);
 
     FEITO -- opção "secreta" do menu inicial, que Simula a passagem do tempo no sistema e verifica se usuarios estão em débito; 
     
@@ -22,14 +18,8 @@ pendencias????
         ideia tal -- ?Continuação pessoal do projeto?
 
     FEITO -- adicionar opção de Sim|Não para escolher caso o livro que tentou fazer emprestimo não esteja disponível
-
-    numero de espera na lista de reserva POR Livro
-
     
     -* ainda usar isso para imprimir a quantidade de dias atrasado
-    
-    Teste a opção de devolver empréstimo no menu, e após devolver ele ainda aparece no Consultar todos os emprestimos, porém ele está com status 0
-    o livro não ficou disponivel para emprestimo apos devolver ele
 
     FEITO -- Possui livro no emprestimo causando loop de cout no terminal
 
@@ -37,15 +27,20 @@ pendencias????
 
     FEITO -- Colocar uma letra ao inves do codigo do usuario causa algum erro de loop
 
-    Remover livro emprestado do acervo
-
     FINAL:: entregar uma planilha com os codigos e nomes dos livros e usuarios cadastrados para que o professor fuce
-    
-    adicionar classe Estagio - herdando atributos de aluno e professor, para usar a herança multipla
 
     FEITO -- verificação se o objeto já existe, impedindo cadastro duplicado de livro, usuario, editora;
 
+    adicionar quantidade de dias certos por mes (ENUM dos meses);    
 
+    numero de espera na lista de reserva POR Livro
+
+    Teste a opção de devolver empréstimo no menu, e após devolver ele ainda aparece no Consultar todos os emprestimos, porém ele está com status 0
+    o livro não ficou disponivel para emprestimo apos devolver ele
+    
+    Remover livro emprestado do acervo
+
+    adicionar classe Estagio - herdando atributos de aluno e professor, para usar a herança multipla
 
 https://docs.google.com/spreadsheets/d/1MlzKFv07vmvE7z_deBQD7X10JH_4Ces-OliQAH0jmk4/edit?usp=sharing  //editavel da tabela
 
