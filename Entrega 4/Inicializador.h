@@ -5,6 +5,7 @@
 #include "Usuario.h"
 #include "Aluno.h"
 #include "Professor.h"
+#include "Pesquisador.h"
 #include "Autor.h"
 #include "Editora.h"
 #include "Endereco.h"
@@ -35,6 +36,7 @@ inline std::vector<Usuario*> Inicializador<Usuario>::carregar() {
     usuarios.push_back(new Professor(5, "Backes"));
     usuarios.push_back(new Aluno(6, "Aluno em debito", StatusUsuario::EM_DEBITO));
     usuarios.push_back(new Professor(7, "Professor em debito", StatusUsuario::EM_DEBITO));
+    usuarios.push_back(new Pesquisador(8, "Pedro"));
     return usuarios;
 }
 
