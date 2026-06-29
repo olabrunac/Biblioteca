@@ -35,4 +35,7 @@ int main() {
     sistema.executar();
 
     return 0; 
-}
+};
+
+
+// https://docs.google.com/spreadsheets/u/2/d/e/2PACX-1vSPL6P46-GgutUZDF2t3kon_SIr0xOYO2Kf4SJz4oCtQm06wjtniDFAXQ1xnsLkvAzNsAiaxoDCroIv/pubhtml para visualisar o que foi carregado no sistema

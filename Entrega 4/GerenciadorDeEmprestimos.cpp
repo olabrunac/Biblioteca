@@ -296,8 +296,7 @@ void GerenciadorDeEmprestimos::listarTodasReservasUsuario(Usuario* usuarioBuscad
 void GerenciadorDeEmprestimos::listarEmprestimosDoUsuario(Usuario* usuario) { 
     bool encontrou = false;
     for (const auto& temp : emprestimos) {
-        if (temp->getUsuario() == usuario) {
-        if (temp->getUsuario() == usuario && temp->getStatus() == 1) { // só emprestimos ativos
+        if (temp->getUsuario()->getCodigo() == usuario->getCodigo() && temp->getStatus() == 1) { // só emprestimos ativos
             temp->imprimirEmprestimo();
             encontrou = true;
         }
@@ -305,7 +304,7 @@ void GerenciadorDeEmprestimos::listarEmprestimosDoUsuario(Usuario* usuario) {
     if (!encontrou) {
        throw ErroNenhumEmprestimo();
     } 
-}}
+}
 
 
 
@@ -363,29 +362,30 @@ int GerenciadorDeEmprestimos::contarReservasAtivas(Livro& livro) const {
 
 
 bool GerenciadorDeEmprestimos::realizarDevolucao(Usuario* usuario, int codigoLivro, const Data& dataDevolucao) { 
-    for (auto temp : emprestimos) {
-        // procura o emprestimo do usuario e depois o livro
-        if (temp->getUsuario() == usuario && temp->getStatus() == 1) {
-            for (auto tempItem : temp->getItens()) {
-                if (tempItem->getExemplar()->getLivro()->getCodigo() == codigoLivro && tempItem->getExemplar()->getStatus() == StatusEmprestimo::EMPRESTADO) {
+    for (auto it = emprestimos.begin(); it != emprestimos.end(); ++it) {
+        Emprestimo* emprestimoAtual = *it;
+        // Procura o empréstimo comparando os codigos, nao os ponteiros
+        if (emprestimoAtual->getUsuario()->getCodigo() == usuario->getCodigo() && emprestimoAtual->getStatus() == 1) {
+            for (auto item : emprestimoAtual->getItens()) {
+                if (item->getExemplar()->getLivro()->getCodigo() == codigoLivro && item->getExemplar()->getStatus() == StatusEmprestimo::EMPRESTADO) {
                     
-                    // faz a devolução
-                    tempItem->getExemplar()->setStatus(StatusEmprestimo::DISPONIVEL);
-                    tempItem->setDataQueFoiDevolvido(dataDevolucao.getDataInteira());
+                    item->getExemplar()->setStatus(StatusEmprestimo::DISPONIVEL);   //devolve
+                    item->setDataQueFoiDevolvido(dataDevolucao.getDataInteira());
                     
-                    cout << "Devolucao do livro '" << tempItem->getExemplar()->getLivro()->getTitulo() << "' realizada com sucesso." << endl;
+                    cout << "Devolucao do livro '" << item->getExemplar()->getLivro()->getTitulo() << "' realizada com sucesso." << endl;
                     
-                    // verifica se devolveu
                     bool todosDevolvidos = true;
-                    for (auto tempCheck : temp->getItens()) {
-                        if (tempCheck->getExemplar()->getStatus() == StatusEmprestimo::EMPRESTADO) {
+                    for (auto checkItem : emprestimoAtual->getItens()) {
+                        if (checkItem->getExemplar()->getStatus() == StatusEmprestimo::EMPRESTADO) {
                             todosDevolvidos = false;
                             break;
                         }
                     }
+
                     if (todosDevolvidos) {
-                        temp->setStatus(0); // finaliza o emprestimo
-                        cout << "Todos os itens deste emprestimo foram devolvidos." << endl;
+                        cout << "Todos os itens deste emprestimo foram devolvidos. Removendo o registro do sistema." << endl;
+                        delete emprestimoAtual; // libera a memoria
+                        emprestimos.erase(it); 
                     }
                     return true;
                 }
@@ -393,7 +393,6 @@ bool GerenciadorDeEmprestimos::realizarDevolucao(Usuario* usuario, int codigoLiv
         }
     }
     throw ErroNenhumEmprestimo();
-    return false; 
 }
 
 

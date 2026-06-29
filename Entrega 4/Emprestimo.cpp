@@ -28,7 +28,6 @@ Emprestimo::~Emprestimo() {
 void Emprestimo::imprimirEmprestimo() {                                  
     cout << endl << "+++ Detalhes Emprestimo +++" << endl;                       
     if (usuario != nullptr) {
-        cout << "Tipo do usuario: "; 
         usuario->imprimirUsuario();         //polimorfismo
     } else {
         cout << "Tipo do usuario: (Nao especificado)" << endl;
