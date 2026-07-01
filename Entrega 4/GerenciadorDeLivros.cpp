@@ -73,21 +73,23 @@ void GerenciadorDeLivros::cadastrarLivro() {
         throw ErroLivroJaExiste(titulo);
     }
 
+    // insere editora e valida
     cout << "Nome da Editora: "; getline(cin, nomeEditora);
-    cout << "Nome do Autor: "; getline(cin, nomeAutor);
-    cout << "Quantidade de exemplares: "; cin >> qtd;
-    cout << "Dias para emprestimo: "; cin >> dias;
-    limparBufferEntrada();
-
     Editora* editora = buscarEditoraPorNome(nomeEditora);
-    Autor* autor = buscarAutorPorNome(nomeAutor);
-
     if (!editora) {
         throw ErroEditoraNaoExiste();
     }
+
+    // faz o msm com autor
+    cout << "Nome do Autor: "; getline(cin, nomeAutor);
+    Autor* autor = buscarAutorPorNome(nomeAutor);
     if (!autor) {
         throw ErroAutorNaoExiste();
     }
+
+    cout << "Quantidade de exemplares: "; cin >> qtd;
+    cout << "Dias para emprestimo: "; cin >> dias;
+    limparBufferEntrada();
 
     int novoCodigo = proximoCodigoLivro++;
     Livro* novoLivro = new Livro(novoCodigo, titulo, *editora, {autor}, qtd);
@@ -293,3 +295,25 @@ Editora* GerenciadorDeLivros::buscarEditoraPorNome(const std::string& nome) {
 
 
 Acervo& GerenciadorDeLivros::getAcervo() { return acervo; }
+
+
+void GerenciadorDeLivros::listarTodosAutores() const {
+    cout << "\n--- Lista de Todos os Autores ---" << endl;
+    if (autores.empty()) {
+        throw ErroSistemaVazio();
+    }
+    for (const auto& autor : autores) {
+        autor->imprimirAutor();
+    }
+}
+
+
+void GerenciadorDeLivros::listarTodasEditoras() const {
+    cout << "\n--- Lista de Todas as Editoras ---" << endl;
+    if (editoras.empty()) {
+        throw ErroSistemaVazio();
+    }
+    for (const auto& editora : editoras) {
+        editora->imprimirEditora();
+    }
+}

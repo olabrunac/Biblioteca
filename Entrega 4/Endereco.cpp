@@ -17,12 +17,7 @@ Endereco::~Endereco() {}        //outro que nao faz alocacao dinamica
 
 
 void Endereco::imprimirEndereco() {
-    cout << "Rua: " << rua << endl;
-    cout << "Numero: " << numero << endl;
-    cout << "Bairro: " << bairro << endl;
-    cout << "Cidade: " << cidade << endl;
-    cout << "Estado: " << estado << endl;
-    cout << "CEP: " << cep << endl;
+    cout << "Endereco: " << rua << ", " << numero << ", " << bairro << ", " << cidade << "- " << estado << ", " << cep << endl;
 }
 
 

@@ -22,8 +22,8 @@ Editora::~Editora() {}      //assim como o autor nao precisa de delete pois edit
 
 void Editora::imprimirEditora() {
     cout << "Nome: " << nome << " (Cod: " << codigo << ")" << endl;
-    cout << "--- Endereco da Editora ---" << endl;
-    endereco.imprimirEndereco(); 
+    endereco.imprimirEndereco();
+    cout << endl;
 }
 
 

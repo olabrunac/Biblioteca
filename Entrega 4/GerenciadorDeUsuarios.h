@@ -21,6 +21,7 @@ public:
     void setUsuarios(const std::vector<Usuario*>& novosUsuarios);
     Usuario* buscarUsuarioPorCodigo(int buscaCodigo);
     Usuario* buscarUsuarioPorNome(const std::string& nome);
+    void listarTodosUsuarios() const;
 };
 
 #endif

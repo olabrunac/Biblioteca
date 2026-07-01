@@ -133,3 +133,14 @@ Usuario* GerenciadorDeUsuarios::buscarUsuarioPorNome(const std::string& nome) {
     }
     return nullptr;
 }
+
+
+void GerenciadorDeUsuarios::listarTodosUsuarios() const {
+    cout << "\n--- Lista de Todos os Usuarios ---" << endl;
+    if (usuarios.empty()) {
+        throw ErroSistemaVazio();
+    }
+    for (const auto& usuario : usuarios) {
+        usuario->imprimirUsuario();
+    }
+}

@@ -180,6 +180,15 @@ void GerenciadorDeEmprestimos::criarReserva(Usuario* reservaUsuario, Livro* rese
         throw ErroUsuarioJaReservouLivro();
     }
 
+    // ve se o usuario já tem o livro emprestado
+    for (const auto& emprestimo : emprestimos) {
+        if (emprestimo->getUsuario() == reservaUsuario && emprestimo->getStatus() == 1) {
+            if (emprestimo->possuiLivro(reservaLivro)) {
+                throw ErroUsuarioJaEmprestouLivro();
+            }
+        }
+    }
+
     Data dataDeRetirada = dataRealizacao; // a data de retirada do acervo
     
     //ve se tem livro disponivel, se sim nao precisa criar reserva

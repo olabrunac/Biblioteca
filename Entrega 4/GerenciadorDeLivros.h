@@ -42,6 +42,8 @@ public:
     Editora* buscarEditoraPorNome(const std::string& nome);
 
     Acervo& getAcervo();
+    void listarTodosAutores() const;
+    void listarTodasEditoras() const;
 };
 
 #endif

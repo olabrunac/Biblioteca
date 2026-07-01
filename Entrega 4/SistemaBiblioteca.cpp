@@ -236,6 +236,9 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                     }
                 } catch (const Erros& e) {
                     cerr << e.what() << endl;
+                    cout << "\nPressione Enter para continuar...";
+                    cin.get();
+                    return; // Retorna para o menu de Empréstimos e Reservas
                 }
                 break;
             }
@@ -340,11 +343,16 @@ void SistemaBiblioteca::menuEmprestimosEReservas() {
                             } else {
                                 Data dataReserva(dia, mes, ano);
                                 gerenciadorEmprestimos.criarReserva(usuario, livro, dataReserva);
+                                cout << "\nPressione Enter para continuar...1";
+                                cin.get();
                             }
                         }
                     } while (opcaoReserva == -1);
                 } catch (const Erros& e) {
                     cerr << e.what() << endl;
+                    cout << "\nPressione Enter para continuar...2";
+                    cin.get();
+                    return; // Retorna para o menu de Empréstimos e Reservas
                 }
 
                 break;
@@ -411,6 +419,9 @@ void SistemaBiblioteca::menuConsultas() {
         cout << "2. Consultar por Livro" << endl;
         cout << "3. Consultar por Usuario" << endl;
         cout << "4. Listar todos os livros no acervo" << endl;
+        cout << "5. Listar todos os usuarios" << endl;
+        cout << "6. Listar todos os autores" << endl;
+        cout << "7. Listar todas as editoras" << endl;
         cout << "0. Voltar ao Menu Principal" << endl;
         cout << "Escolha uma opcao: ";
         cin >> opcao;
@@ -461,6 +472,18 @@ void SistemaBiblioteca::menuConsultas() {
             }
             case 4: 
                 try { gerenciadorLivros.getAcervo().listarTodos(); }
+                catch (const Erros& e) { cerr << e.what() << endl; }
+                break;
+            case 5:
+                try { gerenciadorUsuarios.listarTodosUsuarios(); }
+                catch (const Erros& e) { cerr << e.what() << endl; }
+                break;
+            case 6:
+                try { gerenciadorLivros.listarTodosAutores(); }
+                catch (const Erros& e) { cerr << e.what() << endl; }
+                break;
+            case 7:
+                try { gerenciadorLivros.listarTodasEditoras(); }
                 catch (const Erros& e) { cerr << e.what() << endl; }
                 break;
             case 0: break;
